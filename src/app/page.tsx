@@ -2,6 +2,8 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsExplorer } from "@/components/sections/SkillsExplorer";
 import { ProjectsShowcase } from "@/components/sections/ProjectsShowcase";
 import { ArchitectureSimulator } from "@/components/sections/ArchitectureSimulator";
+import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
+import { EducationBento } from "@/components/sections/EducationBento";
 
 export default function Home() {
   return (
@@ -21,9 +23,13 @@ export default function Home() {
       {/* Interactive Architectural Deep-Dive Simulator */}
       <ArchitectureSimulator />
 
-      {/* Target section anchors for upcoming phases */}
-      <div id="experience" className="py-2" />
-      <div id="education" className="py-2" />
+      {/* Work Experience & Tracing Beam Career Timeline */}
+      <ExperienceTimeline />
+
+      {/* Education, Certifications & Languages Bento Grid */}
+      <EducationBento />
+
+      {/* Target section anchor for final phase */}
       <div id="contact" className="py-2" />
     </main>
   );
