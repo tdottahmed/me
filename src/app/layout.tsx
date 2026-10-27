@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { AppProviders } from "@/components/providers/AppProviders";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
 const inter = Inter({
@@ -74,7 +74,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-[#070a12] text-[#f8fafc] font-sans antialiased selection:bg-blue-500/30 selection:text-white">
-        <SmoothScroll>{children}</SmoothScroll>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
