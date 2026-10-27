@@ -64,7 +64,7 @@ export function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left: Brand mark & status pill */}
+        {/* Left: Brand mark */}
         <div className="flex items-center gap-3">
           <Link
             href="#overview"
@@ -75,15 +75,6 @@ export function Navbar() {
             </span>
             <span>Tanbir Ahmed</span>
           </Link>
-
-          {/* Live Availability Badge */}
-          <div className="hidden lg:flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-mono text-emerald-400">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            <span>Available for Opportunities</span>
-          </div>
         </div>
 
         {/* Center: Desktop Nav with Sliding Pill Indicator */}
@@ -181,12 +172,6 @@ export function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-800 bg-[#070a12]/95 px-4 pt-4 pb-6 backdrop-blur-xl animate-in slide-in-from-top-2">
-          {/* Status pill on mobile */}
-          <div className="mb-4 flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-mono text-emerald-400">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Available for Full-Stack Opportunities</span>
-          </div>
-
           <nav className="flex flex-col space-y-2">
             {NAV_ITEMS.map((item) => (
               <a
