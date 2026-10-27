@@ -91,6 +91,7 @@ export const PORTFOLIO_DATA = {
     portfolioUrl: "https://tanbir.nixsoftware.net",
     linkedinUrl: "https://linkedin.com/in/tanbir-ahmed07",
     githubUrl: "https://github.com/tdottahmed",
+    resumeUrl: "https://docs.google.com/document/d/1acwsxleAOt_vVNW3_2eMqSk25mKlFf8cou8nwWacixI/edit?usp=sharing",
     availability: "Available for Full-Stack Roles & High-Impact Contracts",
     summary:
       "Full-stack developer with 3.5+ years of production experience building and deploying high-reliability web platforms in Laravel, Django, Next.js, and React. Proven track record shipping live-class LMS platforms, defense inventory modules, and high-concurrency web applications from relational database design to hardened Linux VPS deployment with automated CI/CD. Strong focus on financial correctness (idempotent payment webhooks, append-only ledgers, row-level stock locking), real-time concurrency with WebSockets, and automated testing.",

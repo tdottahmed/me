@@ -180,12 +180,12 @@ export function CommandMenu() {
               <Command.Item
                 onSelect={() => {
                   closeMenu();
-                  window.open("/resume/Tanbir_Ahmed_Resume_ATS.pdf", "_blank");
+                  window.open(PORTFOLIO_DATA.personal.resumeUrl, "_blank");
                 }}
                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
               >
                 <FileDown className="h-4 w-4 text-amber-400" />
-                <span>Download ATS Resume (.PDF)</span>
+                <span>View ATS Resume (Google Docs)</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => {

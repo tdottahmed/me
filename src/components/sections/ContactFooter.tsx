@@ -234,14 +234,14 @@ export function ContactFooter() {
               </a>
 
               <a
-                href="/resume/Tanbir_Ahmed_Resume_ATS.pdf"
+                href={personal.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-amber-300 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all text-center"
               >
                 <FileDown className="h-5 w-5 mb-1.5 text-amber-400" />
                 <span className="font-mono text-xs font-semibold">Resume</span>
-                <span className="text-[10px] text-slate-400 font-mono">ATS PDF</span>
+                <span className="text-[10px] text-slate-400 font-mono">Google Docs</span>
               </a>
             </div>
           </div>

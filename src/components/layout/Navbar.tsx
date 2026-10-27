@@ -68,10 +68,12 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="#overview"
-            className="flex items-center gap-1.5 font-mono text-base font-bold text-slate-100 hover:text-blue-400 transition-colors"
+            className="flex items-center gap-2 font-sans text-base font-bold text-white hover:text-blue-400 transition-colors"
           >
-            <span className="text-blue-500">&gt;</span>
-            <span>tanbir.dev</span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-xs font-mono font-black text-white shadow-md shadow-blue-500/20">
+              TA
+            </span>
+            <span>Tanbir Ahmed</span>
           </Link>
 
           {/* Live Availability Badge */}
@@ -156,7 +158,7 @@ export function Navbar() {
 
           {/* Resume CTA */}
           <a
-            href="/resume/Tanbir_Ahmed_Resume_ATS.pdf"
+            href={PORTFOLIO_DATA.personal.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="relative hidden sm:inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:from-blue-500 hover:to-blue-400 transition-all"
@@ -200,7 +202,7 @@ export function Navbar() {
 
           <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between">
             <a
-              href="/resume/Tanbir_Ahmed_Resume_ATS.pdf"
+              href={PORTFOLIO_DATA.personal.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white"

@@ -105,13 +105,13 @@ export function HeroSection() {
 
             {/* Resume Button */}
             <a
-              href="/resume/Tanbir_Ahmed_Resume_ATS.pdf"
+              href={personal.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-4 py-3 text-sm font-medium text-slate-200 hover:border-slate-700 hover:bg-slate-800/80 transition-all"
             >
               <FileDown className="h-4 w-4 text-amber-400" />
-              <span>Download ATS Resume</span>
+              <span>ATS Resume</span>
             </a>
 
             {/* Copy Email Button */}
