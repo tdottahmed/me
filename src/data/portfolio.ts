@@ -83,7 +83,7 @@ export const PORTFOLIO_DATA = {
     name: "Tanbir Ahmed",
     title: "Full-Stack Developer",
     tagline: "Laravel · React · Next.js · Django",
-    headline: "Engineering Money-Safe Marketplaces, Real-Time WebApps & Hardened Cloud Systems.",
+    headline: "Architecting High-Concurrency, Real-Time Web Systems.",
     email: "ahmedtanbir442@gmail.com",
     phone: "+8801876525073",
     phoneFormatted: "+880 1876-525073",
@@ -93,7 +93,7 @@ export const PORTFOLIO_DATA = {
     githubUrl: "https://github.com/tdottahmed",
     availability: "Available for Full-Stack Roles & High-Impact Contracts",
     summary:
-      "Full-stack developer with 3.5+ years of production experience building and deploying high-reliability web platforms in Laravel, Django, Next.js, and React. Proven track record shipping multi-vendor marketplaces, e-commerce SPAs, and live-class LMS platforms from relational database design to hardened Linux VPS deployment with automated CI/CD. Strong focus on financial correctness (idempotent payment webhooks, append-only ledgers, row-level stock locking), real-time concurrency with WebSockets, and automated testing.",
+      "Full-stack developer with 3.5+ years of production experience building and deploying high-reliability web platforms in Laravel, Django, Next.js, and React. Proven track record shipping live-class LMS platforms, defense inventory modules, and high-concurrency web applications from relational database design to hardened Linux VPS deployment with automated CI/CD. Strong focus on financial correctness (idempotent payment webhooks, append-only ledgers, row-level stock locking), real-time concurrency with WebSockets, and automated testing.",
   },
 
   metrics: [

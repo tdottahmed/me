@@ -68,11 +68,11 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="font-sans text-4xl font-extrabold tracking-tight text-white sm:text-5xl xl:text-6xl leading-[1.12]"
           >
-            Engineering{" "}
+            Architecting{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">
-              Money-Safe
-            </span>{" "}
-            Marketplaces, Real-Time WebApps & Hardened Cloud Systems.
+              High-Concurrency
+            </span>
+            , Real-Time Web Systems.
           </motion.h1>
 
           {/* Subheadline */}
