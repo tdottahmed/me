@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useLenis } from "lenis/react";
 import { ProjectItem } from "@/data/portfolio";
 import {
   X,
@@ -20,6 +21,15 @@ interface ProjectModalProps {
 }
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const lenis = useLenis();
+
+  // Freeze the page behind the modal (Lenis ignores body overflow)
+  useEffect(() => {
+    if (!project || !lenis) return;
+    lenis.stop();
+    return () => lenis.start();
+  }, [project, lenis]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -48,7 +58,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
-          className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-slate-800 bg-[#0c1222] p-6 sm:p-8 shadow-2xl text-slate-200 scrollbar-thin"
+          data-lenis-prevent
+          className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto overscroll-contain rounded-2xl border border-slate-800 bg-[#0c1222] p-6 sm:p-8 shadow-2xl text-slate-200 scrollbar-thin"
         >
           {/* Close button */}
           <button

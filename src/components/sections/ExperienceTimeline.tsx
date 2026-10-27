@@ -44,7 +44,7 @@ export function ExperienceTimeline() {
             {experience.map((item, index) => (
               <div
                 key={item.id}
-                className="relative rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl"
+                className="relative rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl"
               >
                 {/* Header: Role, Company, Period, Location */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">

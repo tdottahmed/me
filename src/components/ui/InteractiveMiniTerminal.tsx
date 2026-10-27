@@ -24,10 +24,12 @@ export function InteractiveMiniTerminal() {
       ),
     },
   ]);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
 
+  // Scroll only the log box; scrollIntoView would also yank the whole page
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = logRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [history]);
 
   const handleCommand = (cmd: string) => {
@@ -106,7 +108,7 @@ export function InteractiveMiniTerminal() {
 
   return (
     <div className="flex h-full flex-col font-mono text-xs">
-      <div className="flex-1 space-y-2 overflow-y-auto max-h-[220px] p-2 scrollbar-thin">
+      <div ref={logRef} data-lenis-prevent className="flex-1 space-y-2 overflow-y-auto overscroll-contain max-h-[220px] p-2 scrollbar-thin">
         {history.map((item, i) => (
           <div key={i} className="space-y-1">
             <div className="flex items-center gap-1.5 text-slate-400">
@@ -116,7 +118,6 @@ export function InteractiveMiniTerminal() {
             <div className="text-slate-300 pl-4">{item.output}</div>
           </div>
         ))}
-        <div ref={bottomRef} />
       </div>
 
       <form onSubmit={handleSubmit} className="mt-2 flex items-center gap-2 border-t border-slate-800 pt-2">

@@ -49,7 +49,7 @@ export function ProjectsShowcase() {
         {flagshipProjects.map((project, index) => (
           <div
             key={project.id}
-            className="group relative overflow-hidden rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-10 shadow-2xl backdrop-blur-xl transition-all hover:border-slate-700"
+            className="group relative overflow-hidden rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-10 shadow-2xl transition-all hover:border-slate-700"
           >
             {/* BorderBeam effect for Flagship platforms */}
             <BorderBeam

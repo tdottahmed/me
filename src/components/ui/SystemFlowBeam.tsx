@@ -42,7 +42,7 @@ export function SystemFlowBeam() {
         const Icon = node.icon;
         return (
           <div key={node.id} className="w-full">
-            <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-900/60 p-3 backdrop-blur-md">
+            <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-900/60 p-3">
               <div className="flex items-center gap-3">
                 <div className={`flex h-9 w-9 items-center justify-center rounded-lg border ${node.color}`}>
                   <Icon className="h-4 w-4" />
@@ -63,7 +63,7 @@ export function SystemFlowBeam() {
               <div className="relative mx-auto h-5 w-0.5 bg-slate-800">
                 <motion.div
                   className="absolute left-0 top-0 h-2 w-full bg-gradient-to-b from-blue-400 via-emerald-400 to-rose-400"
-                  animate={{ top: ["0%", "100%"], opacity: [0, 1, 0] }}
+                  animate={{ y: [0, 20], opacity: [0, 1, 0] }}
                   transition={{
                     duration: 1.2,
                     repeat: Infinity,

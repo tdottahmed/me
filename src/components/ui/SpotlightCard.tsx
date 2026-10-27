@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, ReactNode } from "react";
+import React, { useRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SpotlightCardProps {
@@ -17,53 +17,31 @@ export function SpotlightCard({
   onClick,
 }: SpotlightCardProps) {
   const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
-  const [opacity, setOpacity] = useState(0);
 
+  // Write pointer position straight to CSS variables: no React re-render per mousemove
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleFocus = () => {
-    setOpacity(1);
-  };
-
-  const handleBlur = () => {
-    setOpacity(0);
-  };
-
-  const handleMouseEnter = () => {
-    setOpacity(1);
-  };
-
-  const handleMouseLeave = () => {
-    setOpacity(0);
+    const el = divRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
   };
 
   return (
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-slate-800/80 bg-[#0c1220]/80 p-6 backdrop-blur-md transition-all duration-300",
+        "group/spotlight relative overflow-hidden rounded-2xl border border-slate-800/80 bg-[#0c1220]/80 p-6 transition-[border-color,background-color,box-shadow,transform] duration-300",
         className
       )}
     >
       {/* Radial spotlight effect */}
       <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover/spotlight:opacity-100 group-focus-within/spotlight:opacity-100"
         style={{
-          opacity,
-          background: position
-            ? `radial-gradient(450px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 45%)`
-            : "",
+          background: `radial-gradient(450px circle at var(--spot-x, 50%) var(--spot-y, 50%), ${spotlightColor}, transparent 45%)`,
         }}
       />
       <div className="relative z-10">{children}</div>

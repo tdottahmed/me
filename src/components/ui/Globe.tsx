@@ -11,7 +11,8 @@ export function Globe({ className = "" }: { className?: string }) {
   useEffect(() => {
     let phi = 0;
     let width = 0;
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let visible = false;
 
     const onResize = () => {
       if (canvasRef.current) {
@@ -22,11 +23,13 @@ export function Globe({ className = "" }: { className?: string }) {
     onResize();
 
     if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: (width || 300) * 2,
-      height: (width || 300) * 2,
+      devicePixelRatio: dpr,
+      width: (width || 300) * dpr,
+      height: (width || 300) * dpr,
       phi: 0,
       theta: 0.25,
       dark: 1,
@@ -50,15 +53,26 @@ export function Globe({ className = "" }: { className?: string }) {
       }
       globe.update({
         phi: phi + pointerInteractionMovement.current,
-        width: (width || 300) * 2,
-        height: (width || 300) * 2,
+        width: (width || 300) * dpr,
+        height: (width || 300) * dpr,
       });
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    // Only spend GPU time on the WebGL globe while it is actually on screen
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !visible) {
+        visible = true;
+        animationFrameId = requestAnimationFrame(animate);
+      } else if (!entry.isIntersecting && visible) {
+        visible = false;
+        cancelAnimationFrame(animationFrameId);
+      }
+    });
+    observer.observe(canvas);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
       globe.destroy();
       window.removeEventListener("resize", onResize);

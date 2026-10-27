@@ -131,7 +131,7 @@ export function SkillsExplorer() {
         </div>
 
         {/* Search Bar & Project Cross-Filters */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-800/80 bg-slate-900/40 p-4 backdrop-blur-md">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-800/80 bg-slate-900/40 p-4">
           {/* Search Input */}
           <div className="relative w-full md:w-80">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />

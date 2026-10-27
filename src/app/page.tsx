@@ -5,6 +5,7 @@ import { ArchitectureSimulator } from "@/components/sections/ArchitectureSimulat
 import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
 import { EducationBento } from "@/components/sections/EducationBento";
 import { ContactFooter } from "@/components/sections/ContactFooter";
+import { Reveal } from "@/components/ui/Reveal";
 
 export default function Home() {
   return (
@@ -16,22 +17,34 @@ export default function Home() {
       <HeroSection />
 
       {/* Skills Matrix: Individualized Spotlight Cards & Project Cross-Filters */}
-      <SkillsExplorer />
+      <Reveal>
+        <SkillsExplorer />
+      </Reveal>
 
       {/* Featured Production Projects: BorderBeam Showcase & Case Studies */}
-      <ProjectsShowcase />
+      <Reveal>
+        <ProjectsShowcase />
+      </Reveal>
 
       {/* Interactive Architectural Deep-Dive Simulator: Row-Locks & WebSockets */}
-      <ArchitectureSimulator />
+      <Reveal>
+        <ArchitectureSimulator />
+      </Reveal>
 
       {/* Work Experience: Tracing Beam Career Timeline */}
-      <ExperienceTimeline />
+      <Reveal>
+        <ExperienceTimeline />
+      </Reveal>
 
       {/* Education & Certifications Bento Grid */}
-      <EducationBento />
+      <Reveal>
+        <EducationBento />
+      </Reveal>
 
       {/* Direct Engagement Contact Section & Developer Footer */}
-      <ContactFooter />
+      <Reveal>
+        <ContactFooter />
+      </Reveal>
     </main>
   );
 }

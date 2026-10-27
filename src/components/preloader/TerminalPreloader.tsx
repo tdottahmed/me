@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useLenis } from "lenis/react";
 import { Terminal, ShieldCheck, Check, FastForward } from "lucide-react";
 
 const BOOT_LOGS = [
@@ -68,6 +69,14 @@ export function TerminalPreloader() {
       document.body.style.overflow = "";
     };
   }, []);
+
+  // body overflow alone doesn't stop Lenis from scrolling the page underneath
+  const lenis = useLenis();
+  useEffect(() => {
+    if (!lenis) return;
+    if (visible && !isSkipped) lenis.stop();
+    else lenis.start();
+  }, [lenis, visible, isSkipped]);
 
   const dismissPreloader = () => {
     setIsSkipped(true);

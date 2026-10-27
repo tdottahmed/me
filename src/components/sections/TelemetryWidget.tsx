@@ -11,7 +11,7 @@ export function TelemetryWidget() {
   const [activeTab, setActiveTab] = useState<"flow" | "globe" | "terminal">("flow");
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-slate-800/90 bg-[#0c1222]/90 p-5 shadow-2xl backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-2xl border border-slate-800/90 bg-[#0c1222]/90 p-5 shadow-2xl">
       {/* Top Header & Tab Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-3 gap-3">
         <div className="flex items-center gap-2">

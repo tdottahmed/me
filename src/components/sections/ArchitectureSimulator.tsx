@@ -71,7 +71,7 @@ export function ArchitectureSimulator() {
       </div>
 
       {/* Main Glass Panel Simulator */}
-      <div className="mt-12 overflow-hidden rounded-2xl border border-slate-800 bg-[#0c1222]/90 shadow-2xl backdrop-blur-xl">
+      <div className="mt-12 overflow-hidden rounded-2xl border border-slate-800 bg-[#0c1222]/90 shadow-2xl">
         {/* Tab Controls */}
         <div className="flex flex-wrap items-center border-b border-slate-800/80 bg-slate-900/40 p-2 gap-2">
           <button

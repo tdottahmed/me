@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { useToast } from "@/components/ui/Toast";
+import { useLenis } from "lenis/react";
 import confetti from "canvas-confetti";
 import {
   Mail,
@@ -23,6 +24,7 @@ import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 export function ContactFooter() {
   const { personal } = PORTFOLIO_DATA;
   const { showToast } = useToast();
+  const lenis = useLenis();
 
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
@@ -93,7 +95,7 @@ export function ContactFooter() {
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    lenis?.scrollTo(0, { duration: 1.6 });
   };
 
   return (
@@ -123,7 +125,7 @@ export function ContactFooter() {
             {/* Email Card with 1-Click Copy */}
             <div
               onClick={handleCopyEmail}
-              className="cursor-pointer rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5 backdrop-blur-md hover:border-blue-500/40 transition-all group"
+              className="cursor-pointer rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5 hover:border-blue-500/40 transition-all group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -153,7 +155,7 @@ export function ContactFooter() {
             </div>
 
             {/* Phone & WhatsApp Card */}
-            <div className="rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5 backdrop-blur-md">
+            <div className="rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
@@ -189,7 +191,7 @@ export function ContactFooter() {
             </div>
 
             {/* Location & Timezone Card */}
-            <div className="rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5 backdrop-blur-md">
+            <div className="rounded-2xl border border-slate-800/90 bg-[#0c1222]/80 p-5">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-400">
                   <MapPin className="h-5 w-5" />
@@ -248,7 +250,7 @@ export function ContactFooter() {
 
           {/* Right Column: Interactive Client Contact Form (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl">
+            <div className="rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl">
               <div className="flex items-center gap-2 pb-5 border-b border-slate-800/80">
                 <MessageSquare className="h-4 w-4 text-blue-400" />
                 <h3 className="font-sans text-base font-bold text-white">

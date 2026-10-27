@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Command } from "cmdk";
 import { useCommandMenu } from "./CommandMenuContext";
 import { useToast } from "@/components/ui/Toast";
+import { useLenis } from "lenis/react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import confetti from "canvas-confetti";
 import {
@@ -24,6 +25,7 @@ import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 export function CommandMenu() {
   const { isOpen, closeMenu, toggleMenu } = useCommandMenu();
   const { showToast } = useToast();
+  const lenis = useLenis();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,9 +40,9 @@ export function CommandMenu() {
 
   const handleNavigate = (hash: string) => {
     closeMenu();
-    const element = document.querySelector(hash);
+    const element = document.querySelector<HTMLElement>(hash);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      lenis?.scrollTo(element, { offset: -72, duration: 1.4 });
     } else {
       window.location.hash = hash;
     }
@@ -97,7 +99,7 @@ export function CommandMenu() {
             </kbd>
           </div>
 
-          <Command.List className="max-h-80 overflow-y-auto p-2 scrollbar-thin">
+          <Command.List data-lenis-prevent className="max-h-80 overflow-y-auto overscroll-contain p-2 scrollbar-thin">
             <Command.Empty className="py-6 text-center text-xs font-mono text-slate-500">
               No matching command found.
             </Command.Empty>

@@ -5,8 +5,10 @@ import { motion } from "motion/react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { NumberTicker } from "@/components/ui/NumberTicker";
+import { EASE_OUT_EXPO } from "@/components/ui/Reveal";
 import { TelemetryWidget } from "./TelemetryWidget";
 import { useToast } from "@/components/ui/Toast";
+import { useLenis } from "lenis/react";
 import confetti from "canvas-confetti";
 import {
   ArrowDown,
@@ -22,6 +24,7 @@ import {
 export function HeroSection() {
   const { personal, metrics } = PORTFOLIO_DATA;
   const { showToast } = useToast();
+  const lenis = useLenis();
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
@@ -38,10 +41,7 @@ export function HeroSection() {
   };
 
   const scrollToProjects = () => {
-    const el = document.getElementById("projects");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    lenis?.scrollTo("#projects", { offset: -72, duration: 1.4 });
   };
 
   return (
@@ -54,7 +54,7 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
             className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3.5 py-1.5 text-xs font-mono font-medium text-blue-400"
           >
             <span className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
@@ -65,7 +65,7 @@ export function HeroSection() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.1 }}
             className="font-sans text-4xl font-extrabold tracking-tight text-white sm:text-5xl xl:text-6xl leading-[1.12]"
           >
             Architecting{" "}
@@ -79,7 +79,7 @@ export function HeroSection() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.2 }}
             className="max-w-2xl text-base sm:text-lg text-slate-300 leading-relaxed font-normal"
           >
             {personal.summary}
@@ -89,7 +89,7 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.3 }}
             className="flex flex-wrap items-center gap-3 pt-2"
           >
             {/* Primary Magnetic CTA */}
@@ -137,7 +137,7 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.4 }}
             className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono text-slate-400"
           >
             <div className="flex items-center gap-1.5">
@@ -161,7 +161,7 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 1.2, ease: EASE_OUT_EXPO, delay: 0.2 }}
           className="lg:col-span-5"
         >
           <TelemetryWidget />
@@ -170,15 +170,15 @@ export function HeroSection() {
 
       {/* Hero Metrics Bar with NumberTicker */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        transition={{ duration: 1.2, ease: EASE_OUT_EXPO, delay: 0.4 }}
         className="mt-16 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
       >
         {metrics.map((item, idx) => (
           <div
             key={idx}
-            className="glass-panel glass-panel-hover rounded-xl p-4 sm:p-5 text-center transition-all"
+            className="glass-panel glass-panel-hover rounded-xl p-4 sm:p-5 text-center"
           >
             <div className="font-mono text-3xl sm:text-4xl font-extrabold text-blue-400">
               <NumberTicker

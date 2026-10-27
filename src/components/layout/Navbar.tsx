@@ -31,33 +31,35 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      // Section detection
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1));
-      const scrollPosition = window.scrollY + 200;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
+    // Only reads scrollY (no layout); React bails out when the boolean is unchanged
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Section detection off the main scroll path: a section is active while it
+    // crosses a thin band ~40% down the viewport
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.href.substring(1));
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow,padding] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         scrolled
           ? "bg-[#070a12]/80 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/40 py-3"
           : "bg-transparent py-5"
@@ -78,7 +80,7 @@ export function Navbar() {
         </div>
 
         {/* Center: Desktop Nav with Sliding Pill Indicator */}
-        <nav className="hidden md:flex items-center rounded-full border border-slate-800/80 bg-slate-900/60 p-1 backdrop-blur-lg">
+        <nav className="hidden md:flex items-center rounded-full border border-slate-800/80 bg-slate-900/60 p-1">
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.href.substring(1);
             return (
