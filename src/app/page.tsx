@@ -4,6 +4,7 @@ import { ProjectsShowcase } from "@/components/sections/ProjectsShowcase";
 import { ArchitectureSimulator } from "@/components/sections/ArchitectureSimulator";
 import { ExperienceTimeline } from "@/components/sections/ExperienceTimeline";
 import { EducationBento } from "@/components/sections/EducationBento";
+import { ContactFooter } from "@/components/sections/ContactFooter";
 
 export default function Home() {
   return (
@@ -11,26 +12,26 @@ export default function Home() {
       {/* Background radial gradient glow */}
       <div className="pointer-events-none absolute inset-0 bg-radial-fade bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(59,130,246,0.18),rgba(7,10,18,0))]" />
 
-      {/* Hero Section */}
+      {/* Hero Section: Narrative, Numbers Ticker & Architecture Telemetry Bento */}
       <HeroSection />
 
-      {/* Skills & Tools Matrix Explorer */}
+      {/* Skills Matrix: Individualized Spotlight Cards & Project Cross-Filters */}
       <SkillsExplorer />
 
-      {/* Featured Production Projects */}
+      {/* Featured Production Projects: BorderBeam Showcase & Case Studies */}
       <ProjectsShowcase />
 
-      {/* Interactive Architectural Deep-Dive Simulator */}
+      {/* Interactive Architectural Deep-Dive Simulator: Row-Locks & WebSockets */}
       <ArchitectureSimulator />
 
-      {/* Work Experience & Tracing Beam Career Timeline */}
+      {/* Work Experience: Tracing Beam Career Timeline */}
       <ExperienceTimeline />
 
-      {/* Education, Certifications & Languages Bento Grid */}
+      {/* Education & Certifications Bento Grid */}
       <EducationBento />
 
-      {/* Target section anchor for final phase */}
-      <div id="contact" className="py-2" />
+      {/* Direct Engagement Contact Section & Developer Footer */}
+      <ContactFooter />
     </main>
   );
 }
