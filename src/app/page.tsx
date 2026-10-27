@@ -1,5 +1,7 @@
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsExplorer } from "@/components/sections/SkillsExplorer";
+import { ProjectsShowcase } from "@/components/sections/ProjectsShowcase";
+import { ArchitectureSimulator } from "@/components/sections/ArchitectureSimulator";
 
 export default function Home() {
   return (
@@ -13,9 +15,13 @@ export default function Home() {
       {/* Skills & Tools Matrix Explorer */}
       <SkillsExplorer />
 
+      {/* Featured Production Projects */}
+      <ProjectsShowcase />
+
+      {/* Interactive Architectural Deep-Dive Simulator */}
+      <ArchitectureSimulator />
+
       {/* Target section anchors for upcoming phases */}
-      <div id="projects" className="py-2" />
-      <div id="architecture" className="py-2" />
       <div id="experience" className="py-2" />
       <div id="education" className="py-2" />
       <div id="contact" className="py-2" />
