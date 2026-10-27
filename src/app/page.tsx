@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/sections/HeroSection";
+import { SkillsExplorer } from "@/components/sections/SkillsExplorer";
 
 export default function Home() {
   return (
@@ -9,8 +10,10 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* Skills & Tools Matrix Explorer */}
+      <SkillsExplorer />
+
       {/* Target section anchors for upcoming phases */}
-      <div id="skills" className="py-2" />
       <div id="projects" className="py-2" />
       <div id="architecture" className="py-2" />
       <div id="experience" className="py-2" />
