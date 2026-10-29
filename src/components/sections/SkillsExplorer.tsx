@@ -7,6 +7,7 @@ import { PORTFOLIO_DATA, SkillItem } from "@/data/portfolio";
 import { NumberTicker } from "@/components/ui/NumberTicker";
 import { EASE_OUT_EXPO } from "@/components/ui/Reveal";
 import { SkillIcon } from "@/components/ui/Icons";
+import { FeaturedStackCarousel } from "@/components/ui/FeaturedStackCarousel";
 import {
   Search,
   X,
@@ -326,8 +327,13 @@ export function SkillsExplorer() {
           </motion.div>
         </div>
 
+        {/* Executive Core Stacks Animated Carousel */}
+        <div className="mt-8 sm:mt-10 max-w-4xl mx-auto">
+          <FeaturedStackCarousel onSelectProject={jumpToProject} />
+        </div>
+
         {/* Controls Container */}
-        <div className="mt-10 sm:mt-12 space-y-4 sm:space-y-6">
+        <div className="mt-8 sm:mt-10 space-y-4 sm:space-y-6">
           {/* Top Bar: View Mode Switcher + Domain Horizontal Scroll */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Domain Tabs with Horizontal Drag/Scroll on Mobile */}
@@ -410,7 +416,7 @@ export function SkillsExplorer() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search tools, versions, or keywords..."
-                className="w-full rounded-xl border border-slate-800 bg-slate-950/70 pl-10 pr-9 py-2 text-xs text-slate-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-xl border border-slate-800 bg-slate-950/70 pl-10 pr-9 py-2 text-base sm:text-xs text-slate-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
               {searchQuery && (
                 <button
@@ -517,7 +523,7 @@ export function SkillsExplorer() {
                     </div>
 
                     {/* Tech Pods Grid inside the Bento Card */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-2">
                       {skills.map((skill) => {
                         const isInspected = inspectedSkill?.id === skill.id;
                         return (
@@ -639,7 +645,7 @@ export function SkillsExplorer() {
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
-              className="relative w-full sm:max-w-xl max-h-[85vh] sm:max-h-[80vh] overflow-y-auto overscroll-contain rounded-t-3xl sm:rounded-2xl border border-slate-800 bg-[#0c1222] p-6 shadow-2xl text-slate-200"
+              className="relative w-full sm:max-w-xl max-h-[85vh] sm:max-h-[80vh] overflow-y-auto overscroll-contain rounded-t-3xl sm:rounded-2xl border border-slate-800 bg-[#0c1222] p-5 sm:p-6 pb-8 sm:pb-6 shadow-2xl text-slate-200"
             >
               {/* Mobile Drag Indicator Handle */}
               <div className="mx-auto -mt-2 mb-4 h-1 w-12 rounded-full bg-slate-700 sm:hidden" />

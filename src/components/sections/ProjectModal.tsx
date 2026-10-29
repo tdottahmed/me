@@ -7,11 +7,8 @@ import { ProjectItem } from "@/data/portfolio";
 import {
   X,
   ExternalLink,
-  ShieldCheck,
   CheckCircle2,
-  Cpu,
   Layers,
-  Terminal,
 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/Icons";
 

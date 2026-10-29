@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
+import { CredentialsCarousel } from "@/components/ui/CredentialsCarousel";
 import {
   GraduationCap,
   Award,
@@ -11,8 +11,6 @@ import {
   Calendar,
   MapPin,
   CheckCircle2,
-  BookOpen,
-  Sparkles,
 } from "lucide-react";
 
 export function EducationBento() {
@@ -39,8 +37,13 @@ export function EducationBento() {
         </p>
       </div>
 
+      {/* Interactive Credentials & Honors Animated Carousel */}
+      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+        <CredentialsCarousel />
+      </div>
+
       {/* 3-Card Bento Grid */}
-      <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="mt-10 sm:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Card 1: Academic Degree (7 cols) */}
         <div className="lg:col-span-7">
           <SpotlightCard className="h-full flex flex-col justify-between border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 hover:border-purple-500/40 transition-all">

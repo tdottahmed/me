@@ -16,10 +16,10 @@ import {
   ArrowUp,
   Sparkles,
   MessageSquare,
-  ShieldCheck,
   Check,
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { EngineeringCommitmentsCarousel } from "@/components/ui/EngineeringCommitmentsCarousel";
 
 export function ContactFooter() {
   const { personal } = PORTFOLIO_DATA;
@@ -118,8 +118,13 @@ export function ContactFooter() {
           </p>
         </div>
 
+        {/* Core Production Commitments & SLA Animated Carousel */}
+        <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+          <EngineeringCommitmentsCarousel />
+        </div>
+
         {/* 2-Column Split: Direct Info & Contact Form */}
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Direct Action Pods (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             {/* Email Card with 1-Click Copy */}
@@ -212,45 +217,51 @@ export function ContactFooter() {
             </div>
 
             {/* Profiles & Resume Triggers */}
-            <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-2">
               <a
                 href={personal.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-slate-300 hover:border-slate-700 hover:text-white transition-all text-center"
+                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 sm:p-3 text-slate-300 hover:border-slate-700 hover:text-white transition-all text-center"
               >
-                <GithubIcon className="h-5 w-5 mb-1.5" />
-                <span className="font-mono text-xs font-semibold">GitHub</span>
-                <span className="text-[10px] text-slate-500 font-mono">@tdottahmed</span>
+                <GithubIcon className="h-4 sm:h-5 w-4 sm:w-5 mb-1" />
+                <span className="font-mono text-[11px] sm:text-xs font-semibold">GitHub</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-mono truncate max-w-full">
+                  @tdottahmed
+                </span>
               </a>
 
               <a
                 href={personal.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-slate-300 hover:border-slate-700 hover:text-sky-400 transition-all text-center"
+                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 sm:p-3 text-slate-300 hover:border-slate-700 hover:text-sky-400 transition-all text-center"
               >
-                <LinkedinIcon className="h-5 w-5 mb-1.5" />
-                <span className="font-mono text-xs font-semibold">LinkedIn</span>
-                <span className="text-[10px] text-slate-500 font-mono">/in/tanbir-ahmed07</span>
+                <LinkedinIcon className="h-4 sm:h-5 w-4 sm:w-5 mb-1" />
+                <span className="font-mono text-[11px] sm:text-xs font-semibold">LinkedIn</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-500 font-mono truncate max-w-full">
+                  Profile
+                </span>
               </a>
 
               <a
                 href={personal.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-amber-300 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all text-center"
+                className="flex flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 sm:p-3 text-amber-300 hover:border-amber-500/40 hover:bg-amber-500/10 transition-all text-center"
               >
-                <FileDown className="h-5 w-5 mb-1.5 text-amber-400" />
-                <span className="font-mono text-xs font-semibold">Resume</span>
-                <span className="text-[10px] text-slate-400 font-mono">Google Docs</span>
+                <FileDown className="h-4 sm:h-5 w-4 sm:w-5 mb-1 text-amber-400" />
+                <span className="font-mono text-[11px] sm:text-xs font-semibold">Resume</span>
+                <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono truncate max-w-full">
+                  ATS Docs
+                </span>
               </a>
             </div>
           </div>
 
           {/* Right Column: Interactive Client Contact Form (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl">
+            <div className="rounded-2xl sm:rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-5 sm:p-8 md:p-10 shadow-2xl">
               <div className="flex items-center gap-2 pb-5 border-b border-slate-800/80">
                 <MessageSquare className="h-4 w-4 text-blue-400" />
                 <h3 className="font-sans text-base font-bold text-white">
@@ -300,7 +311,7 @@ export function ContactFooter() {
                           setFormData({ ...formData, name: e.target.value })
                         }
                         placeholder="John Doe"
-                        className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-base sm:text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
                       />
                     </div>
 
@@ -316,7 +327,7 @@ export function ContactFooter() {
                           setFormData({ ...formData, email: e.target.value })
                         }
                         placeholder="john@company.com"
-                        className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
+                        className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-base sm:text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -330,7 +341,7 @@ export function ContactFooter() {
                       onChange={(e) =>
                         setFormData({ ...formData, service: e.target.value })
                       }
-                      className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-xs text-slate-200 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-base sm:text-xs text-slate-200 focus:border-blue-500 focus:outline-none"
                     >
                       <option value="Full-Stack Opportunity">
                         Full-Stack Engineering Role (Full-Time)
@@ -360,14 +371,14 @@ export function ContactFooter() {
                         setFormData({ ...formData, message: e.target.value })
                       }
                       placeholder="Share project requirements, team scope, or timeline..."
-                      className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3.5 py-2.5 text-base sm:text-xs text-white placeholder:text-slate-600 focus:border-blue-500 focus:outline-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-xs font-semibold text-white shadow-xl shadow-blue-500/20 hover:brightness-110 disabled:opacity-50 transition-all cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3.5 sm:py-3 text-sm sm:text-xs font-semibold text-white shadow-xl shadow-blue-500/20 hover:brightness-110 disabled:opacity-50 transition-all cursor-pointer"
                   >
                     {submitting ? (
                       <>

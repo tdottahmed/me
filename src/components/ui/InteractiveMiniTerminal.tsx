@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Terminal as TerminalIcon, CornerDownLeft } from "lucide-react";
+import { CornerDownLeft } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
 interface HistoryItem {
@@ -127,7 +127,7 @@ export function InteractiveMiniTerminal() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="type 'help'..."
-          className="w-full bg-transparent text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
+          className="w-full bg-transparent text-base sm:text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
         />
         <button
           type="submit"

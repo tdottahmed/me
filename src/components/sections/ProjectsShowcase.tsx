@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 import { PORTFOLIO_DATA, ProjectItem } from "@/data/portfolio";
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { ProjectModal } from "./ProjectModal";
@@ -17,6 +17,8 @@ import {
   ChevronRight,
   Activity,
   ArrowRight,
+  Play,
+  Pause,
 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/Icons";
 import { cn } from "@/lib/utils";
@@ -240,6 +242,10 @@ const PROJECT_EXTENDED_DATA: Record<string, ProjectExtendedMeta> = {
 
 export function ProjectsShowcase() {
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [activeStudioTab, setActiveStudioTab] = useState<StudioTab>("innovations");
   const [selectedProjectForModal, setSelectedProjectForModal] = useState<ProjectItem | null>(null);
 
@@ -251,6 +257,47 @@ export function ProjectsShowcase() {
     systemFlow: [],
     specs: [],
   };
+
+  const AUTO_PROJECT_DURATION = 7500; // 7.5 seconds per platform
+
+  const goToNextProject = useCallback(() => {
+    setDirection(1);
+    setActiveProjectIndex((prev) => (prev + 1) % projects.length);
+    setProgress(0);
+  }, [projects.length]);
+
+  const goToPrevProject = useCallback(() => {
+    setDirection(-1);
+    setActiveProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    setProgress(0);
+  }, [projects.length]);
+
+  const goToProjectIndex = (idx: number) => {
+    if (idx === activeProjectIndex) return;
+    setDirection(idx > activeProjectIndex ? 1 : -1);
+    setActiveProjectIndex(idx);
+    setProgress(0);
+  };
+
+  // Auto-play interval with smooth 50ms progress increments
+  useEffect(() => {
+    if (isPaused || !isAutoPlayEnabled) return;
+
+    const intervalTime = 50;
+    const step = (intervalTime / AUTO_PROJECT_DURATION) * 100;
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          goToNextProject();
+          return 0;
+        }
+        return prev + step;
+      });
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  }, [isPaused, isAutoPlayEnabled, goToNextProject]);
 
   // Touch swipe support for mobile
   const touchStartX = useRef<number | null>(null);
@@ -264,22 +311,38 @@ export function ProjectsShowcase() {
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX.current - touchEndX;
 
-    if (diff > 50) {
-      // Swiped left -> next
-      setActiveProjectIndex((prev) => (prev + 1) % projects.length);
-    } else if (diff < -50) {
-      // Swiped right -> prev
-      setActiveProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    if (diff > 45) {
+      goToNextProject();
+    } else if (diff < -45) {
+      goToPrevProject();
     }
     touchStartX.current = null;
   };
 
-  const goToNextProject = () => {
-    setActiveProjectIndex((prev) => (prev + 1) % projects.length);
-  };
-
-  const goToPrevProject = () => {
-    setActiveProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
+  const projectSlideVariants: Variants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 28 : -28,
+      opacity: 0,
+      scale: 0.99,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: "spring" as const, stiffness: 360, damping: 32 },
+        opacity: { duration: 0.25 },
+      },
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -28 : 28,
+      opacity: 0,
+      scale: 0.99,
+      transition: {
+        x: { type: "spring" as const, stiffness: 360, damping: 32 },
+        opacity: { duration: 0.2 },
+      },
+    }),
   };
 
   return (
@@ -306,25 +369,40 @@ export function ProjectsShowcase() {
         </p>
       </div>
 
-      {/* Platform Selector Strip: Horizontal Navigation with Active Indicator */}
+      {/* Platform Selector Strip: Horizontal Navigation with Active Indicator + Autoplay Controls */}
       <div className="mt-12 sm:mt-14">
         {/* Mobile: Controls + Counter */}
         <div className="flex sm:hidden items-center justify-between mb-3 px-1">
-          <span className="font-mono text-xs text-slate-400">
-            Platform <span className="font-bold text-white">{activeProjectIndex + 1}</span> of{" "}
-            <span className="text-white">{projects.length}</span>
-          </span>
+          <div className="flex items-center gap-1.5 font-mono text-xs text-slate-400">
+            <span>Platform</span>
+            <span className="font-bold text-white bg-slate-800 px-1.5 py-0.5 rounded text-[11px]">
+              0{activeProjectIndex + 1} / 0{projects.length}
+            </span>
+            <span className="text-[10px] text-slate-500">• Swipe to browse</span>
+          </div>
           <div className="flex items-center gap-1.5">
             <button
+              onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              aria-label={isAutoPlayEnabled ? "Pause platform tour" : "Resume platform tour"}
+              title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
+            >
+              {isAutoPlayEnabled && !isPaused ? (
+                <Pause className="h-3.5 w-3.5" />
+              ) : (
+                <Play className="h-3.5 w-3.5 fill-current" />
+              )}
+            </button>
+            <button
               onClick={goToPrevProject}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
               aria-label="Previous platform"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={goToNextProject}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
               aria-label="Next platform"
             >
               <ChevronRight className="h-4 w-4" />
@@ -332,54 +410,89 @@ export function ProjectsShowcase() {
           </div>
         </div>
 
-        {/* Scrollable / Segmented Tab Bar */}
-        <div className="overflow-x-auto pb-2 scrollbar-none">
-          <div className="flex items-center gap-2 min-w-max p-1 rounded-2xl border border-slate-800/80 bg-slate-900/60">
-            {projects.map((project, idx) => {
-              const isActive = activeProjectIndex === idx;
-              const meta = PROJECT_EXTENDED_DATA[project.id];
-              return (
-                <button
-                  key={project.id}
-                  onClick={() => setActiveProjectIndex(idx)}
-                  className={cn(
-                    "relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0",
-                    isActive
-                      ? "text-white font-semibold"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
-                  )}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeStudioProjectPill"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 border border-blue-400/40 shadow-md shadow-blue-500/25 -z-10"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                    />
-                  )}
+        {/* Desktop & Tablet: Segmented Tab Bar + Carousel Controls */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="overflow-x-auto pb-2 scrollbar-none flex-1 min-w-0">
+            <div className="flex items-center gap-2 min-w-max p-1 rounded-2xl border border-slate-800/80 bg-slate-900/60">
+              {projects.map((project, idx) => {
+                const isActive = activeProjectIndex === idx;
+                const meta = PROJECT_EXTENDED_DATA[project.id];
+                return (
+                  <button
+                    key={project.id}
+                    onClick={() => goToProjectIndex(idx)}
+                    className={cn(
+                      "relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0",
+                      isActive
+                        ? "text-white font-semibold"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                    )}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeStudioProjectPill"
+                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 border border-blue-400/40 shadow-md shadow-blue-500/25 -z-10"
+                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                      />
+                    )}
 
-                  {/* Pulsing production status dot */}
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </span>
-
-                  <span className="font-sans font-bold">{project.title}</span>
-
-                  {meta && (
-                    <span
-                      className={cn(
-                        "rounded px-1.5 py-0.5 text-[9px] font-mono",
-                        isActive
-                          ? "bg-white/20 text-white"
-                          : "bg-slate-800 text-slate-400"
-                      )}
-                    >
-                      {meta.flag}
+                    {/* Pulsing production status dot */}
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                     </span>
-                  )}
-                </button>
-              );
-            })}
+
+                    <span className="font-sans font-bold">{project.title}</span>
+
+                    {meta && (
+                      <span
+                        className={cn(
+                          "rounded px-1.5 py-0.5 text-[9px] font-mono",
+                          isActive
+                            ? "bg-white/20 text-white"
+                            : "bg-slate-800 text-slate-400"
+                        )}
+                      >
+                        {meta.flag}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Desktop Carousel Controls */}
+          <div className="hidden sm:flex items-center gap-1.5 shrink-0 pb-2">
+            <div className="rounded-xl border border-slate-800 bg-slate-900/80 px-2.5 py-1.5 font-mono text-xs text-slate-400 mr-1">
+              <span className="text-white font-semibold">0{activeProjectIndex + 1}</span> / 0{projects.length}
+            </div>
+            <button
+              onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              aria-label={isAutoPlayEnabled ? "Pause platform tour" : "Resume platform tour"}
+              title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
+            >
+              {isAutoPlayEnabled && !isPaused ? (
+                <Pause className="h-4 w-4" />
+              ) : (
+                <Play className="h-4 w-4 fill-current" />
+              )}
+            </button>
+            <button
+              onClick={goToPrevProject}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              aria-label="Previous platform"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={goToNextProject}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              aria-label="Next platform"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
@@ -387,9 +500,19 @@ export function ProjectsShowcase() {
       {/* Interactive Engineering Studio Deck (Touch-Swipeable on Mobile, Split-Screen on Desktop) */}
       <div
         className="mt-6 group relative overflow-hidden rounded-3xl border border-slate-800/90 bg-[#0c1222]/95 shadow-2xl transition-all"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
+        {/* Animated Glowing Carousel Progress Line */}
+        <div className="h-0.5 sm:h-1 w-full bg-slate-800/80 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 transition-all duration-75"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
         {/* Dynamic BorderBeam Effect */}
         <BorderBeam
           size={360}
@@ -398,10 +521,19 @@ export function ProjectsShowcase() {
           colorTo={activeProjectIndex % 2 === 0 ? "#10b981" : "#f43f5e"}
         />
 
-        <div className="relative z-10 p-5 sm:p-8 lg:p-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="relative z-10 p-4 sm:p-8 lg:p-10 min-h-[580px]">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentProject.id}
+              custom={direction}
+              variants={projectSlideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start"
+            >
             {/* LEFT COLUMN: Narrative, Badges, Tech Pills, Live Action Buttons (5 Cols) */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-5 sm:space-y-6">
               <div>
                 {/* Period & Metrics Badge */}
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-400">
@@ -413,21 +545,21 @@ export function ProjectsShowcase() {
                 </div>
 
                 {/* Title & Subtitle */}
-                <h3 className="mt-3.5 font-sans text-2xl sm:text-3xl font-extrabold text-white">
+                <h3 className="mt-3 font-sans text-2xl sm:text-3xl font-extrabold text-white">
                   {currentProject.title}
                 </h3>
-                <p className="mt-1.5 text-sm font-medium text-slate-400">
+                <p className="mt-1 text-sm font-medium text-slate-400">
                   {currentProject.subtitle}
                 </p>
 
                 {/* Primary Action Buttons */}
-                <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                <div className="mt-5 flex flex-wrap items-center gap-2 sm:gap-2.5">
                   {currentProject.liveUrl && (
                     <a
                       href={currentProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:brightness-110 transition-all cursor-pointer"
+                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:brightness-110 transition-all cursor-pointer"
                     >
                       <span>Visit Live Platform</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -439,7 +571,7 @@ export function ProjectsShowcase() {
                       href={currentProject.secondaryUrl.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
+                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
                     >
                       <span>{currentProject.secondaryUrl.label}</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -451,16 +583,16 @@ export function ProjectsShowcase() {
                       href={currentProject.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
                     >
                       <GithubIcon className="h-3.5 w-3.5" />
-                      <span>Source Repo</span>
+                      <span>Repo</span>
                     </a>
                   )}
 
                   <button
                     onClick={() => setSelectedProjectForModal(currentProject)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/60 px-3.5 py-2 text-xs font-medium text-blue-300 hover:bg-slate-700 hover:text-white transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/60 px-3.5 py-2.5 text-xs font-medium text-blue-300 hover:bg-slate-700 hover:text-white transition-all cursor-pointer"
                   >
                     <span>Full Architecture</span>
                     <ArrowUpRight className="h-3.5 w-3.5" />
@@ -685,7 +817,8 @@ export function ProjectsShowcase() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
+        </AnimatePresence>
         </div>
       </div>
 

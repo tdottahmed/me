@@ -13,7 +13,6 @@ import {
   Workflow,
   Lock,
   BookOpen,
-  Boxes,
   Shield,
   CreditCard,
   Sparkles,

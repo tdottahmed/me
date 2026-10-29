@@ -1,18 +1,15 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { TracingBeam } from "@/components/ui/TracingBeam";
+import { MilestonesCarousel } from "@/components/ui/MilestonesCarousel";
 import {
   Briefcase,
   Calendar,
   MapPin,
   CheckCircle2,
   ExternalLink,
-  Users,
-  Shield,
-  Layers,
 } from "lucide-react";
 
 export function ExperienceTimeline() {
@@ -37,17 +34,22 @@ export function ExperienceTimeline() {
         </p>
       </div>
 
+      {/* Featured Career Milestones & Leadership Carousel */}
+      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+        <MilestonesCarousel />
+      </div>
+
       {/* Tracing Beam Career Timeline */}
-      <div className="mt-16 pl-6 sm:pl-10">
+      <div className="mt-12 sm:mt-16 pl-0 sm:pl-10">
         <TracingBeam>
-          <div className="space-y-16">
-            {experience.map((item, index) => (
+          <div className="space-y-8 sm:space-y-16">
+            {experience.map((item) => (
               <div
                 key={item.id}
-                className="relative rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-6 sm:p-8 md:p-10 shadow-2xl"
+                className="relative rounded-2xl sm:rounded-3xl border border-slate-800/90 bg-[#0c1222]/90 p-5 sm:p-8 md:p-10 shadow-2xl"
               >
                 {/* Header: Role, Company, Period, Location */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-800/80 pb-5 sm:pb-6">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="rounded-md bg-blue-500/10 px-2.5 py-1 font-mono text-xs font-semibold text-blue-400 border border-blue-500/20">
@@ -55,12 +57,12 @@ export function ExperienceTimeline() {
                       </span>
                     </div>
 
-                    <h3 className="mt-3 font-sans text-2xl sm:text-3xl font-extrabold text-white">
+                    <h3 className="mt-2.5 font-sans text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
                       {item.company}
                     </h3>
                   </div>
 
-                  <div className="flex flex-col sm:items-end text-xs font-mono text-slate-400 space-y-1">
+                  <div className="flex flex-wrap sm:flex-col sm:items-end gap-3 sm:gap-1 text-xs font-mono text-slate-400">
                     <div className="flex items-center gap-1.5 text-slate-300">
                       <Calendar className="h-3.5 w-3.5 text-amber-400" />
                       <span>{item.period}</span>
@@ -73,7 +75,7 @@ export function ExperienceTimeline() {
                 </div>
 
                 {/* Highlights List */}
-                <div className="mt-8 space-y-4">
+                <div className="mt-6 sm:mt-8 space-y-3.5 sm:space-y-4">
                   {item.highlights.map((h, idx) => (
                     <div
                       key={idx}

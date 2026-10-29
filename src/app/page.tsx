@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#070a12] text-[#f8fafc] bg-grid-technical overflow-hidden pt-12">
+    <main className="relative min-h-screen bg-[#070a12] text-[#f8fafc] bg-grid-technical overflow-x-hidden pt-12">
       {/* Background radial gradient glow */}
       <div className="pointer-events-none absolute inset-0 bg-radial-fade bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(59,130,246,0.18),rgba(7,10,18,0))]" />
 

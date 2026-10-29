@@ -92,7 +92,7 @@ export function CommandMenu() {
             <Command.Input
               autoFocus
               placeholder="Type a command or search sections..."
-              className="w-full bg-transparent py-4 font-mono text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+              className="w-full bg-transparent py-4 font-mono text-base sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
             />
             <kbd className="hidden sm:inline-block rounded bg-slate-800 px-2 py-0.5 font-mono text-[10px] text-slate-400 border border-slate-700">
               ESC

@@ -10,7 +10,6 @@ import {
   Terminal,
   Menu,
   X,
-  ExternalLink,
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 
@@ -114,12 +113,13 @@ export function Navbar() {
         </nav>
 
         {/* Right: Actions, Cmd+K, Socials, Resume */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Cmd + K Command Menu Trigger */}
           <button
             onClick={toggleMenu}
-            className="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-900/60 px-2.5 py-1.5 text-xs text-slate-400 hover:border-slate-700 hover:text-slate-200 transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/70 px-2.5 py-1.5 text-xs text-slate-300 hover:border-slate-700 hover:text-white transition-colors cursor-pointer"
             title="Open Command Palette (Cmd + K)"
+            aria-label="Open Command Palette"
           >
             <Terminal className="h-3.5 w-3.5 text-blue-400" />
             <span className="hidden sm:inline font-mono text-[11px]">Cmd + K</span>
@@ -128,12 +128,12 @@ export function Navbar() {
             </kbd>
           </button>
 
-          {/* Social Links */}
+          {/* Social Links - Hidden on very small screens, visible in drawer and on sm+ */}
           <a
             href={PORTFOLIO_DATA.personal.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-slate-800/80 bg-slate-900/60 p-2 text-slate-400 hover:border-slate-700 hover:text-slate-100 transition-colors"
+            className="hidden sm:flex rounded-xl border border-slate-800/80 bg-slate-900/60 p-2 text-slate-400 hover:border-slate-700 hover:text-slate-100 transition-colors"
             aria-label="GitHub Profile"
           >
             <GithubIcon className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function Navbar() {
             href={PORTFOLIO_DATA.personal.linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg border border-slate-800/80 bg-slate-900/60 p-2 text-slate-400 hover:border-slate-700 hover:text-sky-400 transition-colors"
+            className="hidden sm:flex rounded-xl border border-slate-800/80 bg-slate-900/60 p-2 text-slate-400 hover:border-slate-700 hover:text-sky-400 transition-colors"
             aria-label="LinkedIn Profile"
           >
             <LinkedinIcon className="h-4 w-4" />
@@ -154,7 +154,7 @@ export function Navbar() {
             href={PORTFOLIO_DATA.personal.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative hidden sm:inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:from-blue-500 hover:to-blue-400 transition-all"
+            className="relative hidden md:inline-flex items-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:brightness-110 transition-all"
           >
             <FileDown className="h-3.5 w-3.5" />
             <span>Resume</span>
@@ -163,7 +163,7 @@ export function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden rounded-lg border border-slate-800 bg-slate-900/60 p-2 text-slate-400 hover:text-white"
+            className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -173,48 +173,60 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-800 bg-[#070a12]/95 px-4 pt-4 pb-6 backdrop-blur-xl animate-in slide-in-from-top-2">
-          <nav className="flex flex-col space-y-2">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white"
-              >
-                {item.label}
-              </a>
-            ))}
+        <div className="md:hidden border-b border-slate-800 bg-[#070a12]/95 px-4 pt-3 pb-6 backdrop-blur-2xl animate-in slide-in-from-top-2 duration-200">
+          <nav className="flex flex-col space-y-1">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-blue-600/20 text-blue-400 font-semibold border border-blue-500/30"
+                      : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />}
+                </a>
+              );
+            })}
           </nav>
 
-          <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <div className="mt-4 pt-4 border-t border-slate-800/80 flex flex-col gap-3">
             <a
               href={PORTFOLIO_DATA.personal.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white"
+              className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20"
             >
               <FileDown className="h-4 w-4" />
-              <span>Download ATS Resume</span>
+              <span>Download ATS Resume (.PDF / .DOCX)</span>
             </a>
-            <div className="flex gap-2">
+
+            <div className="flex items-center justify-between gap-2">
               <a
                 href={PORTFOLIO_DATA.personal.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-slate-800 bg-slate-900 p-2 text-slate-400"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900/80 py-2 text-xs font-mono text-slate-300 hover:text-white"
                 aria-label="GitHub"
               >
                 <GithubIcon className="h-4 w-4" />
+                <span>GitHub</span>
               </a>
+
               <a
                 href={PORTFOLIO_DATA.personal.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-slate-800 bg-slate-900 p-2 text-slate-400"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900/80 py-2 text-xs font-mono text-slate-300 hover:text-sky-400"
                 aria-label="LinkedIn"
               >
                 <LinkedinIcon className="h-4 w-4" />
+                <span>LinkedIn</span>
               </a>
             </div>
           </div>

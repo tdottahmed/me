@@ -46,7 +46,7 @@ export function TracingBeam({
       ref={ref}
       className={cn("relative mx-auto h-full w-full max-w-5xl", className)}
     >
-      <div className="absolute -left-4 md:-left-12 top-3">
+      <div className="hidden sm:block absolute -left-6 md:-left-12 top-3">
         <motion.div
           transition={{ duration: 0.2, delay: 0.5 }}
           animate={{
