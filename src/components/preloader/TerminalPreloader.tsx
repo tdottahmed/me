@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useLenis } from "lenis/react";
-import { Terminal, ShieldCheck, Check, FastForward } from "lucide-react";
+import { Terminal, ShieldCheck } from "lucide-react";
 
 const BOOT_LOGS = [
   { text: "Mounting Next.js 16 & React 19 Runtime...", status: "READY", delay: 150 },
@@ -17,11 +17,20 @@ export function TerminalPreloader() {
   const [progress, setProgress] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
 
+  const dismissPreloader = useCallback(() => {
+    setIsSkipped(true);
+    setTimeout(() => {
+      setVisible(false);
+      sessionStorage.setItem("tanbir_portfolio_booted", "true");
+      document.body.style.overflow = "";
+    }, 400);
+  }, []);
+
   useEffect(() => {
-    // Check session storage
+    // Check session storage asynchronously to avoid cascading renders
     const hasBooted = sessionStorage.getItem("tanbir_portfolio_booted");
     if (hasBooted) {
-      setVisible(false);
+      setTimeout(() => setVisible(false), 0);
       return;
     }
 
@@ -68,7 +77,7 @@ export function TerminalPreloader() {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [dismissPreloader]);
 
   // body overflow alone doesn't stop Lenis from scrolling the page underneath
   const lenis = useLenis();
@@ -77,15 +86,6 @@ export function TerminalPreloader() {
     if (visible && !isSkipped) lenis.stop();
     else lenis.start();
   }, [lenis, visible, isSkipped]);
-
-  const dismissPreloader = () => {
-    setIsSkipped(true);
-    setTimeout(() => {
-      setVisible(false);
-      sessionStorage.setItem("tanbir_portfolio_booted", "true");
-      document.body.style.overflow = "";
-    }, 400);
-  };
 
   if (!visible) return null;
 

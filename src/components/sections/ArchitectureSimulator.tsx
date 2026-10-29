@@ -1,20 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import {
   ShieldCheck,
   Lock,
   Zap,
   Server,
-  Cpu,
-  Database,
-  ArrowRight,
   CheckCircle2,
-  AlertTriangle,
   Play,
   RotateCcw,
-  Sparkles,
 } from "lucide-react";
 
 export function ArchitectureSimulator() {
@@ -228,7 +222,7 @@ export function ArchitectureSimulator() {
 
             {/* Real-time simulation feedback terminal */}
             <div className="rounded-xl border border-slate-800 bg-black/60 p-4 font-mono text-xs">
-              <div className="text-slate-500">// Live Transaction Trace Log</div>
+              <div className="text-slate-500">{"// Live Transaction Trace Log"}</div>
               {simStep === 0 && (
                 <div className="text-slate-400 mt-1">
                   Click &quot;Simulate Concurrent Order&quot; above to watch the database lock engine handle concurrency.
@@ -326,7 +320,7 @@ export function ArchitectureSimulator() {
             {/* Live Broadcast Ping Monitor */}
             <div className="rounded-xl border border-slate-800 bg-black/60 p-4 font-mono text-xs">
               <div className="flex items-center justify-between text-slate-500 pb-2 border-b border-slate-800/60">
-                <span>// Live Reverb WebSocket Socket Stream</span>
+                <span>{"// Live Reverb WebSocket Socket Stream"}</span>
                 <span className="flex items-center gap-1.5 text-emerald-400 text-[11px]">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
                   CONNECTED (wss://reverb.production:443)
