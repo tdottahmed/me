@@ -10,6 +10,7 @@ import { TerminalPreloader } from "@/components/preloader/TerminalPreloader";
 import { Navbar } from "@/components/layout/Navbar";
 import { CommandMenu } from "@/components/layout/CommandMenu";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { FloatingChatWidget } from "@/components/ui/FloatingChatWidget";
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
@@ -23,6 +24,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
               <Navbar />
               <CommandMenu />
               {children}
+              <FloatingChatWidget />
             </CommandMenuProvider>
           </ToastProvider>
         </SmoothScroll>

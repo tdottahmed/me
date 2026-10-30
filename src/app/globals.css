@@ -131,19 +131,6 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Subtle Technical Grid & Radial Fade */
-.bg-grid-technical {
-  background-size: 36px 36px;
-  background-image: 
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-}
-
-.bg-dot-matrix {
-  background-size: 20px 20px;
-  background-image: radial-gradient(var(--dot-matrix) 1px, transparent 1px);
-}
-
 .bg-radial-fade {
   mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 70%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 70%, transparent 100%);

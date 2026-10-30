@@ -213,12 +213,6 @@ export function HeroSection() {
         transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
         className="mt-16 relative overflow-hidden rounded-3xl glass-contrast p-6 sm:p-10 lg:p-12 shadow-2xl transition-colors duration-300"
       >
-        {/* Subtle geometric line grid overlay */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-dot-matrix opacity-40"
-        />
-
         <div className="relative z-10 max-w-4xl space-y-6">
           {/* Badge */}
           <div className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-mono font-bold tracking-wider uppercase shadow-sm"
