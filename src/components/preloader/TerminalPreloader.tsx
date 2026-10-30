@@ -99,7 +99,7 @@ export function TerminalPreloader() {
             y: "-100%",
             transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
           }}
-          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#070a12] p-6 sm:p-12 text-[#f8fafc] font-mono select-none"
+          className="fixed inset-0 z-[9999] flex flex-col justify-between bg-[#09090b] p-6 sm:p-12 text-[#f8fafc] font-mono select-none"
         >
           {/* Top telemetry bar */}
           <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 text-xs text-slate-400">

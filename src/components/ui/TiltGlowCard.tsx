@@ -15,8 +15,8 @@ interface TiltGlowCardProps {
 export function TiltGlowCard({
   children,
   className,
-  glowColor = "rgba(59, 130, 246, 0.9)",
-  maxTilt = 7,
+  glowColor = "rgba(255, 255, 255, 0.12)",
+  maxTilt = 6,
 }: TiltGlowCardProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -45,7 +45,7 @@ export function TiltGlowCard({
       onPointerLeave={handleLeave}
       style={{ "--glow": glowColor } as React.CSSProperties}
       className={cn(
-        "glow-border group relative overflow-hidden rounded-2xl border border-slate-800/90 bg-[#0c1220]/80 transition-transform duration-300 ease-out will-change-transform",
+        "glow-border group relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] transition-transform duration-300 ease-out will-change-transform",
         className
       )}
     >

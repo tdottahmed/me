@@ -36,9 +36,9 @@ export function Globe({ className = "" }: { className?: string }) {
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.08, 0.12, 0.2],
-      markerColor: [0.23, 0.51, 0.96], // blue-500
-      glowColor: [0.15, 0.25, 0.45],
+      baseColor: [0.18, 0.18, 0.2],
+      markerColor: [0.95, 0.95, 0.98],
+      glowColor: [0.25, 0.25, 0.28],
       markers: [
         // Dhaka, Bangladesh (Imjol IT, Sultan Big Bazaar, Fur & Feather BD, PONDIT)
         { location: [23.8103, 90.4125], size: 0.1 },

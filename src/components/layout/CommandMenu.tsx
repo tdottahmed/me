@@ -76,107 +76,107 @@ export function CommandMenu() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-20 px-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-150"
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-20 px-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-150"
       onClick={closeMenu}
     >
       <div
-        className="w-full max-w-xl overflow-hidden rounded-2xl border border-slate-800 bg-[#0b101d] shadow-2xl transition-all"
+        className="w-full max-w-xl overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         <Command
           label="Command Palette"
-          className="w-full text-slate-200"
+          className="w-full text-[var(--foreground)]"
         >
-          <div className="flex items-center border-b border-slate-800/80 px-4">
-            <Terminal className="h-4 w-4 text-blue-400 shrink-0 mr-3" />
+          <div className="flex items-center border-b border-[var(--border-subtle)] px-4">
+            <Terminal className="h-4 w-4 text-[var(--muted-foreground)] shrink-0 mr-3" />
             <Command.Input
               autoFocus
               placeholder="Type a command or search sections..."
-              className="w-full bg-transparent py-4 font-mono text-base sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+              className="w-full bg-transparent py-4 font-mono text-base sm:text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none"
             />
-            <kbd className="hidden sm:inline-block rounded bg-slate-800 px-2 py-0.5 font-mono text-[10px] text-slate-400 border border-slate-700">
+            <kbd className="hidden sm:inline-block rounded-full bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--muted-foreground)] border border-[var(--border-subtle)]">
               ESC
             </kbd>
           </div>
 
           <Command.List data-lenis-prevent className="max-h-80 overflow-y-auto overscroll-contain p-2 scrollbar-thin">
-            <Command.Empty className="py-6 text-center text-xs font-mono text-slate-500">
+            <Command.Empty className="py-6 text-center text-xs font-mono text-[var(--muted-foreground)]">
               No matching command found.
             </Command.Empty>
 
-            <Command.Group heading="Navigation" className="px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+            <Command.Group heading="Navigation" className="px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--muted-foreground)] font-semibold">
               <Command.Item
                 onSelect={() => handleNavigate("#overview")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Compass className="h-4 w-4 text-blue-400" />
+                <Compass className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Jump to Overview & Metrics</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#projects")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <FolderGit2 className="h-4 w-4 text-rose-400" />
+                <FolderGit2 className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Explore Featured Production Projects</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#skills")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Code className="h-4 w-4 text-emerald-400" />
+                <Code className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Interactive Skills & Tools Matrix</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#architecture")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Cpu className="h-4 w-4 text-cyan-400" />
+                <Cpu className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Inspect Architecture Deep-Dive Simulator</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#experience")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Briefcase className="h-4 w-4 text-amber-400" />
+                <Briefcase className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Work Experience & Engineering Timeline</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#education")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <GraduationCap className="h-4 w-4 text-purple-400" />
+                <GraduationCap className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Education, Degree & Certifications</span>
               </Command.Item>
               <Command.Item
                 onSelect={() => handleNavigate("#contact")}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Mail className="h-4 w-4 text-emerald-400" />
+                <Mail className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Contact & Direct Inquiries</span>
               </Command.Item>
             </Command.Group>
 
-            <Command.Separator className="my-2 h-[1px] bg-slate-800" />
+            <Command.Separator className="my-2 h-[1px] bg-[var(--border-subtle)]" />
 
-            <Command.Group heading="Quick Actions" className="px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+            <Command.Group heading="Quick Actions" className="px-2 py-1.5 text-[10px] font-mono uppercase tracking-wider text-[var(--muted-foreground)] font-semibold">
               <Command.Item
                 onSelect={handleCopyEmail}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Mail className="h-4 w-4 text-emerald-400" />
+                <Mail className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <div className="flex flex-col">
                   <span>Copy Direct Email</span>
-                  <span className="font-mono text-[10px] text-slate-400">{PORTFOLIO_DATA.personal.email}</span>
+                  <span className="font-mono text-[10px] text-[var(--muted-foreground)]">{PORTFOLIO_DATA.personal.email}</span>
                 </div>
               </Command.Item>
               <Command.Item
                 onSelect={handleCopyPhone}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Phone className="h-4 w-4 text-blue-400" />
+                <Phone className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <div className="flex flex-col">
                   <span>Copy Phone / WhatsApp</span>
-                  <span className="font-mono text-[10px] text-slate-400">{PORTFOLIO_DATA.personal.phoneFormatted}</span>
+                  <span className="font-mono text-[10px] text-[var(--muted-foreground)]">{PORTFOLIO_DATA.personal.phoneFormatted}</span>
                 </div>
               </Command.Item>
               <Command.Item
@@ -184,9 +184,9 @@ export function CommandMenu() {
                   closeMenu();
                   window.open(PORTFOLIO_DATA.personal.resumeUrl, "_blank");
                 }}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <FileDown className="h-4 w-4 text-amber-400" />
+                <FileDown className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>View ATS Resume (Google Docs)</span>
               </Command.Item>
               <Command.Item
@@ -194,9 +194,9 @@ export function CommandMenu() {
                   closeMenu();
                   window.open(PORTFOLIO_DATA.personal.githubUrl, "_blank");
                 }}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <GithubIcon className="h-4 w-4 text-slate-300" />
+                <GithubIcon className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Open GitHub Profile (tdottahmed)</span>
               </Command.Item>
               <Command.Item
@@ -204,22 +204,22 @@ export function CommandMenu() {
                   closeMenu();
                   window.open(PORTFOLIO_DATA.personal.linkedinUrl, "_blank");
                 }}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <LinkedinIcon className="h-4 w-4 text-sky-400" />
+                <LinkedinIcon className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Open LinkedIn Profile (tanbir-ahmed07)</span>
               </Command.Item>
               <Command.Item
                 onSelect={handleReplayPreloader}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
               >
-                <Sparkles className="h-4 w-4 text-rose-400" />
+                <Sparkles className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Replay Server Boot Preloader</span>
               </Command.Item>
             </Command.Group>
           </Command.List>
 
-          <div className="flex items-center justify-between border-t border-slate-800/80 px-4 py-2.5 font-mono text-[10px] text-slate-500">
+          <div className="flex items-center justify-between border-t border-[var(--border-subtle)] px-4 py-2.5 font-mono text-[10px] text-[var(--muted-foreground)]">
             <span>Navigation: ↑ ↓ • Select: ↵</span>
             <span>tanbir.nixsoftware.net</span>
           </div>

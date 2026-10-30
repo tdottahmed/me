@@ -46,21 +46,21 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="pointer-events-auto flex items-center gap-3 rounded-xl border border-slate-800 bg-[#0c1220]/90 px-4 py-3 shadow-2xl backdrop-blur-xl"
+              className="pointer-events-auto flex items-center gap-3 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] px-5 py-2.5 shadow-2xl backdrop-blur-xl text-[var(--foreground)]"
             >
               {toast.type === "success" && (
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
               )}
               {toast.type === "error" && (
-                <AlertCircle className="h-4 w-4 text-rose-400 shrink-0" />
+                <AlertCircle className="h-4 w-4 text-rose-500 shrink-0" />
               )}
               {toast.type === "info" && (
-                <Info className="h-4 w-4 text-blue-400 shrink-0" />
+                <Info className="h-4 w-4 text-blue-500 shrink-0" />
               )}
-              <span className="font-mono text-xs text-slate-200">{toast.message}</span>
+              <span className="font-mono text-xs text-[var(--foreground)]">{toast.message}</span>
               <button
                 onClick={() => removeToast(toast.id)}
-                className="ml-2 text-slate-500 hover:text-slate-300"
+                className="ml-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                 aria-label="Close notification"
               >
                 <X className="h-3.5 w-3.5" />

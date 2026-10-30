@@ -76,8 +76,9 @@ export function TracingBeam({
           <motion.path
             d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -18 24V ${svgHeight}`}
             fill="none"
-            stroke="#1e293b"
-            strokeOpacity="0.6"
+            stroke="currentColor"
+            className="text-[var(--border-subtle)]"
+            strokeOpacity="0.8"
             strokeWidth="1.5"
             transition={{ duration: 10 }}
           />
@@ -98,10 +99,10 @@ export function TracingBeam({
               y1={y1}
               y2={y2}
             >
-              <stop stopColor="#3b82f6" stopOpacity="0" />
-              <stop stopColor="#3b82f6" />
-              <stop offset="0.325" stopColor="#60a5fa" />
-              <stop offset="1" stopColor="#10b981" stopOpacity="0" />
+              <stop stopColor="currentColor" className="text-[var(--foreground)]" stopOpacity="0" />
+              <stop stopColor="currentColor" className="text-[var(--foreground)]" stopOpacity="0.8" />
+              <stop offset="0.5" stopColor="currentColor" className="text-[var(--foreground)]" stopOpacity="1" />
+              <stop offset="1" stopColor="currentColor" className="text-[var(--foreground)]" stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>

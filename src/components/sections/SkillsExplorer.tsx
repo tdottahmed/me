@@ -156,7 +156,6 @@ export function SkillsExplorer() {
   const lenis = useLenis();
   const headerRef = useRef<HTMLDivElement>(null);
   const headerInView = useInView(headerRef, { once: true, amount: 0.4 });
-  const headerOnScreen = useInView(headerRef);
 
   const allSkills = PORTFOLIO_DATA.skills;
 
@@ -254,8 +253,7 @@ export function SkillsExplorer() {
     <section id="skills" className="relative py-20 sm:py-24">
       {/* Background ambient lighting */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-20 h-[380px] w-[640px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(59,130,246,0.12),transparent)]" />
-        <div className="absolute right-[-5%] top-1/2 h-[340px] w-[340px] rounded-full bg-[radial-gradient(closest-side,rgba(16,185,129,0.07),transparent)]" />
+        <div className="absolute left-1/2 top-20 h-[380px] w-[640px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.05),transparent)]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -265,30 +263,25 @@ export function SkillsExplorer() {
             initial={{ opacity: 0, y: 12 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3.5 py-1 text-xs font-mono font-medium text-blue-400"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3.5 py-1 text-[11px] font-mono font-medium text-[var(--text-secondary)] shadow-sm uppercase tracking-wider"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>PRODUCTION STACK & ARCHITECTURAL MATRIX</span>
           </motion.div>
 
           {/* Mask Reveal Headline */}
-          <h2 className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {HEADLINE.map(({ word, highlight }, i) => (
+          <h2 className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl">
+            {HEADLINE.map(({ word }, i) => (
               <span key={word} className="inline-block overflow-hidden pb-1 align-bottom">
                 <motion.span
-                  className={cn(
-                    "inline-block",
-                    highlight &&
-                      "bg-gradient-to-r from-blue-400 via-sky-200 to-emerald-400 bg-clip-text text-transparent",
-                    highlight && headerOnScreen && "animate-text-shimmer"
-                  )}
+                  className="inline-block text-[var(--foreground)]"
                   initial={{ y: "110%" }}
                   animate={headerInView ? { y: "0%" } : {}}
                   transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.1 + i * 0.06 }}
                 >
                   {word}
                 </motion.span>
-                {i < HEADLINE.length - 1 && " "}
+                {i < HEADLINE.length - 1 && " "}
               </span>
             ))}
           </h2>
@@ -297,7 +290,7 @@ export function SkillsExplorer() {
             initial={{ opacity: 0, y: 12 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.35 }}
-            className="mt-4 max-w-2xl text-sm sm:text-base text-slate-400"
+            className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)]"
           >
             Every single technology below is backed by battle-tested commercial deployments,
             pessimistic row-level stock locks, double-entry financial ledgers, and 847+ automated tests.
@@ -308,19 +301,19 @@ export function SkillsExplorer() {
             initial={{ opacity: 0 }}
             animate={headerInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs text-slate-500"
+            className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs text-[var(--text-muted)]"
           >
             <span className="flex items-center gap-1.5">
-              <NumberTicker value={allSkills.length} className="text-base sm:text-lg font-bold text-white" />
+              <NumberTicker value={allSkills.length} className="text-base sm:text-lg font-bold text-[var(--foreground)]" />
               <span>technologies</span>
             </span>
-            <span className="h-3.5 w-px bg-slate-800" />
+            <span className="h-3.5 w-px bg-[var(--border-subtle)]" />
             <span className="flex items-center gap-1.5">
-              <NumberTicker value={CATEGORIES.length - 1} className="text-base sm:text-lg font-bold text-white" />
+              <NumberTicker value={CATEGORIES.length - 1} className="text-base sm:text-lg font-bold text-[var(--foreground)]" />
               <span>architectural domains</span>
             </span>
-            <span className="h-3.5 w-px bg-slate-800" />
-            <span className="flex items-center gap-1.5 text-emerald-400">
+            <span className="h-3.5 w-px bg-[var(--border-subtle)]" />
+            <span className="flex items-center gap-1.5 text-[var(--status-live)]">
               <span className="text-base sm:text-lg font-bold">100%</span>
               <span>commercial production</span>
             </span>
@@ -342,30 +335,24 @@ export function SkillsExplorer() {
                 {CATEGORIES.map((cat) => {
                   const isActive = activeCategory === cat.value;
                   const count = categoryCounts[cat.value] || 0;
-                  const meta = cat.value !== "All" ? DOMAIN_METAS[cat.value] : null;
 
                   return (
                     <button
                       key={cat.value}
                       onClick={() => setActiveCategory(cat.value)}
                       className={cn(
-                        "relative flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-mono transition-colors duration-200 cursor-pointer shrink-0",
+                        "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer shrink-0",
                         isActive
-                          ? "text-white font-semibold"
-                          : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
+                          ? "text-[var(--background)] font-semibold"
+                          : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                       )}
                     >
                       {isActive && (
                         <motion.div
                           layoutId="activeCategoryPill"
-                          className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 border border-blue-400/40 shadow-md shadow-blue-500/25 -z-10"
+                          className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
                           transition={{ type: "spring", stiffness: 450, damping: 32 }}
                         />
-                      )}
-                      {meta ? (
-                        <span className={cn("h-1.5 w-1.5 rounded-full", meta.accentDot)} />
-                      ) : (
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
                       )}
                       <span>{cat.label}</span>
                       <span className="text-[10px] opacity-70">({count})</span>
@@ -376,14 +363,14 @@ export function SkillsExplorer() {
             </div>
 
             {/* View Mode Toggle: Bento Matrix vs Telemetry Grid */}
-            <div className="flex items-center gap-1 rounded-xl border border-slate-800 bg-slate-900/60 p-1 shrink-0">
+            <div className="flex items-center gap-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1 shrink-0">
               <button
                 onClick={() => setViewMode("bento")}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-mono transition-colors",
+                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
                   viewMode === "bento"
-                    ? "bg-blue-600 text-white font-semibold shadow"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
                 )}
                 title="Bento Architecture View"
               >
@@ -393,10 +380,10 @@ export function SkillsExplorer() {
               <button
                 onClick={() => setViewMode("grid")}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-mono transition-colors",
+                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
                   viewMode === "grid"
-                    ? "bg-blue-600 text-white font-semibold shadow"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
                 )}
                 title="Compact Telemetry View"
               >
@@ -407,21 +394,21 @@ export function SkillsExplorer() {
           </div>
 
           {/* Search Bar & Project Cross-Filters Bar */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 sm:p-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-3 sm:p-4">
             {/* Search Input */}
             <div className="relative w-full md:w-80">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-muted)]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search tools, versions, or keywords..."
-                className="w-full rounded-xl border border-slate-800 bg-slate-950/70 pl-10 pr-9 py-2 text-base sm:text-xs text-slate-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] pl-10 pr-9 py-2 text-base sm:text-xs text-[var(--foreground)] placeholder:text-[var(--text-muted)] focus:border-[var(--foreground)] focus:outline-none"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--foreground)] cursor-pointer"
                   aria-label="Clear search"
                 >
                   <X className="h-3.5 w-3.5" />
@@ -432,7 +419,7 @@ export function SkillsExplorer() {
             {/* Project Cross-Filter Chips with Horizontal Scroll */}
             <div className="w-full md:w-auto overflow-x-auto pb-1 scrollbar-none">
               <div className="flex items-center gap-1.5 min-w-max">
-                <span className="text-[11px] font-mono text-slate-500 mr-1 flex items-center gap-1 shrink-0">
+                <span className="text-[11px] font-mono text-[var(--text-muted)] mr-1 flex items-center gap-1 shrink-0">
                   <Filter className="h-3 w-3" />
                   <span>Platform:</span>
                 </span>
@@ -443,10 +430,10 @@ export function SkillsExplorer() {
                       key={project}
                       onClick={() => setSelectedProject(project)}
                       className={cn(
-                        "rounded-lg px-2.5 py-1 text-[11px] font-mono transition-colors shrink-0 cursor-pointer",
+                        "rounded-full px-3 py-1 text-[11px] font-mono transition-colors shrink-0 cursor-pointer border",
                         isSelected
-                          ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold shadow-sm"
-                          : "bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                          ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)] font-semibold shadow-sm"
+                          : "bg-[var(--glass-pill-bg)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--foreground)] hover:border-[var(--text-muted)]"
                       )}
                     >
                       {project}
@@ -459,15 +446,15 @@ export function SkillsExplorer() {
         </div>
 
         {/* Telemetry Status Bar */}
-        <div className="mt-3 flex items-center justify-between px-2 text-xs font-mono text-slate-500">
+        <div className="mt-3 flex items-center justify-between px-2 text-xs font-mono text-[var(--text-muted)]">
           <div>
-            Showing <span className="font-bold text-slate-300">{filteredSkills.length}</span> of{" "}
-            <span className="font-bold text-slate-300">{allSkills.length}</span> technologies
+            Showing <span className="font-bold text-[var(--foreground)]">{filteredSkills.length}</span> of{" "}
+            <span className="font-bold text-[var(--foreground)]">{allSkills.length}</span> technologies
           </div>
           {(selectedProject !== "All Projects" || searchQuery || activeCategory !== "All") && (
             <button
               onClick={resetFilters}
-              className="text-blue-400 hover:text-blue-300 transition-colors underline cursor-pointer text-[11px]"
+              className="text-[var(--foreground)] hover:underline transition-colors cursor-pointer text-[11px] font-semibold"
             >
               Reset Filters
             </button>
@@ -482,42 +469,26 @@ export function SkillsExplorer() {
               return (
                 <div
                   key={meta.category}
-                  className="group relative overflow-hidden rounded-2xl border border-slate-800/90 bg-[#0c1220]/80 p-5 transition-all duration-300 hover:border-slate-700 hover:shadow-xl hover:shadow-black/40 flex flex-col justify-between"
-                  style={{ "--glow": meta.glow } as React.CSSProperties}
+                  className="group relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-5 sm:p-6 transition-all duration-300 hover:border-[var(--card-border-hover)] hover:shadow-xl flex flex-col justify-between"
                 >
-                  {/* Top domain accent line */}
-                  <div
-                    aria-hidden="true"
-                    className={cn(
-                      "absolute inset-x-0 top-0 h-1 bg-gradient-to-r via-transparent to-transparent opacity-75",
-                      meta.accentBar
-                    )}
-                  />
-
                   <div>
-                    {/* Domain Header */}
-                    <div className="flex items-center justify-between border-b border-slate-800/80 pb-3.5 mb-4">
+                    {/* Domain Header (Matches Screenshot Services Card Header) */}
+                    <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3.5 mb-4">
                       <div className="flex items-center gap-2.5">
-                        <div
-                          className={cn(
-                            "flex h-9 w-9 items-center justify-center rounded-xl border p-2",
-                            meta.accentBg,
-                            meta.accentBorder
-                          )}
-                        >
-                          <IconComp className={cn("h-4 w-4", meta.accentText)} />
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--foreground)] text-[var(--background)] shadow-sm">
+                          <IconComp className="h-4.5 w-4.5" />
                         </div>
                         <div>
-                          <h3 className="font-sans text-sm font-bold text-white">
+                          <h3 className="font-sans text-sm sm:text-base font-bold text-[var(--foreground)]">
                             {meta.title}
                           </h3>
-                          <div className={cn("text-[10px] font-mono", meta.accentText)}>
+                          <div className="text-[10px] font-mono text-[var(--text-muted)]">
                             {meta.badge}
                           </div>
                         </div>
                       </div>
 
-                      <span className="rounded-full bg-slate-900 border border-slate-800 px-2.5 py-0.5 font-mono text-[10px] text-slate-400">
+                      <span className="rounded-full bg-[var(--glass-pill-bg)] border border-[var(--border-subtle)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--text-secondary)]">
                         {skills.length} tools
                       </span>
                     </div>
@@ -533,25 +504,25 @@ export function SkillsExplorer() {
                             className={cn(
                               "group/pod relative flex items-center gap-2.5 rounded-xl border p-2.5 text-left transition-all duration-200 cursor-pointer",
                               isInspected
-                                ? "border-blue-500 bg-blue-500/10 shadow-md shadow-blue-500/20"
-                                : "border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-850 hover:shadow-sm"
+                                ? "border-[var(--foreground)] bg-[var(--foreground)]/10 shadow-sm"
+                                : "border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] hover:border-[var(--text-muted)] hover:bg-neutral-500/10"
                             )}
                           >
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-800 bg-slate-950/80 p-1.5 transition-transform duration-200 group-hover/pod:scale-110">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1.5 transition-transform duration-200 group-hover/pod:scale-105">
                               <SkillIcon skillId={skill.id} className="h-4 w-4" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center justify-between gap-1">
-                                <span className="font-sans text-xs font-semibold text-white truncate">
+                                <span className="font-sans text-xs font-semibold text-[var(--foreground)] truncate">
                                   {skill.name}
                                 </span>
                                 {skill.version && (
-                                  <span className="text-[9px] font-mono text-slate-500 shrink-0">
+                                  <span className="text-[9px] font-mono text-[var(--text-muted)] shrink-0">
                                     {skill.version.split(" ")[0]}
                                   </span>
                                 )}
                               </div>
-                              <div className="text-[10px] font-mono text-slate-400 truncate mt-0.5">
+                              <div className="text-[10px] font-mono text-[var(--text-secondary)] truncate mt-0.5">
                                 {skill.relatedProjects.length > 0
                                   ? skill.relatedProjects[0]
                                   : "Core Stack"}
@@ -564,9 +535,9 @@ export function SkillsExplorer() {
                   </div>
 
                   {/* Domain Footer Note */}
-                  <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
                     <span>Tap any tool to inspect</span>
-                    <span className="text-slate-400 flex items-center gap-0.5 group-hover:text-white transition-colors">
+                    <span className="text-[var(--text-secondary)] flex items-center gap-0.5 group-hover:text-[var(--foreground)] transition-colors">
                       <span>Details</span>
                       <ChevronRight className="h-3 w-3" />
                     </span>
@@ -581,31 +552,30 @@ export function SkillsExplorer() {
         {viewMode === "grid" && (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
             {filteredSkills.map((skill) => {
-              const meta = DOMAIN_METAS[skill.category];
               return (
                 <button
                   key={skill.id}
                   onClick={() => setInspectedSkill(skill)}
-                  className="flex items-start gap-3 rounded-xl border border-slate-800/90 bg-[#0c1220]/80 p-3.5 text-left transition-all duration-200 hover:border-slate-700 hover:bg-slate-900/90 cursor-pointer group"
+                  className="flex items-start gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-3.5 text-left transition-all duration-200 hover:border-[var(--card-border-hover)] hover:bg-neutral-500/5 cursor-pointer group"
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/90 p-2 group-hover:scale-105 transition-transform">
-                    <SkillIcon skillId={skill.id} className="h-4 w-4" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--foreground)] text-[var(--background)] p-2 group-hover:scale-105 transition-transform">
+                    <SkillIcon skillId={skill.id} className="h-4.5 w-4.5" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1">
-                      <span className="font-sans text-xs font-bold text-white truncate">
+                      <span className="font-sans text-xs font-bold text-[var(--foreground)] truncate">
                         {skill.name}
                       </span>
                       {skill.version && (
-                        <span className="rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[9px] text-slate-400 border border-slate-800 shrink-0">
+                        <span className="rounded-full bg-[var(--glass-pill-bg)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] border border-[var(--border-subtle)] shrink-0">
                           {skill.version}
                         </span>
                       )}
                     </div>
-                    <div className={cn("text-[10px] font-mono mt-0.5", meta.accentText)}>
+                    <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">
                       {skill.category}
                     </div>
-                    <p className="mt-1 text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                    <p className="mt-1 text-[11px] text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
                       {skill.highlight}
                     </p>
                   </div>
@@ -617,13 +587,13 @@ export function SkillsExplorer() {
 
         {/* Empty State */}
         {filteredSkills.length === 0 && (
-          <div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900/40 p-10 text-center">
-            <p className="font-mono text-sm text-slate-400">
+          <div className="mt-10 rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-10 text-center">
+            <p className="font-mono text-sm text-[var(--muted-foreground)]">
               No technologies found matching &quot;{searchQuery}&quot; with current filters.
             </p>
             <button
               onClick={resetFilters}
-              className="mt-4 rounded-xl bg-blue-600 px-4 py-2 font-mono text-xs font-semibold text-white hover:bg-blue-500 transition-colors cursor-pointer"
+              className="mt-4 rounded-full bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] px-5 py-2 font-mono text-xs font-semibold hover:opacity-90 transition-opacity cursor-pointer"
             >
               Clear All Filters
             </button>
@@ -645,15 +615,15 @@ export function SkillsExplorer() {
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
-              className="relative w-full sm:max-w-xl max-h-[85vh] sm:max-h-[80vh] overflow-y-auto overscroll-contain rounded-t-3xl sm:rounded-2xl border border-slate-800 bg-[#0c1222] p-5 sm:p-6 pb-8 sm:pb-6 shadow-2xl text-slate-200"
+              className="relative w-full sm:max-w-xl max-h-[85vh] sm:max-h-[80vh] overflow-y-auto overscroll-contain rounded-t-3xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-5 sm:p-6 pb-8 sm:pb-6 shadow-2xl text-[var(--foreground)]"
             >
               {/* Mobile Drag Indicator Handle */}
-              <div className="mx-auto -mt-2 mb-4 h-1 w-12 rounded-full bg-slate-700 sm:hidden" />
+              <div className="mx-auto -mt-2 mb-4 h-1 w-12 rounded-full bg-neutral-500/30 sm:hidden" />
 
               {/* Close Button */}
               <button
                 onClick={() => setInspectedSkill(null)}
-                className="absolute right-4 top-4 rounded-lg border border-slate-800 bg-slate-900/80 p-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="absolute right-4 top-4 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
                 aria-label="Close inspector"
               >
                 <X className="h-4 w-4" />
@@ -661,47 +631,47 @@ export function SkillsExplorer() {
 
               {/* Header: Skill Icon + Name + Category + Version */}
               <div className="flex items-start gap-4 pr-10">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-slate-800 bg-slate-900 p-2.5 shadow-inner">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--foreground)] text-[var(--background)] p-2.5 shadow-sm">
                   <SkillIcon skillId={inspectedSkill.id} className="h-6 w-6" />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-sans text-xl font-extrabold text-white">
+                    <h3 className="font-sans text-xl font-extrabold text-[var(--foreground)]">
                       {inspectedSkill.name}
                     </h3>
                     {inspectedSkill.version && (
-                      <span className="rounded-md border border-slate-800 bg-slate-900 px-2 py-0.5 font-mono text-[10px] text-slate-400">
+                      <span className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--text-muted)]">
                         {inspectedSkill.version}
                       </span>
                     )}
                   </div>
-                  <div className={cn("text-xs font-mono mt-0.5", DOMAIN_METAS[inspectedSkill.category].accentText)}>
+                  <div className="text-xs font-mono text-[var(--text-muted)] mt-0.5">
                     {inspectedSkill.category} • {DOMAIN_METAS[inspectedSkill.category].badge}
                   </div>
                 </div>
               </div>
 
               {/* Production Context Narrative */}
-              <div className="mt-5 rounded-xl border border-slate-800/80 bg-slate-900/50 p-4">
-                <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-2">
-                  <Info className="h-3.5 w-3.5 text-blue-400" />
+              <div className="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-4">
+                <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)] mb-2">
+                  <Info className="h-3.5 w-3.5 text-[var(--foreground)]" />
                   <span>Production Role & Implementation</span>
                 </div>
-                <p className="text-sm text-slate-200 leading-relaxed font-sans">
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-sans">
                   {inspectedSkill.highlight}
                 </p>
               </div>
 
               {/* Verified Production Badge */}
-              <div className="mt-4 flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3.5 py-2">
+              <div className="mt-4 flex items-center gap-2 text-xs font-mono text-[var(--status-live)] bg-[var(--status-live)]/10 border border-[var(--status-live)]/20 rounded-2xl px-3.5 py-2">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
                 <span>Verified across commercial platforms with automated testing & hardened VPS deployment</span>
               </div>
 
               {/* Linked Production Platforms */}
               {inspectedSkill.relatedProjects.length > 0 && (
-                <div className="mt-5 pt-4 border-t border-slate-800/80">
-                  <div className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-2.5">
+                <div className="mt-5 pt-4 border-t border-[var(--border-subtle)]">
+                  <div className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] mb-2.5">
                     Production Systems Using {inspectedSkill.name}
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -709,10 +679,10 @@ export function SkillsExplorer() {
                       <button
                         key={idx}
                         onClick={() => jumpToProject(p)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-900/90 px-3 py-1.5 text-xs font-mono text-slate-300 hover:border-blue-500/50 hover:text-white transition-all cursor-pointer"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1.5 text-xs font-mono text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-all cursor-pointer"
                       >
                         <span>{p}</span>
-                        <ExternalLink className="h-3 w-3 text-blue-400" />
+                        <ExternalLink className="h-3 w-3 text-[var(--foreground)]" />
                       </button>
                     ))}
                   </div>
@@ -723,7 +693,7 @@ export function SkillsExplorer() {
               <div className="mt-6 flex items-center justify-end gap-3">
                 <button
                   onClick={() => setInspectedSkill(null)}
-                  className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-2 font-mono text-xs font-medium text-slate-300 hover:bg-slate-800 transition-colors cursor-pointer"
+                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2 font-mono text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
                 >
                   Close
                 </button>
@@ -735,7 +705,7 @@ export function SkillsExplorer() {
                       jumpToProject(skill.relatedProjects[0]);
                     }
                   }}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 font-mono text-xs font-semibold text-white hover:bg-blue-500 transition-colors cursor-pointer shadow-md shadow-blue-500/20"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[var(--btn-primary-bg)] text-[var(--btn-primary-fg)] px-5 py-2 font-mono text-xs font-semibold hover:opacity-90 transition-all cursor-pointer shadow-sm"
                 >
                   <span>View Project Case Studies</span>
                   <ChevronRight className="h-3.5 w-3.5" />

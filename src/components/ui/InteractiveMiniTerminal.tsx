@@ -120,18 +120,18 @@ export function InteractiveMiniTerminal() {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-2 flex items-center gap-2 border-t border-slate-800 pt-2">
-        <span className="text-emerald-400 shrink-0 text-xs">tanbir@dev:~$</span>
+      <form onSubmit={handleSubmit} className="mt-2 flex items-center gap-2 border-t border-[var(--border-subtle)] pt-2">
+        <span className="text-emerald-500 shrink-0 text-xs">tanbir@dev:~$</span>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="type 'help'..."
-          className="w-full bg-transparent text-base sm:text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
+          className="w-full bg-transparent text-base sm:text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none"
         />
         <button
           type="submit"
-          className="rounded p-1 text-slate-500 hover:text-slate-200"
+          className="rounded p-1 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
           aria-label="Send command"
         >
           <CornerDownLeft className="h-3 w-3" />

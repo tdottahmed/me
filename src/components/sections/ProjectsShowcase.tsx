@@ -349,43 +349,41 @@ export function ProjectsShowcase() {
     <section id="projects" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       {/* Background radial glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-10 h-[360px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(59,130,246,0.14),transparent)]" />
+        <div className="absolute left-1/2 top-10 h-[360px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.05),transparent)]" />
       </div>
 
       {/* Section Header */}
       <div className="flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3.5 py-1 text-xs font-mono font-medium text-blue-400">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3.5 py-1 text-[11px] font-mono font-medium text-[var(--text-secondary)] shadow-sm uppercase tracking-wider">
           <FolderGit2 className="h-3.5 w-3.5" />
           <span>PRODUCTION SYSTEMS & CASE STUDIES</span>
         </div>
 
-        <h2 className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+        <h2 className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl">
           Featured Engineering Platforms
         </h2>
 
-        <p className="mt-4 max-w-2xl text-sm sm:text-base text-slate-400">
+        <p className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)]">
           End-to-end commercial solutions shipped to real users in Bangladesh and Canada,
           validated by 847+ automated test suites, idempotent pipelines, and high-uptime VPS hosting.
         </p>
       </div>
 
-      {/* Platform Selector Strip: Horizontal Navigation with Active Indicator + Autoplay Controls */}
+      {/* Platform Selector Strip */}
       <div className="mt-12 sm:mt-14">
         {/* Mobile: Controls + Counter */}
         <div className="flex sm:hidden items-center justify-between mb-3 px-1">
-          <div className="flex items-center gap-1.5 font-mono text-xs text-slate-400">
+          <div className="flex items-center gap-1.5 font-mono text-xs text-[var(--text-secondary)]">
             <span>Platform</span>
-            <span className="font-bold text-white bg-slate-800 px-1.5 py-0.5 rounded text-[11px]">
+            <span className="font-bold text-[var(--foreground)] bg-[var(--glass-pill-bg)] border border-[var(--border-subtle)] px-2 py-0.5 rounded-full text-[11px]">
               0{activeProjectIndex + 1} / 0{projects.length}
             </span>
-            <span className="text-[10px] text-slate-500">• Swipe to browse</span>
           </div>
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label={isAutoPlayEnabled ? "Pause platform tour" : "Resume platform tour"}
-              title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
             >
               {isAutoPlayEnabled && !isPaused ? (
                 <Pause className="h-3.5 w-3.5" />
@@ -395,14 +393,14 @@ export function ProjectsShowcase() {
             </button>
             <button
               onClick={goToPrevProject}
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Previous platform"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={goToNextProject}
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Next platform"
             >
               <ChevronRight className="h-4 w-4" />
@@ -413,7 +411,7 @@ export function ProjectsShowcase() {
         {/* Desktop & Tablet: Segmented Tab Bar + Carousel Controls */}
         <div className="flex items-center justify-between gap-3">
           <div className="overflow-x-auto pb-2 scrollbar-none flex-1 min-w-0">
-            <div className="flex items-center gap-2 min-w-max p-1 rounded-2xl border border-slate-800/80 bg-slate-900/60">
+            <div className="flex items-center gap-2 min-w-max p-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)]">
               {projects.map((project, idx) => {
                 const isActive = activeProjectIndex === idx;
                 const meta = PROJECT_EXTENDED_DATA[project.id];
@@ -422,24 +420,24 @@ export function ProjectsShowcase() {
                     key={project.id}
                     onClick={() => goToProjectIndex(idx)}
                     className={cn(
-                      "relative flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0",
+                      "relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0",
                       isActive
-                        ? "text-white font-semibold"
-                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                        ? "text-[var(--background)] font-semibold"
+                        : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                     )}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeStudioProjectPill"
-                        className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 border border-blue-400/40 shadow-md shadow-blue-500/25 -z-10"
+                        className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
                         transition={{ type: "spring", stiffness: 450, damping: 32 }}
                       />
                     )}
 
                     {/* Pulsing production status dot */}
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--status-live)] opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--status-live)]" />
                     </span>
 
                     <span className="font-sans font-bold">{project.title}</span>
@@ -447,10 +445,10 @@ export function ProjectsShowcase() {
                     {meta && (
                       <span
                         className={cn(
-                          "rounded px-1.5 py-0.5 text-[9px] font-mono",
+                          "rounded-full px-1.5 py-0.5 text-[9px] font-mono",
                           isActive
-                            ? "bg-white/20 text-white"
-                            : "bg-slate-800 text-slate-400"
+                            ? "bg-[var(--background)]/20 text-[var(--background)] font-bold"
+                            : "bg-neutral-500/10 text-[var(--text-muted)]"
                         )}
                       >
                         {meta.flag}
@@ -464,14 +462,13 @@ export function ProjectsShowcase() {
 
           {/* Desktop Carousel Controls */}
           <div className="hidden sm:flex items-center gap-1.5 shrink-0 pb-2">
-            <div className="rounded-xl border border-slate-800 bg-slate-900/80 px-2.5 py-1.5 font-mono text-xs text-slate-400 mr-1">
-              <span className="text-white font-semibold">0{activeProjectIndex + 1}</span> / 0{projects.length}
+            <div className="rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] px-3 py-1.5 font-mono text-xs text-[var(--text-secondary)] mr-1">
+              <span className="text-[var(--foreground)] font-semibold">0{activeProjectIndex + 1}</span> / 0{projects.length}
             </div>
             <button
               onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label={isAutoPlayEnabled ? "Pause platform tour" : "Resume platform tour"}
-              title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
             >
               {isAutoPlayEnabled && !isPaused ? (
                 <Pause className="h-4 w-4" />
@@ -481,14 +478,14 @@ export function ProjectsShowcase() {
             </button>
             <button
               onClick={goToPrevProject}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Previous platform"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={goToNextProject}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Next platform"
             >
               <ChevronRight className="h-4 w-4" />
@@ -497,18 +494,18 @@ export function ProjectsShowcase() {
         </div>
       </div>
 
-      {/* Interactive Engineering Studio Deck (Touch-Swipeable on Mobile, Split-Screen on Desktop) */}
+      {/* Interactive Engineering Studio Deck */}
       <div
-        className="mt-6 group relative overflow-hidden rounded-3xl border border-slate-800/90 bg-[#0c1222]/95 shadow-2xl transition-all"
+        className="mt-6 group relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Animated Glowing Carousel Progress Line */}
-        <div className="h-0.5 sm:h-1 w-full bg-slate-800/80 overflow-hidden">
+        {/* Animated Carousel Progress Line */}
+        <div className="h-0.5 sm:h-1 w-full bg-[var(--border-subtle)] overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 transition-all duration-75"
+            className="h-full bg-[var(--foreground)] transition-all duration-75"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -517,8 +514,8 @@ export function ProjectsShowcase() {
         <BorderBeam
           size={360}
           duration={14}
-          colorFrom={activeProjectIndex % 2 === 0 ? "#3b82f6" : "#10b981"}
-          colorTo={activeProjectIndex % 2 === 0 ? "#10b981" : "#f43f5e"}
+          colorFrom="rgba(255, 255, 255, 0.4)"
+          colorTo="rgba(255, 255, 255, 0.05)"
         />
 
         <div className="relative z-10 p-4 sm:p-8 lg:p-10 min-h-[580px]">
@@ -536,8 +533,8 @@ export function ProjectsShowcase() {
             <div className="lg:col-span-5 flex flex-col justify-between space-y-5 sm:space-y-6">
               <div>
                 {/* Period & Metrics Badge */}
-                <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-400">
-                  <span className="rounded-full bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-400 border border-emerald-500/20">
+                <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[var(--text-secondary)]">
+                  <span className="rounded-full bg-[var(--status-live)]/10 px-3 py-1 font-semibold text-[var(--status-live)] border border-[var(--status-live)]/20">
                     {currentProject.metricsBadge}
                   </span>
                   <span>•</span>
@@ -545,10 +542,10 @@ export function ProjectsShowcase() {
                 </div>
 
                 {/* Title & Subtitle */}
-                <h3 className="mt-3 font-sans text-2xl sm:text-3xl font-extrabold text-white">
+                <h3 className="mt-3 font-sans text-2xl sm:text-3xl font-extrabold text-[var(--foreground)]">
                   {currentProject.title}
                 </h3>
-                <p className="mt-1 text-sm font-medium text-slate-400">
+                <p className="mt-1 text-sm font-medium text-[var(--text-secondary)]">
                   {currentProject.subtitle}
                 </p>
 
@@ -559,7 +556,7 @@ export function ProjectsShowcase() {
                       href={currentProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-500/20 hover:brightness-110 transition-all cursor-pointer"
+                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-full bg-[var(--btn-primary-bg)] text-[var(--btn-primary-fg)] px-5 py-2.5 text-xs font-semibold shadow-md hover:opacity-90 transition-all cursor-pointer"
                     >
                       <span>Visit Live Platform</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -571,7 +568,7 @@ export function ProjectsShowcase() {
                       href={currentProject.secondaryUrl.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
+                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2.5 text-xs font-medium text-[var(--foreground)] hover:border-[var(--text-muted)] transition-all cursor-pointer"
                     >
                       <span>{currentProject.secondaryUrl.label}</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -583,7 +580,7 @@ export function ProjectsShowcase() {
                       href={currentProject.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-medium text-slate-300 hover:border-slate-700 hover:text-white transition-all cursor-pointer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2.5 text-xs font-medium text-[var(--foreground)] hover:border-[var(--text-muted)] transition-all cursor-pointer"
                     >
                       <GithubIcon className="h-3.5 w-3.5" />
                       <span>Repo</span>
@@ -592,7 +589,7 @@ export function ProjectsShowcase() {
 
                   <button
                     onClick={() => setSelectedProjectForModal(currentProject)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/60 px-3.5 py-2.5 text-xs font-medium text-blue-300 hover:bg-slate-700 hover:text-white transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2.5 text-xs font-medium text-[var(--foreground)] hover:bg-neutral-500/10 transition-all cursor-pointer"
                   >
                     <span>Full Architecture</span>
                     <ArrowUpRight className="h-3.5 w-3.5" />
@@ -600,15 +597,15 @@ export function ProjectsShowcase() {
                 </div>
 
                 {/* Tech Stack Pills */}
-                <div className="mt-6 pt-5 border-t border-slate-800/80">
-                  <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500 mb-2">
+                <div className="mt-6 pt-5 border-t border-[var(--border-subtle)]">
+                  <div className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] mb-2">
                     Production Tech Stack
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {currentProject.techStack.map((tech, idx) => (
                       <span
                         key={idx}
-                        className="rounded-lg border border-slate-800 bg-slate-900/80 px-2.5 py-1 font-mono text-[11px] text-slate-300"
+                        className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)]"
                       >
                         {tech}
                       </span>
@@ -623,12 +620,12 @@ export function ProjectsShowcase() {
                   {extendedMeta.specs.slice(0, 2).map((spec, i) => (
                     <div
                       key={i}
-                      className="rounded-xl border border-slate-800/80 bg-slate-900/40 p-3"
+                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3"
                     >
-                      <div className="text-[10px] font-mono text-slate-400">
+                      <div className="text-[10px] font-mono text-[var(--text-muted)]">
                         {spec.label}
                       </div>
-                      <div className="text-xs font-bold text-white mt-0.5 truncate">
+                      <div className="text-xs font-bold text-[var(--foreground)] mt-0.5 truncate">
                         {spec.value}
                       </div>
                     </div>
@@ -638,28 +635,28 @@ export function ProjectsShowcase() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Workstation Window with 3 Tabs (7 Cols) */}
-            <div className="lg:col-span-7 rounded-2xl border border-slate-800/90 bg-[#070b16]/95 overflow-hidden shadow-xl">
+            <div className="lg:col-span-7 rounded-2xl border border-[var(--border-subtle)] bg-[var(--background)] overflow-hidden shadow-xl">
               {/* Window Title Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 bg-slate-900/60 px-4 py-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2.5">
                 {/* Traffic Lights */}
                 <div className="flex items-center gap-1.5">
-                  <div className="h-2.5 w-2.5 rounded-full bg-rose-500/80" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-amber-500/80" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/80" />
-                  <span className="ml-2 font-mono text-[11px] text-slate-400 hidden sm:inline">
+                  <div className="h-2.5 w-2.5 rounded-full bg-neutral-400" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-neutral-500" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-neutral-600" />
+                  <span className="ml-2 font-mono text-[11px] text-[var(--text-muted)] hidden sm:inline">
                     sys://architecture/{currentProject.id}
                   </span>
                 </div>
 
                 {/* Studio View Mode Tabs */}
-                <div className="flex items-center gap-1 rounded-xl border border-slate-800 bg-slate-950 p-1">
+                <div className="flex items-center gap-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1">
                   <button
                     onClick={() => setActiveStudioTab("innovations")}
                     className={cn(
-                      "flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-colors cursor-pointer",
+                      "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
                       activeStudioTab === "innovations"
-                        ? "bg-blue-600 text-white font-semibold"
-                        : "text-slate-400 hover:text-slate-200"
+                        ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
+                        : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
                     )}
                   >
                     <Sparkles className="h-3 w-3" />
@@ -669,10 +666,10 @@ export function ProjectsShowcase() {
                   <button
                     onClick={() => setActiveStudioTab("flow")}
                     className={cn(
-                      "flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-colors cursor-pointer",
+                      "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
                       activeStudioTab === "flow"
-                        ? "bg-blue-600 text-white font-semibold"
-                        : "text-slate-400 hover:text-slate-200"
+                        ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
+                        : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
                     )}
                   >
                     <Workflow className="h-3 w-3" />
@@ -682,10 +679,10 @@ export function ProjectsShowcase() {
                   <button
                     onClick={() => setActiveStudioTab("specs")}
                     className={cn(
-                      "flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-mono transition-colors cursor-pointer",
+                      "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
                       activeStudioTab === "specs"
-                        ? "bg-blue-600 text-white font-semibold"
-                        : "text-slate-400 hover:text-slate-200"
+                        ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
+                        : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
                     )}
                   >
                     <ShieldCheck className="h-3 w-3" />
@@ -710,13 +707,13 @@ export function ProjectsShowcase() {
                       {currentProject.highlights.map((h, idx) => (
                         <div
                           key={idx}
-                          className="rounded-xl border border-slate-800/80 bg-slate-900/40 p-3.5 transition-colors hover:border-slate-700 hover:bg-slate-900/70"
+                          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3.5 transition-colors hover:border-[var(--text-muted)]"
                         >
-                          <div className="flex items-center gap-2 font-sans text-xs sm:text-sm font-bold text-white">
-                            <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                          <div className="flex items-center gap-2 font-sans text-xs sm:text-sm font-bold text-[var(--foreground)]">
+                            <CheckCircle2 className="h-4 w-4 text-[var(--status-live)] shrink-0" />
                             <span>{h.label}</span>
                           </div>
-                          <p className="mt-1.5 text-xs text-slate-300 leading-relaxed font-sans pl-6">
+                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans pl-6">
                             {h.description}
                           </p>
                         </div>
@@ -734,27 +731,27 @@ export function ProjectsShowcase() {
                       transition={{ duration: 0.2 }}
                       className="space-y-3.5"
                     >
-                      <div className="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                      <div className="text-xs font-mono text-[var(--text-muted)] mb-2 flex items-center justify-between">
                         <span>End-to-End Pipeline & Concurrency Path:</span>
-                        <span className="text-emerald-400 font-semibold">ACID Verified</span>
+                        <span className="text-[var(--status-live)] font-semibold">ACID Verified</span>
                       </div>
 
                       {extendedMeta.systemFlow.map((step, idx) => (
                         <div key={idx} className="relative">
-                          <div className="flex items-start gap-3.5 rounded-xl border border-slate-800/90 bg-slate-900/50 p-3.5">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-500/30 bg-blue-500/10 font-mono text-xs font-bold text-blue-400">
+                          <div className="flex items-start gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3.5">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--foreground)] text-[var(--background)] font-mono text-xs font-bold shadow-sm">
                               {step.step}
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="font-sans text-xs font-bold text-white">
+                                <span className="font-sans text-xs font-bold text-[var(--foreground)]">
                                   {step.layer}
                                 </span>
-                                <span className="rounded bg-slate-800 px-2 py-0.5 font-mono text-[10px] text-slate-300 border border-slate-700">
+                                <span className="rounded-full bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
                                   {step.tech}
                                 </span>
                               </div>
-                              <p className="mt-1 text-xs text-slate-400 leading-relaxed">
+                              <p className="mt-1 text-xs text-[var(--text-secondary)] leading-relaxed">
                                 {step.desc}
                               </p>
                             </div>
@@ -762,7 +759,7 @@ export function ProjectsShowcase() {
 
                           {/* Connecting vertical line between steps */}
                           {idx < extendedMeta.systemFlow.length - 1 && (
-                            <div className="ml-7 h-2 w-px bg-slate-800 my-0.5" />
+                            <div className="ml-7 h-2 w-px bg-[var(--border-subtle)] my-0.5" />
                           )}
                         </div>
                       ))}
@@ -782,16 +779,16 @@ export function ProjectsShowcase() {
                       {extendedMeta.specs.map((spec, idx) => (
                         <div
                           key={idx}
-                          className="rounded-xl border border-slate-800/80 bg-slate-900/40 p-4"
+                          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-4"
                         >
-                          <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-400">
-                            <Activity className="h-3.5 w-3.5 text-blue-400" />
+                          <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-muted)]">
+                            <Activity className="h-3.5 w-3.5 text-[var(--foreground)]" />
                             <span>{spec.label}</span>
                           </div>
-                          <div className="mt-1 font-sans text-sm font-bold text-white">
+                          <div className="mt-1 font-sans text-sm font-bold text-[var(--foreground)]">
                             {spec.value}
                           </div>
-                          <p className="mt-1.5 text-xs text-slate-400 leading-relaxed font-sans">
+                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans">
                             {spec.desc}
                           </p>
                         </div>
@@ -801,15 +798,15 @@ export function ProjectsShowcase() {
                 </AnimatePresence>
 
                 {/* Studio Footer Info */}
-                <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
-                  <span className="flex items-center gap-1.5 text-emerald-400">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
+                  <span className="flex items-center gap-1.5 text-[var(--status-live)]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--status-live)]" />
                     <span>Production High Uptime</span>
                   </span>
 
                   <button
                     onClick={() => setSelectedProjectForModal(currentProject)}
-                    className="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 cursor-pointer"
+                    className="text-[var(--foreground)] hover:underline transition-colors flex items-center gap-1 cursor-pointer font-semibold"
                   >
                     <span>Inspect Full Architecture Drawer</span>
                     <ArrowRight className="h-3 w-3" />
@@ -824,16 +821,16 @@ export function ProjectsShowcase() {
 
       {/* Quick-Switch Thumbnails Gallery (All 6 Platforms Side-by-Side) */}
       <div className="mt-12 sm:mt-14">
-        <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4">
           <div>
-            <h4 className="font-sans text-base sm:text-lg font-bold text-white">
+            <h4 className="font-sans text-base sm:text-lg font-bold text-[var(--foreground)]">
               All Commercial & Flagship Engineering Platforms
             </h4>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5">
               Click any platform to load its live architecture studio and telemetry above.
             </p>
           </div>
-          <span className="font-mono text-xs text-slate-500 hidden sm:inline">
+          <span className="font-mono text-xs text-[var(--text-muted)] hidden sm:inline">
             6 Commercial Deployments
           </span>
         </div>
@@ -853,20 +850,20 @@ export function ProjectsShowcase() {
                   }
                 }}
                 className={cn(
-                  "group/card flex flex-col justify-between rounded-2xl border p-5 text-left transition-all duration-200 cursor-pointer",
+                  "group/card flex flex-col justify-between rounded-3xl border p-5 text-left transition-all duration-200 cursor-pointer",
                   isSelected
-                    ? "border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/10"
-                    : "border-slate-800/80 bg-[#0c1222]/80 hover:border-slate-700 hover:bg-slate-900/70"
+                    ? "border-[var(--foreground)] bg-[var(--foreground)]/5 shadow-md"
+                    : "border-[var(--border-subtle)] bg-[var(--card-bg)] hover:border-[var(--card-border-hover)]"
                 )}
               >
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-secondary)]">
                     <span
                       className={cn(
-                        "rounded px-2 py-0.5 font-semibold",
+                        "rounded-full px-2.5 py-0.5 font-semibold border",
                         isSelected
-                          ? "bg-blue-500/20 text-blue-300 border border-blue-500/40"
-                          : "bg-slate-900 text-slate-400 border border-slate-800"
+                          ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)]"
+                          : "bg-[var(--glass-pill-bg)] text-[var(--text-secondary)] border-[var(--border-subtle)]"
                       )}
                     >
                       {project.metricsBadge.split("•")[0]}
@@ -874,20 +871,20 @@ export function ProjectsShowcase() {
                     <span>{meta?.flag}</span>
                   </div>
 
-                  <h5 className="mt-3 font-sans text-base font-bold text-white group-hover/card:text-blue-400 transition-colors">
+                  <h5 className="mt-3 font-sans text-base font-bold text-[var(--foreground)] group-hover/card:opacity-80 transition-opacity">
                     {project.title}
                   </h5>
-                  <p className="mt-1 text-xs text-slate-400 line-clamp-2">
+                  <p className="mt-1 text-xs text-[var(--text-secondary)] line-clamp-2">
                     {project.subtitle}
                   </p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-slate-500">{project.period}</span>
+                <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-[var(--text-muted)]">{project.period}</span>
                   <span
                     className={cn(
                       "flex items-center gap-0.5 font-semibold transition-colors",
-                      isSelected ? "text-blue-400" : "text-slate-400 group-hover/card:text-white"
+                      isSelected ? "text-[var(--foreground)]" : "text-[var(--text-secondary)] group-hover/card:text-[var(--foreground)]"
                     )}
                   >
                     <span>View Studio</span>

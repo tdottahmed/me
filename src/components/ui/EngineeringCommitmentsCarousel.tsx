@@ -6,7 +6,6 @@ import {
   ShieldCheck,
   Zap,
   Server,
-  Sparkles,
   ChevronLeft,
   ChevronRight,
   Play,
@@ -23,16 +22,6 @@ export interface CommitmentItem {
   icon: React.ComponentType<{ className?: string }>;
   tags: string[];
   metricsBadge: string;
-  accent: {
-    text: string;
-    border: string;
-    bg: string;
-    glow: string;
-    gradient: string;
-    tagBg: string;
-    tagBorder: string;
-    tagText: string;
-  };
 }
 
 const COMMITMENTS: CommitmentItem[] = [
@@ -46,16 +35,6 @@ const COMMITMENTS: CommitmentItem[] = [
     icon: ShieldCheck,
     tags: ["Row-Level Locks", "Idempotency Keys", "Double-Entry Ledgers", "ACID Compliance"],
     metricsBadge: "100% Monetary Integrity",
-    accent: {
-      text: "text-emerald-400",
-      border: "border-emerald-500/40",
-      bg: "bg-emerald-500/10",
-      glow: "rgba(16, 185, 129, 0.35)",
-      gradient: "from-emerald-500 via-teal-500 to-cyan-400",
-      tagBg: "bg-emerald-500/10",
-      tagBorder: "border-emerald-500/30",
-      tagText: "text-emerald-300",
-    },
   },
   {
     id: "concurrency-realtime",
@@ -67,16 +46,6 @@ const COMMITMENTS: CommitmentItem[] = [
     icon: Zap,
     tags: ["Reverb WebSockets", "Redis Queues", "Next.js 16 SSR", "847 Automated Tests"],
     metricsBadge: "<25ms Event Latency",
-    accent: {
-      text: "text-amber-400",
-      border: "border-amber-500/40",
-      bg: "bg-amber-500/10",
-      glow: "rgba(245, 158, 11, 0.35)",
-      gradient: "from-amber-500 via-orange-500 to-yellow-400",
-      tagBg: "bg-amber-500/10",
-      tagBorder: "border-amber-500/30",
-      tagText: "text-amber-300",
-    },
   },
   {
     id: "hardened-infrastructure",
@@ -88,41 +57,10 @@ const COMMITMENTS: CommitmentItem[] = [
     icon: Server,
     tags: ["Ubuntu Linux VPS", "Cloudflare Strict TLS", "Fail2ban Defense", "GitHub Actions CI/CD"],
     metricsBadge: "99.9% Production Uptime",
-    accent: {
-      text: "text-blue-400",
-      border: "border-blue-500/40",
-      bg: "bg-blue-500/10",
-      glow: "rgba(59, 130, 246, 0.35)",
-      gradient: "from-blue-500 via-indigo-500 to-sky-400",
-      tagBg: "bg-blue-500/10",
-      tagBorder: "border-blue-500/30",
-      tagText: "text-blue-300",
-    },
-  },
-  {
-    id: "direct-delivery",
-    number: "04",
-    title: "Rapid Turnaround & Direct Engineering SLA",
-    subtitle: "End-to-End Ownership from Schema to Production Edge",
-    description:
-      "Transparent engineering communication with a 4 to 8-hour response window for critical production systems. Complete technical ownership spanning relational database normalization, API design, and client-side reactive UX.",
-    icon: Sparkles,
-    tags: ["4-8h Response SLA", "Bilingual Tech Specs", "Direct Pair Programming", "Full Ownership"],
-    metricsBadge: "<8h SLA Guarantee",
-    accent: {
-      text: "text-purple-400",
-      border: "border-purple-500/40",
-      bg: "bg-purple-500/10",
-      glow: "rgba(168, 85, 247, 0.35)",
-      gradient: "from-purple-500 via-pink-500 to-indigo-400",
-      tagBg: "bg-purple-500/10",
-      tagBorder: "border-purple-500/30",
-      tagText: "text-purple-300",
-    },
   },
 ];
 
-const AUTO_SLIDE_DURATION = 6000; // 6 seconds per slide
+const AUTO_ROTATE_MS = 8000;
 
 export function EngineeringCommitmentsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -131,8 +69,7 @@ export function EngineeringCommitmentsCarousel() {
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  const activeCommitment = COMMITMENTS[currentIndex];
-  const Icon = activeCommitment.icon;
+  const activeItem = COMMITMENTS[currentIndex];
 
   const goToNext = useCallback(() => {
     setDirection(1);
@@ -147,18 +84,16 @@ export function EngineeringCommitmentsCarousel() {
   }, []);
 
   const goToIndex = (index: number) => {
-    if (index === currentIndex) return;
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
     setProgress(0);
   };
 
-  // Auto-play interval with smooth 50ms progress increments
   useEffect(() => {
     if (isPaused || !isAutoPlayEnabled) return;
 
     const intervalTime = 50;
-    const step = (intervalTime / AUTO_SLIDE_DURATION) * 100;
+    const increment = (intervalTime / AUTO_ROTATE_MS) * 100;
 
     const timer = setInterval(() => {
       setProgress((prev) => {
@@ -166,14 +101,13 @@ export function EngineeringCommitmentsCarousel() {
           goToNext();
           return 0;
         }
-        return prev + step;
+        return prev + increment;
       });
     }, intervalTime);
 
     return () => clearInterval(timer);
   }, [isPaused, isAutoPlayEnabled, goToNext]);
 
-  // Touch swipe support for mobile
   const touchStartX = useRef<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -221,14 +155,14 @@ export function EngineeringCommitmentsCarousel() {
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-800/90 bg-[#0c1220]/95 shadow-2xl transition-all"
+      className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Top Header Bar: Step Selector Tabs + Play/Pause & Nav Arrows */}
-      <div className="flex items-center justify-between border-b border-slate-800/80 bg-slate-900/50 p-2 sm:p-3">
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-3">
         {/* Horizontal Scrollable Tabs */}
         <div className="overflow-x-auto scrollbar-none flex-1 min-w-0 pr-2">
           <div className="flex items-center gap-1 sm:gap-1.5 min-w-max">
@@ -239,20 +173,20 @@ export function EngineeringCommitmentsCarousel() {
                   key={item.id}
                   onClick={() => goToIndex(idx)}
                   className={cn(
-                    "relative flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-mono transition-all cursor-pointer truncate",
+                    "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all cursor-pointer truncate",
                     isActive
-                      ? "text-white font-semibold"
-                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                      ? "text-[var(--background)] font-semibold"
+                      : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                   )}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeCommitmentTab"
-                      className="absolute inset-0 rounded-xl bg-slate-800 border border-slate-700/80 shadow -z-10"
+                      className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
                       transition={{ type: "spring", stiffness: 450, damping: 32 }}
                     />
                   )}
-                  <span className={cn("text-[10px] font-bold", isActive ? item.accent.text : "text-slate-500")}>
+                  <span className={cn("text-[10px] font-bold", isActive ? "text-[var(--background)]" : "text-[var(--text-muted)]")}>
                     {item.number}
                   </span>
                   <span className="hidden sm:inline truncate">{item.title}</span>
@@ -265,10 +199,9 @@ export function EngineeringCommitmentsCarousel() {
 
         {/* Carousel Controls */}
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 pl-1">
-          {/* Autoplay Play/Pause Toggle */}
           <button
             onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label={isAutoPlayEnabled ? "Pause carousel auto-play" : "Resume carousel auto-play"}
             title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
           >
@@ -281,133 +214,80 @@ export function EngineeringCommitmentsCarousel() {
 
           <button
             onClick={goToPrev}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous commitment"
           >
-            <ChevronLeft className="h-3.5 w-3.5" />
+            <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
+
           <button
             onClick={goToNext}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next commitment"
           >
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </div>
       </div>
 
-      {/* Animated Glowing Progress Line */}
-      <div className="h-0.5 w-full bg-slate-850/80 overflow-hidden">
-        <div
-          className={cn("h-full bg-gradient-to-r transition-all duration-75", activeCommitment.accent.gradient)}
+      {/* Auto-Advance Progress Line */}
+      <div className="relative h-0.5 w-full bg-[var(--border-subtle)] overflow-hidden">
+        <motion.div
+          className="h-full bg-[var(--foreground)]"
           style={{ width: `${progress}%` }}
+          transition={{ duration: 0.05, ease: "linear" }}
         />
       </div>
 
-      {/* Main Slide Card Area with Fixed Min-Height to eliminate CLS */}
-      <div className="relative min-h-[260px] sm:min-h-[220px] p-5 sm:p-7 flex flex-col justify-between">
-        {/* Ambient Radial Accent Glow */}
-        <div
-          className="pointer-events-none absolute -top-12 -right-12 h-44 w-44 rounded-full blur-3xl opacity-20 transition-all duration-700"
-          style={{ backgroundColor: activeCommitment.accent.glow }}
-        />
-
+      {/* Active Commitment Card Content */}
+      <div className="p-5 sm:p-8 min-h-[220px] flex flex-col justify-between">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
-            key={activeCommitment.id}
+            key={activeItem.id}
             custom={direction}
             variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
-            className="flex flex-col justify-between h-full space-y-4"
+            className="flex flex-col justify-between h-full"
           >
-            {/* Top Row: Icon + Title + Metrics Badge */}
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
                 <div className="flex items-center gap-3">
-                  <div
-                    className={cn(
-                      "flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl border transition-all",
-                      activeCommitment.accent.bg,
-                      activeCommitment.accent.border,
-                      activeCommitment.accent.text
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--foreground)] text-[var(--background)] shadow-sm">
+                    <activeItem.icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className={cn("text-xs font-mono font-bold", activeCommitment.accent.text)}>
-                        {activeCommitment.number}
-                      </span>
-                      <span className="text-xs font-mono text-slate-500">•</span>
-                      <span className="text-xs font-mono text-slate-400">{activeCommitment.subtitle}</span>
-                    </div>
-                    <h3 className="text-base sm:text-xl font-bold font-sans text-white tracking-tight mt-0.5">
-                      {activeCommitment.title}
+                    <h3 className="font-sans text-base sm:text-lg font-bold text-[var(--foreground)]">
+                      {activeItem.title}
                     </h3>
+                    <div className="text-xs font-mono text-[var(--text-muted)]">
+                      {activeItem.subtitle}
+                    </div>
                   </div>
                 </div>
 
-                {/* Metrics SLA Pill */}
-                <span
-                  className={cn(
-                    "rounded-full px-3 py-1 text-[11px] font-mono font-semibold border shadow-sm",
-                    activeCommitment.accent.bg,
-                    activeCommitment.accent.border,
-                    activeCommitment.accent.text
-                  )}
-                >
-                  {activeCommitment.metricsBadge}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-[var(--status-live)]/10 px-3 py-1 font-mono text-xs font-semibold text-[var(--status-live)] border border-[var(--status-live)]/20">
+                    {activeItem.metricsBadge}
+                  </span>
+                </div>
               </div>
 
-              {/* Description Body */}
-              <p className="mt-3.5 text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                {activeCommitment.description}
+              <p className="mt-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                {activeItem.description}
               </p>
             </div>
 
-            {/* Bottom Row: Tags & Mobile Indicator */}
-            <div className="pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                {activeCommitment.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className={cn(
-                      "rounded-lg px-2.5 py-1 text-[11px] font-mono font-medium border transition-colors",
-                      activeCommitment.accent.tagBg,
-                      activeCommitment.accent.tagBorder,
-                      activeCommitment.accent.tagText
-                    )}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Progress Dots Indicator */}
-              <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0">
-                <span className="text-[10px] font-mono text-slate-500 sm:hidden">
-                  Swipe or tap tabs to browse
+            <div className="mt-6 flex flex-wrap items-center gap-1.5 pt-4 border-t border-[var(--border-subtle)]">
+              {activeItem.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 font-mono text-[10px] text-[var(--text-secondary)]"
+                >
+                  {tag}
                 </span>
-                <div className="flex items-center gap-1.5">
-                  {COMMITMENTS.map((item, idx) => (
-                    <button
-                      key={item.id}
-                      onClick={() => goToIndex(idx)}
-                      className={cn(
-                        "h-1.5 rounded-full transition-all cursor-pointer",
-                        currentIndex === idx
-                          ? cn("w-6", item.accent.bg, item.accent.border, "bg-white")
-                          : "w-1.5 bg-slate-700 hover:bg-slate-500"
-                      )}
-                      aria-label={`Go to commitment ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </motion.div>
         </AnimatePresence>

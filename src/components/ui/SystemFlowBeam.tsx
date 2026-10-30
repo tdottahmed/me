@@ -419,7 +419,7 @@ export function SystemFlowBeam() {
       onTouchEnd={handleTouchEnd}
     >
       {/* 1. Symmetrical Scenario Selector Bar (Fixed Height) */}
-      <div className="grid grid-cols-3 gap-1.5 pb-3 border-b border-slate-800/80">
+      <div className="grid grid-cols-3 gap-1.5 pb-3 border-b border-[var(--border-subtle)]">
         {SCENARIOS.map((s) => {
           const isActive = mode === s.id;
           const Icon = s.icon;
@@ -428,10 +428,10 @@ export function SystemFlowBeam() {
               key={s.id}
               onClick={() => handleScenarioChange(s.id)}
               className={cn(
-                "relative flex items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-[11px] font-mono transition-all cursor-pointer truncate",
+                "relative flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-mono transition-all cursor-pointer truncate",
                 isActive
-                  ? "bg-blue-600/30 text-blue-300 border border-blue-500/40 font-semibold shadow-sm"
-                  : "bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white hover:bg-slate-800/50"
+                  ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-semibold shadow-sm"
+                  : "bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] border border-[var(--border-subtle)] hover:text-[var(--foreground)]"
               )}
             >
               <Icon className="h-3 w-3 shrink-0" />
@@ -446,12 +446,12 @@ export function SystemFlowBeam() {
         {/* Dedicated Circle Nodes Row (Fixed Height: h-8 = 32px) */}
         <div className="relative h-8 flex items-center">
           {/* Connecting Background Line: Exactly spans from Center of Node 1 (12.5%) to Center of Node 4 (87.5%) */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-slate-800 z-0" />
+          <div className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-[var(--border-subtle)] z-0" />
 
           {/* Animated Active Beam: Progresses exactly between node centers */}
           <div className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-0.5 z-0 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400"
+              className="h-full bg-[var(--foreground)] opacity-80"
               animate={{
                 width: `${(currentStageIdx / (TOTAL_STAGES - 1)) * 100}%`,
               }}
@@ -472,18 +472,11 @@ export function SystemFlowBeam() {
                     className={cn(
                       "flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-bold transition-all duration-300 cursor-pointer focus:outline-none",
                       isActive
-                        ? cn("scale-110 shadow-lg", stage.accent.bg, stage.accent.border, stage.accent.text)
+                        ? "scale-110 shadow-lg bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] border-[var(--card-contrast-fg)]"
                         : isCompleted
-                        ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-300"
-                        : "border-slate-800 bg-slate-900 text-slate-500 hover:border-slate-700 hover:text-slate-300"
+                        ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500"
+                        : "border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:border-[var(--muted-foreground)] hover:text-[var(--foreground)]"
                     )}
-                    style={
-                      isActive
-                        ? {
-                            boxShadow: `0 0 16px -2px ${stage.accent.glow}`,
-                          }
-                        : undefined
-                    }
                     aria-label={`Go to ${stage.shortLabel} stage`}
                   >
                     {isCompleted ? (
@@ -509,10 +502,10 @@ export function SystemFlowBeam() {
                 className={cn(
                   "text-[10px] font-mono truncate leading-none px-1 transition-colors",
                   isActive
-                    ? "text-white font-bold"
+                    ? "text-[var(--foreground)] font-bold"
                     : isCompleted
-                    ? "text-slate-400"
-                    : "text-slate-500"
+                    ? "text-[var(--muted-foreground)]"
+                    : "text-[var(--muted-foreground)] opacity-60"
                 )}
               >
                 {stage.shortLabel}
@@ -523,20 +516,14 @@ export function SystemFlowBeam() {
       </div>
 
       {/* 3. Spacious Active Stage Inspector Card (Strict Fixed Height: h-[280px], Zero Layout Shift) */}
-      <div className="relative h-[285px] sm:h-[275px] rounded-2xl border border-slate-800/90 bg-[#090e1a]/95 p-4 sm:p-5 shadow-xl overflow-hidden mt-1.5 flex flex-col justify-between">
+      <div className="relative h-[285px] sm:h-[275px] rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-4 sm:p-5 shadow-xl overflow-hidden mt-1.5 flex flex-col justify-between">
         {/* Animated Progress Line */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-slate-850/80 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-[var(--border-subtle)] overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 transition-all duration-75"
+            className="h-full bg-[var(--foreground)] opacity-70 transition-all duration-75"
             style={{ width: `${progress}%` }}
           />
         </div>
-
-        {/* Subtle Ambient Radial Glow */}
-        <div
-          className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full blur-2xl opacity-25 transition-all duration-500"
-          style={{ backgroundColor: activeStage.accent.glow }}
-        />
 
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -553,48 +540,38 @@ export function SystemFlowBeam() {
               <div className="flex items-center justify-between gap-2 h-6">
                 <div className="flex items-center gap-2 min-w-0">
                   <div
-                    className={cn(
-                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border",
-                      activeStage.accent.bg,
-                      activeStage.accent.border,
-                      activeStage.accent.text
-                    )}
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--foreground)]"
                   >
                     <ActiveIcon className="h-3 w-3" />
                   </div>
-                  <span className={cn("text-[10px] font-mono font-bold tracking-wider truncate", activeStage.accent.text)}>
+                  <span className="text-[10px] font-mono font-bold tracking-wider truncate text-[var(--foreground)]">
                     {activeStage.layerTag}
                   </span>
                 </div>
 
                 {/* Top Indicator Badge: Locked at top right, never displaced by title */}
                 <div
-                  className={cn(
-                    "flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-mono font-semibold border shrink-0",
-                    activeStage.accent.bg,
-                    activeStage.accent.border,
-                    activeStage.accent.text
-                  )}
+                  className="flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-mono font-semibold border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--foreground)] shrink-0"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span>{activeStage.metricBadge}</span>
                 </div>
               </div>
 
               {/* Dedicated Title Row: Full width, fixed height h-6, never collides with badge */}
-              <h4 className="font-sans text-sm sm:text-base font-bold text-white mt-1.5 leading-snug truncate">
+              <h4 className="font-sans text-sm sm:text-base font-bold text-[var(--foreground)] mt-1.5 leading-snug truncate">
                 {activeStage.title}
               </h4>
 
               {/* Fixed-Height Description: 2 lines max, h-9 */}
-              <p className="mt-1 text-[11px] sm:text-xs text-slate-300 leading-relaxed font-normal h-9 line-clamp-2 overflow-hidden">
+              <p className="mt-1 text-[11px] sm:text-xs text-[var(--muted-foreground)] leading-relaxed font-normal h-9 line-clamp-2 overflow-hidden">
                 {activeStage.role}
               </p>
             </div>
 
             {/* Code / Protocol Payload Box (Fixed Height: h-[68px]) */}
-            <div className="rounded-xl border border-slate-800 bg-black/70 p-2.5 font-mono text-[11px] text-slate-300 shadow-inner h-[68px] overflow-hidden my-1">
-              <pre className="text-slate-300 whitespace-pre-wrap leading-relaxed font-mono">
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2.5 font-mono text-[11px] text-[var(--foreground)] shadow-inner h-[68px] overflow-hidden my-1">
+              <pre className="text-[var(--foreground)] whitespace-pre-wrap leading-relaxed font-mono">
                 {activeStage.codeSnippet}
               </pre>
             </div>
@@ -604,7 +581,7 @@ export function SystemFlowBeam() {
               {activeStage.techTags.map((tech, i) => (
                 <span
                   key={i}
-                  className="rounded-md border border-slate-800 bg-slate-900/80 px-2 py-0.5 font-mono text-[10px] text-slate-400 truncate shrink-0"
+                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--muted-foreground)] truncate shrink-0"
                 >
                   {tech}
                 </span>
@@ -615,25 +592,25 @@ export function SystemFlowBeam() {
       </div>
 
       {/* 4. Bottom Verdict & Navigation Controls */}
-      <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2 border-t border-slate-800/80 text-[11px]">
+      <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2 border-t border-[var(--border-subtle)] text-[11px]">
         {/* Live System Verdict */}
-        <div className="flex items-center gap-2 text-emerald-400 truncate">
+        <div className="flex items-center gap-2 text-emerald-500 truncate">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate text-[10px] sm:text-[11px]">
+          <span className="truncate text-[10px] sm:text-[11px] font-medium">
             {currentScenario.summaryVerdict}
           </span>
         </div>
 
         {/* Stepper Controls */}
         <div className="flex items-center justify-end gap-1.5 shrink-0">
-          <span className="font-mono text-[10px] text-slate-500 mr-1">
+          <span className="font-mono text-[10px] text-[var(--muted-foreground)] mr-1">
             0{activeStage.step} / 0{TOTAL_STAGES}
           </span>
 
           {/* Autoplay Play/Pause */}
           <button
             onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-            className="flex h-6 w-6 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label={isAutoPlayEnabled ? "Pause stepper" : "Resume stepper"}
             title={isAutoPlayEnabled ? "Pause" : "Play"}
           >
@@ -647,7 +624,7 @@ export function SystemFlowBeam() {
           {/* Prev Stage */}
           <button
             onClick={goToPrevStage}
-            className="flex h-6 w-6 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous architectural stage"
           >
             <ChevronLeft className="h-3 w-3" />
@@ -656,7 +633,7 @@ export function SystemFlowBeam() {
           {/* Next Stage */}
           <button
             onClick={goToNextStage}
-            className="flex h-6 w-6 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next architectural stage"
           >
             <ChevronRight className="h-3 w-3" />

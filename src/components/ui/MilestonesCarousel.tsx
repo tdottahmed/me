@@ -5,7 +5,6 @@ import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   Briefcase,
   ShieldCheck,
-  Zap,
   Users,
   ChevronLeft,
   ChevronRight,
@@ -27,16 +26,6 @@ export interface MilestoneItem {
   tags: string[];
   link?: { text: string; url: string };
   icon: React.ComponentType<{ className?: string }>;
-  accent: {
-    text: string;
-    border: string;
-    bg: string;
-    glow: string;
-    gradient: string;
-    tagBg: string;
-    tagBorder: string;
-    tagText: string;
-  };
 }
 
 const MILESTONES: MilestoneItem[] = [
@@ -53,16 +42,6 @@ const MILESTONES: MilestoneItem[] = [
     tags: ["Laravel 12", "React 19", "PostgreSQL", "JaaS / Jitsi", "Bunny CDN"],
     link: { text: "Visit TradingChart.org", url: "https://tradingchart.org" },
     icon: Briefcase,
-    accent: {
-      text: "text-blue-400",
-      border: "border-blue-500/40",
-      bg: "bg-blue-500/10",
-      glow: "rgba(59, 130, 246, 0.35)",
-      gradient: "from-blue-500 via-indigo-500 to-sky-400",
-      tagBg: "bg-blue-500/10",
-      tagBorder: "border-blue-500/30",
-      tagText: "text-blue-300",
-    },
   },
   {
     id: "financial-mobile",
@@ -76,66 +55,36 @@ const MILESTONES: MilestoneItem[] = [
       "Engineered multi-currency BDT and USD student enrollment checkout via SSLCommerz with idempotent webhook verification, and delivered a companion cross-platform React Native mobile learning application.",
     tags: ["SSLCommerz", "Multi-Currency", "Idempotent Webhooks", "React Native"],
     icon: ShieldCheck,
-    accent: {
-      text: "text-emerald-400",
-      border: "border-emerald-500/40",
-      bg: "bg-emerald-500/10",
-      glow: "rgba(16, 185, 129, 0.35)",
-      gradient: "from-emerald-500 via-teal-500 to-cyan-400",
-      tagBg: "bg-emerald-500/10",
-      tagBorder: "border-emerald-500/30",
-      tagText: "text-emerald-300",
-    },
   },
   {
-    id: "defense-modules",
+    id: "defense-inventory",
     number: "03",
-    title: "Defense Inventory Security & Bug Resolution",
-    company: "PONDIT",
-    period: "Feb 2023 – Oct 2023",
+    title: "Military Defense Medical Procurement System",
+    company: "Nix Software",
+    period: "May 2022 – Nov 2023",
     location: "Dhaka, Bangladesh",
-    headline: "Enterprise Hardening & 70+ Critical Bug Fixes",
+    headline: "Secured Armed Forces Supply Chains",
     description:
-      "Secured defense inventory modules against concurrency flaws, refactored legacy Blade and jQuery codebases into structured OOP domain services, and eliminated 70+ critical production bugs.",
-    tags: ["Defense Module Security", "70+ Bug Fixes", "PHPUnit", "OOP Refactoring"],
-    icon: Zap,
-    accent: {
-      text: "text-amber-400",
-      border: "border-amber-500/40",
-      bg: "bg-amber-500/10",
-      glow: "rgba(245, 158, 11, 0.35)",
-      gradient: "from-amber-500 via-orange-500 to-yellow-400",
-      tagBg: "bg-amber-500/10",
-      tagBorder: "border-amber-500/30",
-      tagText: "text-amber-300",
-    },
+      "Spearheaded database schema design, audit logs, and stock tracking for high-security medical equipment procurement, preventing unauthorized discrepancies in sensitive defense inventories.",
+    tags: ["Laravel", "MySQL", "Role-Based ACL", "Audit Logging"],
+    icon: ShieldCheck,
   },
   {
-    id: "leadership-vps",
+    id: "leadership-mentorship",
     number: "04",
-    title: "Engineering Mentorship & Automated CI/CD",
-    company: "Imjol IT & Commercial Deployments",
-    period: "2023 – Present",
+    title: "Engineering Leadership & Code Review Rigor",
+    company: "Nix Software & Imjol IT",
+    period: "2022 – Present",
     location: "Dhaka, Bangladesh",
-    headline: "Team Code Reviews & Zero-Downtime Linux VPS",
+    headline: "Mentoring Developers & Enforcing Strict Standards",
     description:
-      "Mentored junior developers in strict typing and automated testing, managed GitHub Actions CI/CD deployment pipelines, and maintained zero-downtime Ubuntu VPS hosting with automated TLS renewals and daily backups.",
-    tags: ["Mentorship", "Code Reviews", "GitHub Actions CI/CD", "Ubuntu VPS"],
+      "Mentored junior and mid-level software developers, conducted strict PR reviews on OOP principles, database indexing, and API security, cutting production defect rates by over 40%.",
+    tags: ["Team Mentorship", "Code Reviews", "System Design", "CI/CD"],
     icon: Users,
-    accent: {
-      text: "text-violet-400",
-      border: "border-violet-500/40",
-      bg: "bg-violet-500/10",
-      glow: "rgba(167, 139, 250, 0.35)",
-      gradient: "from-violet-500 via-purple-500 to-indigo-400",
-      tagBg: "bg-violet-500/10",
-      tagBorder: "border-violet-500/30",
-      tagText: "text-violet-300",
-    },
   },
 ];
 
-const AUTO_SLIDE_DURATION = 6500;
+const AUTO_ROTATE_MS = 8000;
 
 export function MilestonesCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -143,8 +92,7 @@ export function MilestonesCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const activeMilestone = MILESTONES[currentIndex];
-  const Icon = activeMilestone.icon;
+  const activeItem = MILESTONES[currentIndex];
 
   const goToNext = useCallback(() => {
     setDirection(1);
@@ -159,7 +107,6 @@ export function MilestonesCarousel() {
   }, []);
 
   const goToIndex = (index: number) => {
-    if (index === currentIndex) return;
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
     setProgress(0);
@@ -169,7 +116,7 @@ export function MilestonesCarousel() {
     if (isPaused) return;
 
     const intervalTime = 50;
-    const step = (intervalTime / AUTO_SLIDE_DURATION) * 100;
+    const increment = (intervalTime / AUTO_ROTATE_MS) * 100;
 
     const timer = setInterval(() => {
       setProgress((prev) => {
@@ -177,7 +124,7 @@ export function MilestonesCarousel() {
           goToNext();
           return 0;
         }
-        return prev + step;
+        return prev + increment;
       });
     }, intervalTime);
 
@@ -192,9 +139,14 @@ export function MilestonesCarousel() {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (diff > 45) goToNext();
-    else if (diff < -45) goToPrev();
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (diff > 45) {
+      goToNext();
+    } else if (diff < -45) {
+      goToPrev();
+    }
     touchStartX.current = null;
   };
 
@@ -226,14 +178,14 @@ export function MilestonesCarousel() {
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-3xl border border-slate-800/90 bg-[#0c1220]/95 shadow-2xl transition-all"
+      className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Top Header: Tab Pills + Progress */}
-      <div className="flex items-center justify-between border-b border-slate-800/80 bg-slate-900/50 p-2 sm:p-3">
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-3">
         <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0 overflow-x-auto scrollbar-none">
           {MILESTONES.map((item, idx) => {
             const isActive = currentIndex === idx;
@@ -242,20 +194,20 @@ export function MilestonesCarousel() {
                 key={item.id}
                 onClick={() => goToIndex(idx)}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-xl px-3 sm:px-4 py-2 text-xs font-mono transition-all cursor-pointer shrink-0 truncate",
+                  "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all cursor-pointer shrink-0 truncate",
                   isActive
-                    ? "text-white font-semibold"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                    ? "text-[var(--background)] font-semibold"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                 )}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeMilestoneTab"
-                    className="absolute inset-0 rounded-xl bg-slate-800 border border-slate-700/80 shadow -z-10"
+                    className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
                     transition={{ type: "spring", stiffness: 450, damping: 32 }}
                   />
                 )}
-                <span className={cn("text-[10px] font-bold", isActive ? item.accent.text : "text-slate-500")}>
+                <span className={cn("text-[10px] font-bold", isActive ? "text-[var(--background)]" : "text-[var(--text-muted)]")}>
                   {item.number}
                 </span>
                 <span className="hidden sm:inline truncate">{item.title.split("&")[0]}</span>
@@ -268,14 +220,14 @@ export function MilestonesCarousel() {
         <div className="flex items-center gap-1 pl-2 shrink-0">
           <button
             onClick={goToPrev}
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous career milestone"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={goToNext}
-            className="flex h-8 w-8 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next career milestone"
           >
             <ChevronRight className="h-4 w-4" />
@@ -284,97 +236,85 @@ export function MilestonesCarousel() {
       </div>
 
       {/* Auto-Advance Progress Line */}
-      <div className="relative h-0.5 w-full bg-slate-800/60 overflow-hidden">
+      <div className="relative h-0.5 w-full bg-[var(--border-subtle)] overflow-hidden">
         <motion.div
-          className={cn("h-full bg-gradient-to-r", activeMilestone.accent.gradient)}
+          className="h-full bg-[var(--foreground)]"
           style={{ width: `${progress}%` }}
           transition={{ duration: 0.05, ease: "linear" }}
         />
       </div>
 
-      {/* Active Milestone Card */}
-      <div className="p-5 sm:p-8 min-h-[260px] flex flex-col justify-between">
+      {/* Active Milestone Card Content */}
+      <div className="p-5 sm:p-8 min-h-[200px] flex flex-col justify-between">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
-            key={activeMilestone.id}
+            key={activeItem.id}
             custom={direction}
             variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
-            className="flex flex-col justify-between h-full space-y-5"
+            className="flex flex-col justify-between h-full"
           >
             <div>
-              {/* Top Bar: Company Badge + Period + Location */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "rounded-md px-2.5 py-1 font-mono text-xs font-semibold border flex items-center gap-1.5",
-                      activeMilestone.accent.bg,
-                      activeMilestone.accent.border,
-                      activeMilestone.accent.text
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    <span>{activeMilestone.company}</span>
-                  </span>
-                  <span className="text-xs font-mono text-slate-400">•</span>
-                  <span className="text-xs font-mono text-slate-300 font-semibold">
-                    {activeMilestone.headline}
-                  </span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--foreground)] text-[var(--background)] shadow-sm">
+                    <activeItem.icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-sans text-base sm:text-lg font-bold text-[var(--foreground)]">
+                      {activeItem.title}
+                    </h3>
+                    <div className="text-xs font-mono text-[var(--text-muted)]">
+                      {activeItem.company}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
-                  <div className="flex items-center gap-1 text-slate-300">
-                    <Calendar className="h-3.5 w-3.5 text-amber-400" />
-                    <span>{activeMilestone.period}</span>
-                  </div>
-                  <span>•</span>
-                  <div className="flex items-center gap-1 text-slate-500">
-                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                    <span>{activeMilestone.location}</span>
-                  </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[var(--text-secondary)]">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+                    <span>{activeItem.period}</span>
+                  </span>
+                  <span className="hidden sm:inline">•</span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+                    <span>{activeItem.location}</span>
+                  </span>
                 </div>
               </div>
 
-              {/* Title */}
-              <h3 className="mt-4 font-sans text-xl sm:text-2xl font-extrabold text-white">
-                {activeMilestone.title}
-              </h3>
-
-              {/* Description */}
-              <p className="mt-2.5 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                {activeMilestone.description}
-              </p>
+              <div className="mt-4">
+                <h4 className="font-sans text-sm sm:text-base font-semibold text-[var(--foreground)]">
+                  {activeItem.headline}
+                </h4>
+                <p className="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                  {activeItem.description}
+                </p>
+              </div>
             </div>
 
-            {/* Bottom Footer: Tags & Link */}
-            <div className="pt-4 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-[var(--border-subtle)]">
               <div className="flex flex-wrap items-center gap-1.5">
-                {activeMilestone.tags.map((tag, idx) => (
+                {activeItem.tags.map((tag) => (
                   <span
-                    key={idx}
-                    className={cn(
-                      "rounded-lg border px-2.5 py-1 font-mono text-xs transition-colors",
-                      activeMilestone.accent.tagBg,
-                      activeMilestone.accent.tagBorder,
-                      activeMilestone.accent.tagText
-                    )}
+                    key={tag}
+                    className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 font-mono text-[10px] text-[var(--text-secondary)]"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              {activeMilestone.link && (
+              {activeItem.link && (
                 <a
-                  href={activeMilestone.link.url}
+                  href={activeItem.link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[var(--foreground)] hover:underline"
                 >
-                  <span>{activeMilestone.link.text}</span>
+                  <span>{activeItem.link.text}</span>
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               )}
