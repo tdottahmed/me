@@ -35,9 +35,11 @@ jobs:
         run: npm ci
 
       - name: Build static site
-        run: npm run build
+        run: |
+          npm run build
+          touch ./out/.nojekyll
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_BASE_PATH: /me
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
