@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
+export const dynamic = "force-static";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {

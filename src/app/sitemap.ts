@@ -1,6 +1,8 @@
 import { MetadataRoute } from "next";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = PORTFOLIO_DATA.personal.portfolioUrl;
 
