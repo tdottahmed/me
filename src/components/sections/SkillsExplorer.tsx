@@ -7,11 +7,9 @@ import { PORTFOLIO_DATA, SkillItem } from "@/data/portfolio";
 import { NumberTicker } from "@/components/ui/NumberTicker";
 import { EASE_OUT_EXPO } from "@/components/ui/Reveal";
 import { SkillIcon } from "@/components/ui/Icons";
-import { FeaturedStackCarousel } from "@/components/ui/FeaturedStackCarousel";
 import {
   Search,
   X,
-  Filter,
   Sparkles,
   LayoutGrid,
   Layers,
@@ -127,23 +125,6 @@ const CATEGORIES: { label: string; value: CategoryFilter }[] = [
   { label: "Databases & Concurrency", value: "Databases & Concurrency" },
   { label: "DevOps & VPS", value: "DevOps & VPS" },
   { label: "Testing & Workflow", value: "Testing & Workflow" },
-];
-
-const PROJECT_FILTERS = [
-  "All Projects",
-  "Sultan Big Bazaar",
-  "Fur & Feather BD",
-  "TradingChart.org",
-  "Zamzam Wholesale",
-  "DirectMalaysia.com",
-];
-
-const HEADLINE: { word: string; highlight?: boolean }[] = [
-  { word: "Architectural" },
-  { word: "Matrix" },
-  { word: "&" },
-  { word: "Production", highlight: true },
-  { word: "Engines", highlight: true },
 ];
 
 export function SkillsExplorer() {
@@ -265,42 +246,34 @@ export function SkillsExplorer() {
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
             className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3.5 py-1 text-[11px] font-mono font-medium text-[var(--text-secondary)] shadow-sm uppercase tracking-wider"
           >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>PRODUCTION STACK & ARCHITECTURAL MATRIX</span>
+            <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+            <span>TECHNICAL CAPABILITIES</span>
           </motion.div>
 
-          {/* Mask Reveal Headline */}
-          <h2 className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl">
-            {HEADLINE.map(({ word }, i) => (
-              <span key={word} className="inline-block overflow-hidden pb-1 align-bottom">
-                <motion.span
-                  className="inline-block text-[var(--foreground)]"
-                  initial={{ y: "110%" }}
-                  animate={headerInView ? { y: "0%" } : {}}
-                  transition={{ duration: 0.8, ease: EASE_OUT_EXPO, delay: 0.1 + i * 0.06 }}
-                >
-                  {word}
-                </motion.span>
-                {i < HEADLINE.length - 1 && " "}
-              </span>
-            ))}
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.1 }}
+            className="mt-4 font-sans text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl"
+          >
+            Technical Skills & Engineering Stack
+          </motion.h2>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.35 }}
-            className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)]"
+            transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.2 }}
+            className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)] font-medium leading-relaxed"
           >
-            Every single technology below is backed by battle-tested commercial deployments,
-            pessimistic row-level stock locks, double-entry financial ledgers, and 847+ automated tests.
+            Commercial technologies architected and deployed across high-concurrency Laravel backends,
+            Next.js 16 storefronts, transactional database schemas, and hardened Linux infrastructure.
           </motion.p>
 
           {/* Live Telemetry Counter */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={headerInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs text-[var(--text-muted)]"
           >
             <span className="flex items-center gap-1.5">
@@ -320,90 +293,19 @@ export function SkillsExplorer() {
           </motion.div>
         </div>
 
-        {/* Executive Core Stacks Animated Carousel */}
-        <div className="mt-8 sm:mt-10 max-w-4xl mx-auto">
-          <FeaturedStackCarousel onSelectProject={jumpToProject} />
-        </div>
-
-        {/* Controls Container */}
-        <div className="mt-8 sm:mt-10 space-y-4 sm:space-y-6">
-          {/* Top Bar: View Mode Switcher + Domain Horizontal Scroll */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Domain Tabs with Horizontal Drag/Scroll on Mobile */}
-            <div className="w-full md:w-auto overflow-x-auto pb-1 scrollbar-none">
-              <div className="flex items-center gap-1.5 min-w-max">
-                {CATEGORIES.map((cat) => {
-                  const isActive = activeCategory === cat.value;
-                  const count = categoryCounts[cat.value] || 0;
-
-                  return (
-                    <button
-                      key={cat.value}
-                      onClick={() => setActiveCategory(cat.value)}
-                      className={cn(
-                        "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer shrink-0",
-                        isActive
-                          ? "text-[var(--background)] font-semibold"
-                          : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
-                      )}
-                    >
-                      {isActive && (
-                        <motion.div
-                          layoutId="activeCategoryPill"
-                          className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
-                          transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                        />
-                      )}
-                      <span>{cat.label}</span>
-                      <span className="text-[10px] opacity-70">({count})</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* View Mode Toggle: Bento Matrix vs Telemetry Grid */}
-            <div className="flex items-center gap-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1 shrink-0">
-              <button
-                onClick={() => setViewMode("bento")}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
-                  viewMode === "bento"
-                    ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
-                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
-                )}
-                title="Bento Architecture View"
-              >
-                <Layers className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Domain Bento</span>
-              </button>
-              <button
-                onClick={() => setViewMode("grid")}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
-                  viewMode === "grid"
-                    ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
-                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
-                )}
-                title="Compact Telemetry View"
-              >
-                <LayoutGrid className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Telemetry Grid</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Search Bar & Project Cross-Filters Bar */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-3 sm:p-4">
+        {/* Streamlined Controls Bar */}
+        <div className="mt-10 sm:mt-12 space-y-3.5">
+          {/* Top Bar: Search Input + View Mode Switcher */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             {/* Search Input */}
-            <div className="relative w-full md:w-80">
+            <div className="relative w-full sm:w-80">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-muted)]" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search tools, versions, or keywords..."
-                className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] pl-10 pr-9 py-2 text-base sm:text-xs text-[var(--foreground)] placeholder:text-[var(--text-muted)] focus:border-[var(--foreground)] focus:outline-none"
+                placeholder="Search 36 technologies, tools, versions..."
+                className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] pl-10 pr-9 py-2 text-sm sm:text-xs text-[var(--foreground)] placeholder:text-[var(--text-muted)] focus:border-[var(--foreground)] focus:outline-none transition-colors"
               />
               {searchQuery && (
                 <button
@@ -416,31 +318,60 @@ export function SkillsExplorer() {
               )}
             </div>
 
-            {/* Project Cross-Filter Chips with Horizontal Scroll */}
-            <div className="w-full md:w-auto overflow-x-auto pb-1 scrollbar-none">
-              <div className="flex items-center gap-1.5 min-w-max">
-                <span className="text-[11px] font-mono text-[var(--text-muted)] mr-1 flex items-center gap-1 shrink-0">
-                  <Filter className="h-3 w-3" />
-                  <span>Platform:</span>
-                </span>
-                {PROJECT_FILTERS.map((project) => {
-                  const isSelected = selectedProject === project;
-                  return (
-                    <button
-                      key={project}
-                      onClick={() => setSelectedProject(project)}
-                      className={cn(
-                        "rounded-full px-3 py-1 text-[11px] font-mono transition-colors shrink-0 cursor-pointer border",
-                        isSelected
-                          ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)] font-semibold shadow-sm"
-                          : "bg-[var(--glass-pill-bg)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--foreground)] hover:border-[var(--text-muted)]"
-                      )}
-                    >
-                      {project}
-                    </button>
-                  );
-                })}
-              </div>
+            {/* View Mode Toggle: Bento Matrix vs Telemetry Grid */}
+            <div className="flex items-center gap-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1 shrink-0 self-end sm:self-auto">
+              <button
+                onClick={() => setViewMode("bento")}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
+                  viewMode === "bento"
+                    ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)] font-medium"
+                )}
+                title="Domain Bento View"
+              >
+                <Layers className="h-3.5 w-3.5" />
+                <span>Domain Bento</span>
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono transition-colors cursor-pointer",
+                  viewMode === "grid"
+                    ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)] font-medium"
+                )}
+                title="Compact Telemetry View"
+              >
+                <LayoutGrid className="h-3.5 w-3.5" />
+                <span>Compact Grid</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Domain Category Filter Tabs */}
+          <div className="w-full overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex items-center gap-1.5 min-w-max">
+              {CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat.value;
+                const count = categoryCounts[cat.value] || 0;
+
+                return (
+                  <button
+                    key={cat.value}
+                    onClick={() => setActiveCategory(cat.value)}
+                    className={cn(
+                      "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono transition-colors duration-200 cursor-pointer shrink-0 border",
+                      isActive
+                        ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] border-[var(--card-contrast-bg)] font-semibold shadow-sm"
+                        : "bg-[var(--card-bg)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:text-[var(--foreground)] hover:border-[var(--text-muted)] font-medium"
+                    )}
+                  >
+                    <span>{cat.label}</span>
+                    <span className="text-[10px] opacity-75 font-bold">({count})</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

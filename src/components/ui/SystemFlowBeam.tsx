@@ -418,8 +418,8 @@ export function SystemFlowBeam() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* 1. Symmetrical Scenario Selector Bar (Fixed Height) */}
-      <div className="grid grid-cols-3 gap-1.5 pb-3 border-b border-[var(--border-subtle)]">
+      {/* 1. Symmetrical Scenario Selector Bar */}
+      <div className="grid grid-cols-3 gap-1.5 pb-2.5 border-b border-[var(--border-subtle)]">
         {SCENARIOS.map((s) => {
           const isActive = mode === s.id;
           const Icon = s.icon;
@@ -428,88 +428,92 @@ export function SystemFlowBeam() {
               key={s.id}
               onClick={() => handleScenarioChange(s.id)}
               className={cn(
-                "relative flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-mono transition-all cursor-pointer truncate",
+                "relative flex items-center justify-center gap-1.5 rounded-full px-2 py-1.5 text-[11px] font-mono transition-all cursor-pointer min-w-0",
                 isActive
                   ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-semibold shadow-sm"
-                  : "bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] border border-[var(--border-subtle)] hover:text-[var(--foreground)]"
+                  : "bg-[var(--glass-pill-bg)] text-[var(--text-secondary)] border border-[var(--border-subtle)] hover:text-[var(--foreground)]"
               )}
             >
               <Icon className="h-3 w-3 shrink-0" />
-              <span className="truncate">{s.label}</span>
+              <span className="truncate hidden sm:inline">{s.label}</span>
+              <span className="truncate sm:hidden">{s.id === "ledger" ? "Idempotency" : s.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* 2. Decoupled Horizontal Stepper Pipeline (Mathematical Line Center Alignment) */}
-      <div className="relative pt-3 pb-2">
-        {/* Dedicated Circle Nodes Row (Fixed Height: h-8 = 32px) */}
-        <div className="relative h-8 flex items-center">
-          {/* Connecting Background Line: Exactly spans from Center of Node 1 (12.5%) to Center of Node 4 (87.5%) */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-0.5 bg-[var(--border-subtle)] z-0" />
-
-          {/* Animated Active Beam: Progresses exactly between node centers */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-0.5 z-0 overflow-hidden">
-            <motion.div
-              className="h-full bg-[var(--foreground)] opacity-80"
-              animate={{
-                width: `${(currentStageIdx / (TOTAL_STAGES - 1)) * 100}%`,
-              }}
-              transition={{ type: "spring", stiffness: 350, damping: 30 }}
-            />
-          </div>
-
-          {/* 4 Circle Nodes Grid */}
-          <div className="relative z-10 grid grid-cols-4 w-full">
-            {stages.map((stage, idx) => {
-              const isActive = currentStageIdx === idx;
-              const isCompleted = currentStageIdx > idx;
-
-              return (
-                <div key={stage.step} className="flex items-center justify-center">
-                  <button
-                    onClick={() => goToStage(idx)}
-                    className={cn(
-                      "flex h-7 w-7 items-center justify-center rounded-full border text-[11px] font-bold transition-all duration-300 cursor-pointer focus:outline-none",
-                      isActive
-                        ? "scale-110 shadow-lg bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] border-[var(--card-contrast-fg)]"
-                        : isCompleted
-                        ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500"
-                        : "border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:border-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                    )}
-                    aria-label={`Go to ${stage.shortLabel} stage`}
-                  >
-                    {isCompleted ? (
-                      <Check className="h-3.5 w-3.5" />
-                    ) : (
-                      <span>{stage.step}</span>
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Dedicated Labels Row (Fixed Height: h-4, Text Never Displaces Circles Above) */}
-        <div className="grid grid-cols-4 w-full text-center mt-1 h-4">
+      {/* 2. Unified Connected Pipeline Stream (High-Tech Architecture Flow) */}
+      <div className="py-2.5">
+        <div className="flex items-center justify-between gap-1 p-1 rounded-2xl bg-[var(--card-bg-elevated)] border border-[var(--border-subtle)]">
           {stages.map((stage, idx) => {
             const isActive = currentStageIdx === idx;
             const isCompleted = currentStageIdx > idx;
+
             return (
-              <span
-                key={stage.step}
-                className={cn(
-                  "text-[10px] font-mono truncate leading-none px-1 transition-colors",
-                  isActive
-                    ? "text-[var(--foreground)] font-bold"
-                    : isCompleted
-                    ? "text-[var(--muted-foreground)]"
-                    : "text-[var(--muted-foreground)] opacity-60"
+              <React.Fragment key={stage.step}>
+                <button
+                  onClick={() => goToStage(idx)}
+                  className={cn(
+                    "flex-1 relative flex items-center justify-center gap-1 sm:gap-1.5 py-1.5 px-1.5 rounded-xl text-xs font-mono transition-all duration-200 cursor-pointer overflow-hidden focus:outline-none min-w-0",
+                    isActive
+                      ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-bold shadow-sm"
+                      : isCompleted
+                      ? "text-emerald-600 dark:text-emerald-400 font-semibold hover:bg-[var(--glass-pill-bg)]"
+                      : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)]"
+                  )}
+                  aria-label={`Stage ${stage.step}: ${stage.shortLabel}`}
+                >
+                  {/* Step status badge */}
+                  {isCompleted ? (
+                    <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                  ) : (
+                    <span
+                      className={cn(
+                        "h-4 w-4 rounded-full flex items-center justify-center text-[9px] shrink-0 font-bold font-mono",
+                        isActive
+                          ? "bg-[var(--card-contrast-fg)] text-[var(--card-contrast-bg)]"
+                          : "bg-neutral-500/20 text-[var(--foreground)]"
+                      )}
+                    >
+                      {stage.step.slice(-1)}
+                    </span>
+                  )}
+
+                  {/* Step Name */}
+                  <span className="truncate font-sans font-semibold text-[11px] leading-none">
+                    {stage.shortLabel}
+                  </span>
+
+                  {/* Active Phase Micro Progress Fill Bar */}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--card-contrast-fg)]/25 overflow-hidden">
+                      <div
+                        className="h-full bg-emerald-400 transition-all duration-75"
+                        style={{ width: `${progress}%` }}
+                      />
+                    </div>
+                  )}
+                  {isCompleted && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500/80" />
+                  )}
+                </button>
+
+                {/* Subtle Directional Arrow Connector */}
+                {idx < stages.length - 1 && (
+                  <span
+                    className={cn(
+                      "text-[9px] font-mono select-none px-0.5 shrink-0 transition-colors",
+                      isCompleted
+                        ? "text-emerald-500/70"
+                        : isActive
+                        ? "text-[var(--foreground)] opacity-70"
+                        : "text-[var(--text-muted)] opacity-35"
+                    )}
+                  >
+                    →
+                  </span>
                 )}
-              >
-                {stage.shortLabel}
-              </span>
+              </React.Fragment>
             );
           })}
         </div>
@@ -570,8 +574,8 @@ export function SystemFlowBeam() {
             </div>
 
             {/* Code / Protocol Payload Box (Fixed Height: h-[68px]) */}
-            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2.5 font-mono text-[11px] text-[var(--foreground)] shadow-inner h-[68px] overflow-hidden my-1">
-              <pre className="text-[var(--foreground)] whitespace-pre-wrap leading-relaxed font-mono">
+            <div className="rounded-2xl border border-neutral-800/80 bg-[#0c0c10] p-2.5 font-mono text-[11px] shadow-inner h-[68px] overflow-hidden my-1">
+              <pre className="text-emerald-400 whitespace-pre-wrap leading-relaxed font-mono">
                 {activeStage.codeSnippet}
               </pre>
             </div>
@@ -581,7 +585,7 @@ export function SystemFlowBeam() {
               {activeStage.techTags.map((tech, i) => (
                 <span
                   key={i}
-                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--muted-foreground)] truncate shrink-0"
+                  className="rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg-elevated)] px-2.5 py-0.5 font-mono text-[10px] font-medium text-[var(--foreground)] truncate shrink-0"
                 >
                   {tech}
                 </span>
@@ -592,25 +596,25 @@ export function SystemFlowBeam() {
       </div>
 
       {/* 4. Bottom Verdict & Navigation Controls */}
-      <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2 border-t border-[var(--border-subtle)] text-[11px]">
+      <div className="mt-3 flex items-center justify-between gap-2 pt-2 border-t border-[var(--border-subtle)] text-[11px]">
         {/* Live System Verdict */}
-        <div className="flex items-center gap-2 text-emerald-500 truncate">
+        <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 min-w-0">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate text-[10px] sm:text-[11px] font-medium">
+          <span className="truncate text-[10px] sm:text-[11px] font-semibold">
             {currentScenario.summaryVerdict}
           </span>
         </div>
 
         {/* Stepper Controls */}
         <div className="flex items-center justify-end gap-1.5 shrink-0">
-          <span className="font-mono text-[10px] text-[var(--muted-foreground)] mr-1">
-            0{activeStage.step} / 0{TOTAL_STAGES}
+          <span className="font-mono text-[10px] text-[var(--text-secondary)] font-bold mr-1">
+            0{activeStage.step}/0{TOTAL_STAGES}
           </span>
 
           {/* Autoplay Play/Pause */}
           <button
             onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--foreground)] hover:border-[var(--text-muted)] transition-colors cursor-pointer"
             aria-label={isAutoPlayEnabled ? "Pause stepper" : "Resume stepper"}
             title={isAutoPlayEnabled ? "Pause" : "Play"}
           >
@@ -624,7 +628,7 @@ export function SystemFlowBeam() {
           {/* Prev Stage */}
           <button
             onClick={goToPrevStage}
-            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--foreground)] hover:border-[var(--text-muted)] transition-colors cursor-pointer"
             aria-label="Previous architectural stage"
           >
             <ChevronLeft className="h-3 w-3" />
@@ -633,7 +637,7 @@ export function SystemFlowBeam() {
           {/* Next Stage */}
           <button
             onClick={goToNextStage}
-            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] text-[var(--foreground)] hover:border-[var(--text-muted)] transition-colors cursor-pointer"
             aria-label="Next architectural stage"
           >
             <ChevronRight className="h-3 w-3" />

@@ -12,50 +12,55 @@ export function TelemetryWidget() {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-4 sm:p-5 shadow-xl transition-colors duration-250">
       {/* Top Header & Tab Controls */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-          </span>
-          <span className="rounded-full bg-neutral-500/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-[var(--foreground)] border border-[var(--border-subtle)]">
-            LIVE VERIFIED
-          </span>
+      <div className="flex items-center justify-between gap-2 border-b border-[var(--border-subtle)] pb-3">
+        {/* Left: Status Badge Pill */}
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1.5 shadow-xs">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-mono text-[11px] font-bold text-[var(--foreground)] tracking-tight whitespace-nowrap">
+              Telemetry
+            </span>
+          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex items-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-1 font-mono text-[11px]">
+        {/* Right: Segmented Mode Switcher */}
+        <div className="flex items-center rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-1 font-mono text-[11px] shrink-0">
           <button
             onClick={() => setActiveTab("flow")}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === "flow"
-                ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
-                : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-bold shadow-sm"
+                : "text-[var(--text-secondary)] hover:text-[var(--foreground)] font-medium"
             }`}
           >
-            <Cpu className="h-3 w-3" />
-            <span>Architecture</span>
+            <Cpu className="h-3 w-3 shrink-0" />
+            <span className="hidden min-[440px]:inline">Architecture</span>
+            <span className="min-[440px]:hidden">Arch</span>
           </button>
           <button
             onClick={() => setActiveTab("globe")}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === "globe"
-                ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
-                : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-bold shadow-sm"
+                : "text-[var(--text-secondary)] hover:text-[var(--foreground)] font-medium"
             }`}
           >
-            <Globe2 className="h-3 w-3" />
-            <span>Deployments</span>
+            <Globe2 className="h-3 w-3 shrink-0" />
+            <span className="hidden min-[440px]:inline">Deployments</span>
+            <span className="min-[440px]:hidden">Edge</span>
           </button>
           <button
             onClick={() => setActiveTab("terminal")}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === "terminal"
-                ? "bg-[var(--foreground)] text-[var(--background)] font-semibold shadow-sm"
-                : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] font-bold shadow-sm"
+                : "text-[var(--text-secondary)] hover:text-[var(--foreground)] font-medium"
             }`}
           >
-            <TerminalIcon className="h-3 w-3" />
+            <TerminalIcon className="h-3 w-3 shrink-0" />
             <span>CLI</span>
           </button>
         </div>
