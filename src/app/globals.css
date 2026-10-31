@@ -1,60 +1,10 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-:root {
-  /* Default to Dark Mode tokens (matches Screenshot 0) */
-  --background: #09090b;
-  --foreground: #ffffff;
-
-  /* Card Surface Tokens */
-  --card-bg: #141416;
-  --card-bg-elevated: #1a1a1d;
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(255, 255, 255, 0.18);
-  --card-inner-glow: rgba(255, 255, 255, 0.04);
-
-  /* Contrast Hero Cards (Philosophy, Diamond, Testimonial, CTA banner) */
-  --card-contrast-bg: #f8f8fa;
-  --card-contrast-fg: #09090b;
-  --card-contrast-border: rgba(0, 0, 0, 0.08);
-  --card-contrast-subtext: #52525b;
-  --card-contrast-badge-bg: #09090b;
-  --card-contrast-badge-fg: #ffffff;
-  --card-contrast-btn-bg: #09090b;
-  --card-contrast-btn-fg: #ffffff;
-  --card-contrast-chip-bg: #09090b;
-  --card-contrast-chip-fg: #ffffff;
-
-  /* Typography */
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-muted: rgba(255, 255, 255, 0.12);
-
-  /* Glass Tokens */
-  --nav-bg: rgba(9, 9, 11, 0.75);
-  --nav-border: rgba(255, 255, 255, 0.1);
-  --glass-pill-bg: rgba(255, 255, 255, 0.06);
-  --glass-pill-border: rgba(255, 255, 255, 0.12);
-
-  /* Buttons */
-  --btn-primary-bg: #ffffff;
-  --btn-primary-fg: #09090b;
-  --btn-secondary-bg: rgba(255, 255, 255, 0.06);
-  --btn-secondary-fg: #ffffff;
-  --btn-secondary-border: rgba(255, 255, 255, 0.12);
-
-  /* Accents */
-  --status-live: #10b981;
-  --grid-line: rgba(255, 255, 255, 0.035);
-  --dot-matrix: rgba(255, 255, 255, 0.08);
-  --scrollbar-track: #09090b;
-  --scrollbar-thumb: #27272a;
-}
-
-/* Light Mode Overrides (matches Screenshot 1) */
-html.light, [data-theme="light"] {
+:root,
+html.light,
+[data-theme="light"] {
+  /* Default to Light Mode tokens */
   --background: #fafafa;
   --foreground: #09090b;
 
@@ -103,6 +53,59 @@ html.light, [data-theme="light"] {
   --dot-matrix: rgba(0, 0, 0, 0.08);
   --scrollbar-track: #fafafa;
   --scrollbar-thumb: #d4d4d8;
+}
+
+/* Dark Mode Overrides */
+html.dark,
+[data-theme="dark"] {
+  --background: #09090b;
+  --foreground: #ffffff;
+
+  /* Card Surface Tokens */
+  --card-bg: #141416;
+  --card-bg-elevated: #1a1a1d;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(255, 255, 255, 0.18);
+  --card-inner-glow: rgba(255, 255, 255, 0.04);
+
+  /* Contrast Hero Cards (Philosophy, Diamond, Testimonial, CTA banner) */
+  --card-contrast-bg: #f8f8fa;
+  --card-contrast-fg: #09090b;
+  --card-contrast-border: rgba(0, 0, 0, 0.08);
+  --card-contrast-subtext: #52525b;
+  --card-contrast-badge-bg: #09090b;
+  --card-contrast-badge-fg: #ffffff;
+  --card-contrast-btn-bg: #09090b;
+  --card-contrast-btn-fg: #ffffff;
+  --card-contrast-chip-bg: #09090b;
+  --card-contrast-chip-fg: #ffffff;
+
+  /* Typography */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-muted: rgba(255, 255, 255, 0.12);
+
+  /* Glass Tokens */
+  --nav-bg: rgba(9, 9, 11, 0.75);
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --glass-pill-bg: rgba(255, 255, 255, 0.06);
+  --glass-pill-border: rgba(255, 255, 255, 0.12);
+
+  /* Buttons */
+  --btn-primary-bg: #ffffff;
+  --btn-primary-fg: #09090b;
+  --btn-secondary-bg: rgba(255, 255, 255, 0.06);
+  --btn-secondary-fg: #ffffff;
+  --btn-secondary-border: rgba(255, 255, 255, 0.12);
+
+  /* Accents */
+  --status-live: #10b981;
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --dot-matrix: rgba(255, 255, 255, 0.08);
+  --scrollbar-track: #09090b;
+  --scrollbar-thumb: #27272a;
 }
 
 @theme {

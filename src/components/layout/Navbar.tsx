@@ -118,7 +118,7 @@ export function Navbar() {
           {/* Destimax-style Pill Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="relative flex h-6 w-11 items-center rounded-full border border-[var(--border-subtle)] bg-neutral-800/90 dark:bg-neutral-800/90 p-0.5 transition-colors cursor-pointer"
+            className="relative flex h-6 w-11 items-center rounded-full border border-[var(--border-subtle)] bg-[#e5e5e5] dark:bg-[#1e1e24] p-0.5 transition-colors cursor-pointer"
             style={{
               backgroundColor: theme === "dark" ? "#1e1e24" : "#e5e5e5",
             }}
