@@ -203,7 +203,7 @@ export function FloatingChatWidget() {
                 </button>
               </div>
 
-              <p className="mt-3 text-xs text-[var(--muted-foreground)] leading-relaxed">
+              <p className="mt-3 text-xs text-[var(--muted-foreground)] font-medium leading-relaxed">
                 Connect directly for contract architecture, full-stack hiring, or fast consultations:
               </p>
             </div>

@@ -119,7 +119,7 @@ export function ContactFooter() {
             Let&apos;s Build High-Reliability Systems Together
           </h2>
 
-          <p className="mt-4 max-w-2xl text-base text-[var(--muted-foreground)]">
+          <p className="mt-4 max-w-2xl text-base text-[var(--muted-foreground)] font-medium">
             Available for full-stack engineering roles, production platform contracts, and
             system architecture consulting. Reach out directly or send a message below.
           </p>

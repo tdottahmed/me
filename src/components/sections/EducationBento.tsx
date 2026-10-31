@@ -31,7 +31,7 @@ export function EducationBento() {
           Education, Certification & Languages
         </h2>
 
-        <p className="mt-4 max-w-2xl text-base text-[var(--text-secondary)]">
+        <p className="mt-4 max-w-2xl text-base text-[var(--text-secondary)] font-medium">
           Rooted in formal computer science engineering, certified by industry-standard programs,
           and capable of seamless bilingual technical communication.
         </p>
@@ -95,7 +95,7 @@ export function EducationBento() {
                 <div className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)] mb-2">
                   Academic Engineering Capstones
                 </div>
-                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-medium">
                   {edu.projects}
                 </p>
               </div>
@@ -123,7 +123,7 @@ export function EducationBento() {
                 {cert.issuer}
               </div>
 
-              <ul className="mt-4 space-y-2 text-xs text-[var(--text-secondary)] font-normal">
+              <ul className="mt-4 space-y-2 text-xs text-[var(--text-secondary)] font-medium">
                 {cert.highlights.map((h, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <CheckCircle2 className="h-3.5 w-3.5 text-[var(--status-live)] shrink-0 mt-0.5" />

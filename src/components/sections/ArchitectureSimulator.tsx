@@ -195,7 +195,7 @@ export function ArchitectureSimulator() {
           Engineering Deep-Dive Architecture
         </h2>
 
-        <p className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)]">
+        <p className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)] font-medium">
           Interactive visual simulators illustrating how financial correctness, real-time concurrency,
           and hardened VPS infrastructure work under high load.
         </p>

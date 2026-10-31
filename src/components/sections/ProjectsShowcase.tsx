@@ -363,7 +363,7 @@ export function ProjectsShowcase() {
           Featured Engineering Platforms
         </h2>
 
-        <p className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)]">
+        <p className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)] font-medium">
           End-to-end commercial solutions shipped to real users in Bangladesh and Canada,
           validated by 847+ automated test suites, idempotent pipelines, and high-uptime VPS hosting.
         </p>
@@ -713,7 +713,7 @@ export function ProjectsShowcase() {
                             <CheckCircle2 className="h-4 w-4 text-[var(--status-live)] shrink-0" />
                             <span>{h.label}</span>
                           </div>
-                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans pl-6">
+                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans font-medium pl-6">
                             {h.description}
                           </p>
                         </div>
@@ -751,7 +751,7 @@ export function ProjectsShowcase() {
                                   {step.tech}
                                 </span>
                               </div>
-                              <p className="mt-1 text-xs text-[var(--text-secondary)] leading-relaxed">
+                              <p className="mt-1 text-xs text-[var(--text-secondary)] font-medium leading-relaxed">
                                 {step.desc}
                               </p>
                             </div>
@@ -788,7 +788,7 @@ export function ProjectsShowcase() {
                           <div className="mt-1 font-sans text-sm font-bold text-[var(--foreground)]">
                             {spec.value}
                           </div>
-                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans">
+                          <p className="mt-1.5 text-xs text-[var(--text-secondary)] leading-relaxed font-sans font-medium">
                             {spec.desc}
                           </p>
                         </div>

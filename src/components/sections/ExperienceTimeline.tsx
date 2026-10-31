@@ -28,7 +28,7 @@ export function ExperienceTimeline() {
           Work Experience & Engineering Timeline
         </h2>
 
-        <p className="mt-4 max-w-2xl text-base text-[var(--text-secondary)]">
+        <p className="mt-4 max-w-2xl text-base text-[var(--text-secondary)] font-medium">
           Over 3.5 years architecting enterprise Laravel and Django platforms, mentoring engineers,
           securing military defense inventories, and shipping commercial software.
         </p>
@@ -98,7 +98,7 @@ export function ExperienceTimeline() {
                           </a>
                         )}
                       </div>
-                      <p className="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-normal pl-6">
+                      <p className="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed font-medium pl-6">
                         {h.description}
                       </p>
                     </div>

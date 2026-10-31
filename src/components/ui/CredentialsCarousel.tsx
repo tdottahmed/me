@@ -283,7 +283,7 @@ export function CredentialsCarousel() {
                 </div>
               </div>
 
-              <p className="mt-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="mt-4 text-xs sm:text-sm text-[var(--text-secondary)] font-medium leading-relaxed">
                 {activeItem.description}
               </p>
             </div>

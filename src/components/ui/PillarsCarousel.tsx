@@ -250,7 +250,7 @@ export function PillarsCarousel() {
                 </div>
               </div>
 
-              <p className="mt-2.5 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-2">
+              <p className="mt-2.5 text-xs sm:text-sm text-[var(--text-secondary)] font-medium leading-relaxed line-clamp-2">
                 {activePillar.description}
               </p>
             </div>

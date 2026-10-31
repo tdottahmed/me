@@ -289,7 +289,7 @@ export function MilestonesCarousel() {
                 <h4 className="font-sans text-sm sm:text-base font-semibold text-[var(--foreground)]">
                   {activeItem.headline}
                 </h4>
-                <p className="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                <p className="mt-2 text-xs sm:text-sm text-[var(--text-secondary)] font-medium leading-relaxed">
                   {activeItem.description}
                 </p>
               </div>

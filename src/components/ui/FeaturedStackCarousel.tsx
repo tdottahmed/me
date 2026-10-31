@@ -255,7 +255,7 @@ export function FeaturedStackCarousel({
                 </div>
               </div>
 
-              <p className="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-2">
+              <p className="mt-3 text-xs sm:text-sm text-[var(--text-secondary)] font-medium leading-relaxed line-clamp-2">
                 {activeStack.description}
               </p>
             </div>

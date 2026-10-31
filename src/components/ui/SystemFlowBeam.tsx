@@ -564,7 +564,7 @@ export function SystemFlowBeam() {
               </h4>
 
               {/* Fixed-Height Description: 2 lines max, h-9 */}
-              <p className="mt-1 text-[11px] sm:text-xs text-[var(--muted-foreground)] leading-relaxed font-normal h-9 line-clamp-2 overflow-hidden">
+              <p className="mt-1 text-[11px] sm:text-xs text-[var(--muted-foreground)] leading-relaxed font-medium h-9 line-clamp-2 overflow-hidden">
                 {activeStage.role}
               </p>
             </div>

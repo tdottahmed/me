@@ -157,7 +157,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
                     <span>{h.label}</span>
                   </div>
-                  <p className="mt-1.5 text-xs text-[var(--muted-foreground)] leading-relaxed font-normal pl-6">
+                  <p className="mt-1.5 text-xs text-[var(--muted-foreground)] leading-relaxed font-medium pl-6">
                     {h.description}
                   </p>
                 </div>

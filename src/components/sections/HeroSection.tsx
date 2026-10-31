@@ -78,7 +78,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.2 }}
-            className="max-w-2xl text-sm sm:text-base md:text-lg text-[var(--text-secondary)] leading-relaxed font-normal"
+            className="max-w-2xl text-sm sm:text-base md:text-lg text-[var(--text-secondary)] leading-relaxed font-medium"
           >
             Full-stack software engineer with{" "}
             <span className="font-semibold text-[var(--foreground)]">3.5+ years of commercial experience</span>{" "}
@@ -230,7 +230,7 @@ export function HeroSection() {
           </h2>
 
           {/* Paragraph with inline chip highlights */}
-          <p className="text-sm sm:text-base leading-relaxed text-[var(--card-contrast-subtext)] font-normal">
+          <p className="text-sm sm:text-base leading-relaxed text-[var(--card-contrast-subtext)] font-medium">
             Traditional software agencies build a quick prototype, hand it over, and move on. Tanbir takes{" "}
             <span className="inline-block px-2 py-0.5 rounded-md font-semibold text-xs shadow-sm mx-1 align-baseline"
               style={{

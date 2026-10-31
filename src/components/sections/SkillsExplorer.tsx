@@ -575,7 +575,7 @@ export function SkillsExplorer() {
                     <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">
                       {skill.category}
                     </div>
-                    <p className="mt-1 text-[11px] text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
+                    <p className="mt-1 text-[11px] text-[var(--text-secondary)] font-medium line-clamp-2 leading-relaxed">
                       {skill.highlight}
                     </p>
                   </div>
@@ -657,7 +657,7 @@ export function SkillsExplorer() {
                   <Info className="h-3.5 w-3.5 text-[var(--foreground)]" />
                   <span>Production Role & Implementation</span>
                 </div>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-sans">
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-sans font-medium">
                   {inspectedSkill.highlight}
                 </p>
               </div>

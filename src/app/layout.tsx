@@ -7,7 +7,6 @@ import { PORTFOLIO_DATA } from "@/data/portfolio";
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
