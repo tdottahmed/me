@@ -158,8 +158,6 @@ export function EngineeringCommitmentsCarousel() {
       className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Top Header Bar: Step Selector Tabs + Play/Pause & Nav Arrows */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-3">
@@ -240,7 +238,11 @@ export function EngineeringCommitmentsCarousel() {
       </div>
 
       {/* Active Commitment Card Content */}
-      <div className="p-5 sm:p-8 min-h-[220px] flex flex-col justify-between">
+      <div
+        className="p-5 sm:p-8 min-h-[220px] flex flex-col justify-between"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={activeItem.id}

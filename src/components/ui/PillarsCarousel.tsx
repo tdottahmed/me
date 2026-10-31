@@ -152,13 +152,11 @@ export function PillarsCarousel() {
       className="relative w-full overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-lg transition-colors duration-250"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Top Header: Step Selector Pills + Slide Tracker */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-2.5">
         {/* Step Selector Pills */}
-        <div className="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0 overflow-x-auto scrollbar-none">
           {PILLARS.map((pillar, idx) => {
             const isActive = currentIndex === idx;
             return (
@@ -166,7 +164,7 @@ export function PillarsCarousel() {
                 key={pillar.id}
                 onClick={() => goToIndex(idx)}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-mono transition-all cursor-pointer truncate",
+                  "relative flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-mono transition-all cursor-pointer shrink-0 truncate",
                   isActive
                     ? "text-[var(--foreground)] font-semibold"
                     : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
@@ -218,7 +216,11 @@ export function PillarsCarousel() {
       </div>
 
       {/* Active Pillar Card Container */}
-      <div className="p-4 sm:p-5 min-h-[148px] sm:min-h-[142px] flex flex-col justify-between">
+      <div
+        className="p-4 sm:p-5 min-h-[148px] sm:min-h-[142px] flex flex-col justify-between"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={activePillar.id}

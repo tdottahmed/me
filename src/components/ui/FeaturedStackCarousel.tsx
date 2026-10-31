@@ -159,8 +159,6 @@ export function FeaturedStackCarousel({
       className="relative w-full overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-xl transition-colors duration-250"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Top Header: Tab Pills + Controls */}
       <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-2.5">
@@ -223,7 +221,11 @@ export function FeaturedStackCarousel({
       </div>
 
       {/* Active Stack Card Content */}
-      <div className="p-4 sm:p-6 min-h-[160px] sm:min-h-[150px] flex flex-col justify-between">
+      <div
+        className="p-4 sm:p-6 min-h-[160px] sm:min-h-[150px] flex flex-col justify-between"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={activeStack.id}
