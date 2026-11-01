@@ -167,7 +167,7 @@ export function ArchitectureSimulator() {
   };
 
   return (
-    <section ref={containerRef} id="architecture" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+    <section ref={containerRef} id="architecture" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 hidden md:block">
       {/* Background radial glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-10 h-[360px] w-[650px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.05),transparent)]" />

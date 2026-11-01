@@ -37,8 +37,8 @@ export function EducationBento() {
         </p>
       </div>
 
-      {/* Interactive Credentials & Honors Animated Carousel */}
-      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+      {/* Interactive Credentials & Honors Animated Carousel (Desktop & Tablet only) */}
+      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto hidden md:block">
         <CredentialsCarousel />
       </div>
 

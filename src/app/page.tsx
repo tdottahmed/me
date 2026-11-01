@@ -27,10 +27,12 @@ export default function Home() {
         <ProjectsShowcase />
       </Reveal>
 
-      {/* Interactive Architectural Deep-Dive Simulator: Row-Locks & WebSockets */}
-      <Reveal>
-        <ArchitectureSimulator />
-      </Reveal>
+      {/* Interactive Architectural Deep-Dive Simulator: Row-Locks & WebSockets (Desktop & Tablet only) */}
+      <div className="hidden md:block">
+        <Reveal>
+          <ArchitectureSimulator />
+        </Reveal>
+      </div>
 
       {/* Work Experience: Tracing Beam Career Timeline */}
       <Reveal>

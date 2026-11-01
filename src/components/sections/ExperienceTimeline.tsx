@@ -34,8 +34,8 @@ export function ExperienceTimeline() {
         </p>
       </div>
 
-      {/* Featured Career Milestones & Leadership Carousel */}
-      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+      {/* Featured Career Milestones & Leadership Carousel (Desktop & Tablet only) */}
+      <div className="mt-10 sm:mt-12 max-w-5xl mx-auto hidden md:block">
         <MilestonesCarousel />
       </div>
 

@@ -125,8 +125,8 @@ export function ContactFooter() {
           </p>
         </div>
 
-        {/* Core Production Commitments & SLA Animated Carousel */}
-        <div className="mt-10 sm:mt-12 max-w-5xl mx-auto">
+        {/* Core Production Commitments & SLA Animated Carousel (Desktop & Tablet only) */}
+        <div className="mt-10 sm:mt-12 max-w-5xl mx-auto hidden md:block">
           <EngineeringCommitmentsCarousel />
         </div>
 

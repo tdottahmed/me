@@ -193,7 +193,7 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-[var(--border-subtle)] bg-[var(--background)] px-4 pt-3 pb-6 backdrop-blur-2xl animate-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col space-y-1">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.filter((item) => item.href !== "#architecture").map((item) => {
               const isActive = activeSection === item.href.substring(1);
               return (
                 <a

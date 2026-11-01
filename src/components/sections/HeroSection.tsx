@@ -12,7 +12,6 @@ import { useLenis } from "lenis/react";
 import confetti from "canvas-confetti";
 import {
   ArrowDown,
-  ArrowRight,
   FileDown,
   Mail,
   Check,
@@ -40,10 +39,6 @@ export function HeroSection() {
 
   const scrollToProjects = () => {
     lenis?.scrollTo("#projects", { offset: -72, duration: 1.4 });
-  };
-
-  const scrollToContact = () => {
-    lenis?.scrollTo("#contact", { offset: -72, duration: 1.4 });
   };
 
   return (
@@ -89,12 +84,12 @@ export function HeroSection() {
             <span className="font-semibold text-[var(--foreground)]">React 19</span>.
           </motion.p>
 
-          {/* Engineering Pillars Carousel */}
+          {/* Engineering Pillars Carousel (Desktop & Tablet only for optimized mobile scroll) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, ease: EASE_OUT_EXPO, delay: 0.25 }}
-            className="pt-1"
+            className="pt-1 hidden md:block"
           >
             <PillarsCarousel />
           </motion.div>
@@ -203,88 +198,6 @@ export function HeroSection() {
             </div>
           </div>
         ))}
-      </motion.div>
-
-      {/* SIGNATURE DESTIMAX CONTRAST CARD: "OUR PHILOSOPHY" */}
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
-        className="mt-16 relative overflow-hidden rounded-3xl glass-contrast p-6 sm:p-10 lg:p-12 shadow-2xl transition-colors duration-300"
-      >
-        <div className="relative z-10 max-w-4xl space-y-6">
-          {/* Badge */}
-          <div className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-mono font-bold tracking-wider uppercase shadow-sm"
-            style={{
-              backgroundColor: "var(--card-contrast-badge-bg)",
-              color: "var(--card-contrast-badge-fg)",
-            }}
-          >
-            OUR PHILOSOPHY
-          </div>
-
-          {/* Heading */}
-          <h2 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
-            Build smarter systems that free your people to focus on what truly drives your business forward.
-          </h2>
-
-          {/* Paragraph with inline chip highlights */}
-          <p className="text-sm sm:text-base leading-relaxed text-[var(--card-contrast-subtext)] font-medium">
-            Traditional software agencies build a quick prototype, hand it over, and move on. Tanbir takes{" "}
-            <span className="inline-block px-2 py-0.5 rounded-md font-semibold text-xs shadow-sm mx-1 align-baseline"
-              style={{
-                backgroundColor: "var(--card-contrast-chip-bg)",
-                color: "var(--card-contrast-chip-fg)",
-              }}
-            >
-              a completely different approach
-            </span>
-            . Before writing a line of code, we{" "}
-            <span className="inline-block px-2 py-0.5 rounded-md font-semibold text-xs shadow-sm mx-1 align-baseline"
-              style={{
-                backgroundColor: "var(--card-contrast-chip-bg)",
-                color: "var(--card-contrast-chip-fg)",
-              }}
-            >
-              model concurrency limits, audit data integrity, and eliminate race conditions
-            </span>
-            . Then, we implement systems engineered to withstand intense traffic surges. With{" "}
-            <span className="inline-block px-2 py-0.5 rounded-md font-semibold text-xs shadow-sm mx-1 align-baseline"
-              style={{
-                backgroundColor: "var(--card-contrast-chip-bg)",
-                color: "var(--card-contrast-chip-fg)",
-              }}
-            >
-              pessimistic row-level stock locking
-            </span>
-            , idempotent payment pipelines, and 847+ automated test cases, you gain not just an engineer, but{" "}
-            <span className="inline-block px-2 py-0.5 rounded-md font-semibold text-xs shadow-sm mx-1 align-baseline"
-              style={{
-                backgroundColor: "var(--card-contrast-chip-bg)",
-                color: "var(--card-contrast-chip-fg)",
-              }}
-            >
-              a dedicated technology partner
-            </span>
-            .
-          </p>
-
-          {/* Action button */}
-          <div className="pt-2">
-            <button
-              onClick={scrollToContact}
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-semibold shadow-md hover:opacity-90 transition-all cursor-pointer"
-              style={{
-                backgroundColor: "var(--card-contrast-btn-bg)",
-                color: "var(--card-contrast-btn-fg)",
-              }}
-            >
-              <span>Get in Touch Now</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
       </motion.div>
     </section>
   );
