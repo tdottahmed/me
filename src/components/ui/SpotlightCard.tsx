@@ -33,7 +33,7 @@ export function SpotlightCard({
       onMouseMove={handleMouseMove}
       onClick={onClick}
       className={cn(
-        "group/spotlight relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-6 transition-[border-color,background-color,box-shadow,transform] duration-300",
+        "group/spotlight relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-white dark:bg-[#141416] p-6 transition-[border-color,background-color,box-shadow,transform] duration-300",
         className
       )}
     >

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import {
   ShieldCheck,
   Lock,
@@ -53,11 +53,12 @@ const ARCH_TABS: TabMeta[] = [
 const AUTO_TOUR_DURATION = 9000;
 
 export function ArchitectureSimulator() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   // Money-Safe Checkout Simulation State
   const [simulating, setSimulating] = useState(false);
@@ -72,40 +73,28 @@ export function ArchitectureSimulator() {
   const goToNextTab = useCallback(() => {
     setDirection(1);
     setActiveTabIndex((prev) => (prev + 1) % ARCH_TABS.length);
-    setProgress(0);
   }, []);
 
   const goToPrevTab = useCallback(() => {
     setDirection(-1);
     setActiveTabIndex((prev) => (prev - 1 + ARCH_TABS.length) % ARCH_TABS.length);
-    setProgress(0);
   }, []);
 
   const goToTab = (index: number) => {
     if (index === activeTabIndex) return;
     setDirection(index > activeTabIndex ? 1 : -1);
     setActiveTabIndex(index);
-    setProgress(0);
   };
 
   useEffect(() => {
-    if (isPaused || !isAutoPlayEnabled || simulating) return;
+    if (isPaused || !isAutoPlayEnabled || simulating || !isInView) return;
 
-    const intervalTime = 50;
-    const step = (intervalTime / AUTO_TOUR_DURATION) * 100;
+    const timer = setTimeout(() => {
+      goToNextTab();
+    }, AUTO_TOUR_DURATION);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNextTab();
-          return 0;
-        }
-        return prev + step;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, isAutoPlayEnabled, simulating, goToNextTab]);
+    return () => clearTimeout(timer);
+  }, [activeTabIndex, isPaused, isAutoPlayEnabled, simulating, isInView, goToNextTab]);
 
   const startCheckoutSimulation = () => {
     setSimulating(true);
@@ -178,7 +167,7 @@ export function ArchitectureSimulator() {
   };
 
   return (
-    <section id="architecture" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+    <section ref={containerRef} id="architecture" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       {/* Background radial glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-10 h-[360px] w-[650px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.05),transparent)]" />
@@ -203,7 +192,7 @@ export function ArchitectureSimulator() {
 
       {/* Main Glass Panel Simulator Carousel */}
       <div
-        className="mt-12 overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
+        className="mt-12 overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-white dark:bg-[#141416] shadow-2xl transition-all"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
@@ -212,13 +201,16 @@ export function ArchitectureSimulator() {
         {/* Animated Progress Bar */}
         <div className="h-0.5 sm:h-1 w-full bg-[var(--border-subtle)] overflow-hidden">
           <div
-            className="h-full bg-[var(--foreground)] transition-all duration-75"
-            style={{ width: `${progress}%` }}
+            key={`${activeTabIndex}-${isPaused}-${isAutoPlayEnabled}-${simulating}-${isInView}`}
+            className="h-full w-full bg-[var(--foreground)] origin-left"
+            style={{
+              animation: !isPaused && isAutoPlayEnabled && !simulating && isInView ? `carousel-progress ${AUTO_TOUR_DURATION}ms linear forwards` : "none",
+            }}
           />
         </div>
 
         {/* Tab Controls Bar */}
-        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-2.5">
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[#fafafa] dark:bg-[#18181b] p-2 sm:p-2.5">
           {/* Scrollable Tabs */}
           <div className="overflow-x-auto scrollbar-none flex-1 min-w-0 pr-2">
             <div className="flex items-center gap-1.5 min-w-max">
@@ -231,22 +223,17 @@ export function ArchitectureSimulator() {
                     key={tab.id}
                     onClick={() => goToTab(idx)}
                     className={cn(
-                      "relative flex items-center gap-2 rounded-full px-4 py-2 font-mono text-xs transition-all cursor-pointer shrink-0",
+                      "relative flex items-center gap-2 rounded-full px-4 py-2 font-mono text-xs transition-all duration-200 cursor-pointer shrink-0 isolate",
                       isActive
-                        ? "text-[var(--background)] font-semibold"
+                        ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold shadow-sm"
                         : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                     )}
                   >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeArchTabPill"
-                        className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
-                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      />
-                    )}
-                    <Icon className="h-3.5 w-3.5" />
-                    <span className="hidden sm:inline">{tab.fullTitle}</span>
-                    <span className="sm:hidden">{tab.shortTitle}</span>
+                    <span className="relative z-10 flex items-center gap-2">
+                      <Icon className="h-3.5 w-3.5" />
+                      <span className="hidden sm:inline">{tab.fullTitle}</span>
+                      <span className="sm:hidden">{tab.shortTitle}</span>
+                    </span>
                   </button>
                 );
               })}
@@ -255,13 +242,13 @@ export function ArchitectureSimulator() {
 
           {/* Carousel Controls */}
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 pl-1">
-            <div className="rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] px-2.5 py-1 font-mono text-xs text-[var(--text-secondary)] hidden sm:inline mr-1">
+            <div className="rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] px-2.5 py-1 font-mono text-xs text-[var(--text-secondary)] hidden sm:inline mr-1">
               <span className="text-[var(--foreground)] font-semibold">0{activeTabIndex + 1}</span> / 0{ARCH_TABS.length}
             </div>
 
             <button
               onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label={isAutoPlayEnabled ? "Pause architecture tour" : "Resume architecture tour"}
             >
               {isAutoPlayEnabled && !isPaused && !simulating ? (
@@ -273,7 +260,7 @@ export function ArchitectureSimulator() {
 
             <button
               onClick={goToPrevTab}
-              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Previous architecture scenario"
             >
               <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -281,7 +268,7 @@ export function ArchitectureSimulator() {
 
             <button
               onClick={goToNextTab}
-              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+              className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               aria-label="Next architecture scenario"
             >
               <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />

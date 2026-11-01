@@ -1,19 +1,21 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 :root,
 html.light,
 [data-theme="light"] {
   /* Default to Light Mode tokens */
-  --background: #fafafa;
+  --background: #f8f9fa;
   --foreground: #09090b;
 
-  /* Card Surface Tokens (warm ivory / soft beige / chalk ecru) */
-  --card-bg: #f0efe9;
-  --card-bg-elevated: #e8e7e1;
+  /* Card Surface Tokens (Clean Crisp White Cards) */
+  --card-bg: #ffffff;
+  --card-bg-elevated: #f4f4f5;
   --card-border: rgba(0, 0, 0, 0.08);
   --card-border-hover: rgba(0, 0, 0, 0.16);
-  --card-inner-glow: rgba(255, 255, 255, 0.8);
+  --card-inner-glow: rgba(255, 255, 255, 1);
 
   /* Contrast Hero Cards (inverted to deep obsidian) */
   --card-contrast-bg: #09090b;
@@ -32,14 +34,14 @@ html.light,
   --text-secondary: #27272a;
   --text-muted: #52525b;
   --muted-foreground: #52525b;
-  --border-subtle: rgba(0, 0, 0, 0.1);
-  --border-muted: rgba(0, 0, 0, 0.14);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-muted: rgba(0, 0, 0, 0.12);
 
   /* Glass Tokens */
-  --nav-bg: rgba(250, 250, 250, 0.85);
+  --nav-bg: rgba(255, 255, 255, 0.88);
   --nav-border: rgba(0, 0, 0, 0.08);
-  --glass-pill-bg: rgba(0, 0, 0, 0.04);
-  --glass-pill-border: rgba(0, 0, 0, 0.08);
+  --glass-pill-bg: rgba(0, 0, 0, 0.035);
+  --glass-pill-border: rgba(0, 0, 0, 0.07);
 
   /* Buttons */
   --btn-primary-bg: #09090b;
@@ -137,12 +139,16 @@ html.dark,
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-weight: var(--weight-normal, 480);
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.25s ease, color 0.25s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -223,6 +229,22 @@ label {
 
 .animate-border-beam {
   animation: border-beam var(--duration, 12s) infinite linear;
+}
+
+/* Hardware-accelerated Carousel Progress Bar */
+@keyframes carousel-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-carousel-progress {
+  transform-origin: left;
+  animation: carousel-progress var(--progress-duration, 6500ms) linear forwards;
+  will-change: transform;
 }
 
 /* Cursor-tracking gradient border */

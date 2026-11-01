@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import {
   GraduationCap,
   Award,
@@ -86,49 +86,38 @@ const CREDENTIALS: CredentialItem[] = [
 const AUTO_ROTATE_MS = 8000;
 
 export function CredentialsCarousel() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const activeItem = CREDENTIALS[currentIndex];
 
   const goToNext = useCallback(() => {
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % CREDENTIALS.length);
-    setProgress(0);
   }, []);
 
   const goToPrev = useCallback(() => {
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + CREDENTIALS.length) % CREDENTIALS.length);
-    setProgress(0);
   }, []);
 
   const goToIndex = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
-    setProgress(0);
   };
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !isInView) return;
 
-    const intervalTime = 50;
-    const increment = (intervalTime / AUTO_ROTATE_MS) * 100;
+    const timer = setTimeout(() => {
+      goToNext();
+    }, AUTO_ROTATE_MS);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNext();
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, goToNext]);
+    return () => clearTimeout(timer);
+  }, [currentIndex, isPaused, isInView, goToNext]);
 
   const touchStartX = useRef<number | null>(null);
 
@@ -177,12 +166,13 @@ export function CredentialsCarousel() {
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
+      ref={containerRef}
+      className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-white dark:bg-[#141416] shadow-2xl transition-all"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Top Header: Tab Pills + Progress */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-3">
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[#fafafa] dark:bg-[#18181b] p-2 sm:p-3">
         <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0 overflow-x-auto scrollbar-none">
           {CREDENTIALS.map((item, idx) => {
             const isActive = currentIndex === idx;
@@ -191,24 +181,19 @@ export function CredentialsCarousel() {
                 key={item.id}
                 onClick={() => goToIndex(idx)}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all cursor-pointer shrink-0 truncate",
+                  "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 truncate isolate",
                   isActive
-                    ? "text-[var(--background)] font-semibold"
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold shadow-sm"
                     : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                 )}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeCredentialTab"
-                    className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
-                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                  />
-                )}
-                <span className={cn("text-[10px] font-bold", isActive ? "text-[var(--background)]" : "text-[var(--text-muted)]")}>
-                  {item.number}
+                <span className="relative z-10 flex items-center gap-1.5 truncate">
+                  <span className={cn("text-[10px] font-bold", isActive ? "text-neutral-300 dark:text-neutral-600" : "text-[var(--text-muted)]")}>
+                    {item.number}
+                  </span>
+                  <span className="hidden sm:inline truncate">{item.title.split("(")[0]}</span>
+                  <span className="sm:hidden truncate">{item.title.split(" ")[0]}</span>
                 </span>
-                <span className="hidden sm:inline truncate">{item.title.split("(")[0]}</span>
-                <span className="sm:hidden truncate">{item.title.split(" ")[0]}</span>
               </button>
             );
           })}
@@ -217,14 +202,14 @@ export function CredentialsCarousel() {
         <div className="flex items-center gap-1 pl-2 shrink-0">
           <button
             onClick={goToPrev}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous credential"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={goToNext}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next credential"
           >
             <ChevronRight className="h-4 w-4" />
@@ -234,10 +219,12 @@ export function CredentialsCarousel() {
 
       {/* Auto-Advance Progress Line */}
       <div className="relative h-0.5 w-full bg-[var(--border-subtle)] overflow-hidden">
-        <motion.div
-          className="h-full bg-[var(--foreground)]"
-          style={{ width: `${progress}%` }}
-          transition={{ duration: 0.05, ease: "linear" }}
+        <div
+          key={`${currentIndex}-${isPaused}-${isInView}`}
+          className="h-full w-full bg-[var(--foreground)] origin-left"
+          style={{
+            animation: !isPaused && isInView ? `carousel-progress ${AUTO_ROTATE_MS}ms linear forwards` : "none",
+          }}
         />
       </div>
 

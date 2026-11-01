@@ -46,11 +46,11 @@ export function EducationBento() {
       <div className="mt-10 sm:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Card 1: Academic Degree (7 cols) */}
         <div className="lg:col-span-7">
-          <SpotlightCard className="h-full flex flex-col justify-between border border-[var(--border-subtle)] bg-[var(--card-bg)] rounded-3xl p-6 sm:p-8 hover:border-[var(--card-border-hover)] transition-all">
+          <SpotlightCard className="h-full flex flex-col justify-between border border-[var(--border-subtle)] bg-white dark:bg-[#141416] rounded-3xl p-6 sm:p-8 hover:border-[var(--card-border-hover)] shadow-xl transition-all">
             <div>
               {/* Badge & Period */}
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[var(--text-secondary)]">
-                <span className="rounded-full bg-[var(--glass-pill-bg)] px-3 py-1 font-semibold text-[var(--foreground)] border border-[var(--border-subtle)]">
+                <span className="rounded-full bg-[#f8f9fa] dark:bg-[#1e1e24] px-3 py-1 font-semibold text-[var(--foreground)] border border-[var(--border-subtle)]">
                   B.Sc. Engineering Degree
                 </span>
                 <div className="flex items-center gap-1.5 text-[var(--text-muted)]">
@@ -82,7 +82,7 @@ export function EducationBento() {
                   {edu.coursework.map((course, idx) => (
                     <span
                       key={idx}
-                      className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)]"
+                      className="rounded-full border border-[var(--border-subtle)] bg-[#f8f9fa] dark:bg-[#1e1e24] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)]"
                     >
                       {course}
                     </span>
@@ -106,10 +106,10 @@ export function EducationBento() {
         {/* Right Column (5 cols): Certification + Languages stacked */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           {/* Card 2: Professional Certification */}
-          <SpotlightCard className="flex-1 flex flex-col justify-between border border-[var(--border-subtle)] bg-[var(--card-bg)] rounded-3xl p-6 sm:p-7 hover:border-[var(--card-border-hover)] transition-all">
+          <SpotlightCard className="flex-1 flex flex-col justify-between border border-[var(--border-subtle)] bg-white dark:bg-[#141416] rounded-3xl p-6 sm:p-7 hover:border-[var(--card-border-hover)] shadow-xl transition-all">
             <div>
               <div className="flex items-center justify-between text-xs font-mono text-[var(--text-secondary)]">
-                <span className="rounded-full bg-[var(--glass-pill-bg)] px-3 py-1 font-semibold text-[var(--foreground)] border border-[var(--border-subtle)] flex items-center gap-1.5">
+                <span className="rounded-full bg-[#f8f9fa] dark:bg-[#1e1e24] px-3 py-1 font-semibold text-[var(--foreground)] border border-[var(--border-subtle)] flex items-center gap-1.5">
                   <Award className="h-3.5 w-3.5" />
                   <span>Industry Certification</span>
                 </span>
@@ -135,7 +135,7 @@ export function EducationBento() {
           </SpotlightCard>
 
           {/* Card 3: Spoken Languages */}
-          <SpotlightCard className="border border-[var(--border-subtle)] bg-[var(--card-bg)] rounded-3xl p-6 hover:border-[var(--card-border-hover)] transition-all">
+          <SpotlightCard className="border border-[var(--border-subtle)] bg-white dark:bg-[#141416] rounded-3xl p-6 hover:border-[var(--card-border-hover)] shadow-xl transition-all">
             <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-3">
               <Languages className="h-4 w-4" />
               <span>Language Proficiencies</span>
@@ -145,7 +145,7 @@ export function EducationBento() {
               {languages.map((lang, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3"
+                  className="flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[#f8f9fa] dark:bg-[#1e1e24] p-3"
                 >
                   <span className="font-sans text-sm font-bold text-[var(--foreground)]">
                     {lang.language}

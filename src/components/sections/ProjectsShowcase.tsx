@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import { PORTFOLIO_DATA, ProjectItem } from "@/data/portfolio";
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { ProjectModal } from "./ProjectModal";
@@ -241,11 +241,12 @@ const PROJECT_EXTENDED_DATA: Record<string, ProjectExtendedMeta> = {
 };
 
 export function ProjectsShowcase() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [activeStudioTab, setActiveStudioTab] = useState<StudioTab>("innovations");
   const [selectedProjectForModal, setSelectedProjectForModal] = useState<ProjectItem | null>(null);
 
@@ -263,41 +264,29 @@ export function ProjectsShowcase() {
   const goToNextProject = useCallback(() => {
     setDirection(1);
     setActiveProjectIndex((prev) => (prev + 1) % projects.length);
-    setProgress(0);
   }, [projects.length]);
 
   const goToPrevProject = useCallback(() => {
     setDirection(-1);
     setActiveProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
-    setProgress(0);
   }, [projects.length]);
 
   const goToProjectIndex = (idx: number) => {
     if (idx === activeProjectIndex) return;
     setDirection(idx > activeProjectIndex ? 1 : -1);
     setActiveProjectIndex(idx);
-    setProgress(0);
   };
 
-  // Auto-play interval with smooth 50ms progress increments
+  // Auto-play timer (zero-re-render compositor progress bar)
   useEffect(() => {
-    if (isPaused || !isAutoPlayEnabled) return;
+    if (isPaused || !isAutoPlayEnabled || !isInView) return;
 
-    const intervalTime = 50;
-    const step = (intervalTime / AUTO_PROJECT_DURATION) * 100;
+    const timer = setTimeout(() => {
+      goToNextProject();
+    }, AUTO_PROJECT_DURATION);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNextProject();
-          return 0;
-        }
-        return prev + step;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, isAutoPlayEnabled, goToNextProject]);
+    return () => clearTimeout(timer);
+  }, [activeProjectIndex, isPaused, isAutoPlayEnabled, isInView, goToNextProject]);
 
   // Touch swipe support for mobile
   const touchStartX = useRef<number | null>(null);
@@ -346,7 +335,7 @@ export function ProjectsShowcase() {
   };
 
   return (
-    <section id="projects" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+    <section ref={containerRef} id="projects" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       {/* Background radial glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-10 h-[360px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.05),transparent)]" />
@@ -420,40 +409,34 @@ export function ProjectsShowcase() {
                     key={project.id}
                     onClick={() => goToProjectIndex(idx)}
                     className={cn(
-                      "relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0",
+                      "relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 isolate",
                       isActive
-                        ? "text-[var(--background)] font-semibold"
+                        ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold shadow-sm"
                         : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                     )}
                   >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeStudioProjectPill"
-                        className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
-                        transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                      />
-                    )}
-
-                    {/* Pulsing production status dot */}
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--status-live)] opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--status-live)]" />
-                    </span>
-
-                    <span className="font-sans font-bold">{project.title}</span>
-
-                    {meta && (
-                      <span
-                        className={cn(
-                          "rounded-full px-1.5 py-0.5 text-[9px] font-mono",
-                          isActive
-                            ? "bg-[var(--background)]/20 text-[var(--background)] font-bold"
-                            : "bg-neutral-500/10 text-[var(--text-muted)]"
-                        )}
-                      >
-                        {meta.flag}
+                    <span className="relative z-10 flex items-center gap-2">
+                      {/* Pulsing production status dot */}
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--status-live)] opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--status-live)]" />
                       </span>
-                    )}
+
+                      <span className="font-sans font-bold">{project.title}</span>
+
+                      {meta && (
+                        <span
+                          className={cn(
+                            "rounded-full px-1.5 py-0.5 text-[9px] font-mono",
+                            isActive
+                              ? "bg-white/20 dark:bg-black/20 text-white dark:text-neutral-900 font-bold"
+                              : "bg-neutral-500/10 text-[var(--text-muted)]"
+                          )}
+                        >
+                          {meta.flag}
+                        </span>
+                      )}
+                    </span>
                   </button>
                 );
               })}
@@ -496,7 +479,7 @@ export function ProjectsShowcase() {
 
       {/* Interactive Engineering Studio Deck */}
       <div
-        className="mt-6 group relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
+        className="mt-6 group relative overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-white dark:bg-[#141416] shadow-2xl transition-all"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
@@ -505,8 +488,11 @@ export function ProjectsShowcase() {
         {/* Animated Carousel Progress Line */}
         <div className="h-0.5 sm:h-1 w-full bg-[var(--border-subtle)] overflow-hidden">
           <div
-            className="h-full bg-[var(--foreground)] transition-all duration-75"
-            style={{ width: `${progress}%` }}
+            key={`${activeProjectIndex}-${isPaused}-${isAutoPlayEnabled}-${isInView}`}
+            className="h-full w-full bg-[var(--foreground)] origin-left"
+            style={{
+              animation: !isPaused && isAutoPlayEnabled && isInView ? `carousel-progress ${AUTO_PROJECT_DURATION}ms linear forwards` : "none",
+            }}
           />
         </div>
 
@@ -605,7 +591,7 @@ export function ProjectsShowcase() {
                     {currentProject.techStack.map((tech, idx) => (
                       <span
                         key={idx}
-                        className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)]"
+                        className="rounded-full border border-[var(--border-subtle)] bg-[#f8f9fa] dark:bg-[#1e1e24] px-3 py-1 font-mono text-[11px] text-[var(--text-secondary)] font-medium"
                       >
                         {tech}
                       </span>
@@ -620,7 +606,7 @@ export function ProjectsShowcase() {
                   {extendedMeta.specs.slice(0, 2).map((spec, i) => (
                     <div
                       key={i}
-                      className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3"
+                      className="rounded-2xl border border-[var(--border-subtle)] bg-[#f8f9fa] dark:bg-[#1e1e24] p-3"
                     >
                       <div className="text-[10px] font-mono text-[var(--text-muted)]">
                         {spec.label}
@@ -635,9 +621,9 @@ export function ProjectsShowcase() {
             </div>
 
             {/* RIGHT COLUMN: Interactive Workstation Window with 3 Tabs (7 Cols) */}
-            <div className="lg:col-span-7 rounded-2xl border border-[var(--border-subtle)] bg-[var(--background)] overflow-hidden shadow-xl">
+            <div className="lg:col-span-7 rounded-2xl border border-[var(--border-subtle)] bg-[#f8f9fa] dark:bg-[#18181b] overflow-hidden shadow-xl">
               {/* Window Title Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-4 py-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-white/80 dark:bg-[#18181b]/80 px-4 py-2.5">
                 {/* Traffic Lights */}
                 <div className="flex items-center gap-1.5">
                   <div className="h-2.5 w-2.5 rounded-full bg-neutral-400" />
@@ -707,7 +693,7 @@ export function ProjectsShowcase() {
                       {currentProject.highlights.map((h, idx) => (
                         <div
                           key={idx}
-                          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3.5 transition-colors hover:border-[var(--text-muted)]"
+                          className="rounded-2xl border border-[var(--border-subtle)] bg-white dark:bg-[#202024] p-3.5 transition-colors hover:border-[var(--text-muted)] shadow-xs"
                         >
                           <div className="flex items-center gap-2 font-sans text-xs sm:text-sm font-bold text-[var(--foreground)]">
                             <CheckCircle2 className="h-4 w-4 text-[var(--status-live)] shrink-0" />
@@ -738,7 +724,7 @@ export function ProjectsShowcase() {
 
                       {extendedMeta.systemFlow.map((step, idx) => (
                         <div key={idx} className="relative">
-                          <div className="flex items-start gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3.5">
+                          <div className="flex items-start gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-white dark:bg-[#202024] p-3.5 shadow-xs">
                             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--foreground)] text-[var(--background)] font-mono text-xs font-bold shadow-sm">
                               {step.step}
                             </div>
@@ -747,7 +733,7 @@ export function ProjectsShowcase() {
                                 <span className="font-sans text-xs font-bold text-[var(--foreground)]">
                                   {step.layer}
                                 </span>
-                                <span className="rounded-full bg-[var(--glass-pill-bg)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
+                                <span className="rounded-full bg-[#f8f9fa] dark:bg-[#18181b] px-2.5 py-0.5 font-mono text-[10px] text-[var(--text-secondary)] border border-[var(--border-subtle)]">
                                   {step.tech}
                                 </span>
                               </div>
@@ -779,7 +765,7 @@ export function ProjectsShowcase() {
                       {extendedMeta.specs.map((spec, idx) => (
                         <div
                           key={idx}
-                          className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-4"
+                          className="rounded-2xl border border-[var(--border-subtle)] bg-white dark:bg-[#202024] p-4 shadow-xs"
                         >
                           <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-muted)]">
                             <Activity className="h-3.5 w-3.5 text-[var(--foreground)]" />

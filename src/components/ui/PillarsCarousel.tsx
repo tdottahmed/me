@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import {
   Server,
   ShieldCheck,
@@ -57,49 +57,38 @@ const PILLARS: PillarItem[] = [
 const AUTO_ROTATE_MS = 6500;
 
 export function PillarsCarousel() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const activePillar = PILLARS[currentIndex];
 
   const goToNext = useCallback(() => {
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % PILLARS.length);
-    setProgress(0);
   }, []);
 
   const goToPrev = useCallback(() => {
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + PILLARS.length) % PILLARS.length);
-    setProgress(0);
   }, []);
 
   const goToIndex = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
-    setProgress(0);
   };
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !isInView) return;
 
-    const intervalTime = 50;
-    const increment = (intervalTime / AUTO_ROTATE_MS) * 100;
+    const timer = setTimeout(() => {
+      goToNext();
+    }, AUTO_ROTATE_MS);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNext();
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, goToNext]);
+    return () => clearTimeout(timer);
+  }, [currentIndex, isPaused, isInView, goToNext]);
 
   const touchStartX = useRef<number | null>(null);
 
@@ -149,12 +138,13 @@ export function PillarsCarousel() {
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-lg transition-colors duration-250"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Top Header: Step Selector Pills + Slide Tracker */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-2.5">
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[#fafafa] dark:bg-[#18181b] p-2 sm:p-2.5">
         {/* Step Selector Pills */}
         <div className="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0 overflow-x-auto scrollbar-none">
           {PILLARS.map((pillar, idx) => {
@@ -164,24 +154,19 @@ export function PillarsCarousel() {
                 key={pillar.id}
                 onClick={() => goToIndex(idx)}
                 className={cn(
-                  "relative flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-mono transition-all cursor-pointer shrink-0 truncate",
+                  "relative flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs font-mono transition-all duration-200 cursor-pointer shrink-0 truncate isolate",
                   isActive
-                    ? "text-[var(--foreground)] font-semibold"
-                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold shadow-sm"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                 )}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activePillarTab"
-                    className="absolute inset-0 rounded-xl bg-neutral-500/15 border border-[var(--border-subtle)] -z-10"
-                    transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                  />
-                )}
-                <span className={cn("text-[10px] font-bold", isActive ? "text-[var(--foreground)]" : "text-[var(--text-muted)]")}>
-                  {pillar.number}
+                <span className="relative z-10 flex items-center gap-1.5 truncate">
+                  <span className={cn("text-[10px] font-bold", isActive ? "text-neutral-300 dark:text-neutral-600" : "text-[var(--text-muted)]")}>
+                    {pillar.number}
+                  </span>
+                  <span className="hidden sm:inline truncate">{pillar.title}</span>
+                  <span className="sm:hidden truncate">{pillar.title.split(" ")[0]}</span>
                 </span>
-                <span className="hidden sm:inline truncate">{pillar.title}</span>
-                <span className="sm:hidden truncate">{pillar.title.split(" ")[0]}</span>
               </button>
             );
           })}
@@ -191,14 +176,14 @@ export function PillarsCarousel() {
         <div className="flex items-center gap-1 pl-2 shrink-0">
           <button
             onClick={goToPrev}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous engineering pillar"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
           </button>
           <button
             onClick={goToNext}
-            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next engineering pillar"
           >
             <ChevronRight className="h-3.5 w-3.5" />
@@ -208,10 +193,12 @@ export function PillarsCarousel() {
 
       {/* Animated Auto-Advance Progress Line */}
       <div className="relative h-0.5 w-full bg-[var(--border-subtle)] overflow-hidden">
-        <motion.div
-          className="h-full bg-[var(--foreground)]"
-          style={{ width: `${progress}%` }}
-          transition={{ duration: 0.05, ease: "linear" }}
+        <div
+          key={`${currentIndex}-${isPaused}-${isInView}`}
+          className="h-full w-full bg-[var(--foreground)] origin-left"
+          style={{
+            animation: !isPaused && isInView ? `carousel-progress ${AUTO_ROTATE_MS}ms linear forwards` : "none",
+          }}
         />
       </div>
 

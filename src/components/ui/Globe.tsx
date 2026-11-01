@@ -34,7 +34,7 @@ export function Globe({ className = "" }: { className?: string }) {
       theta: 0.25,
       dark: 1,
       diffuse: 1.2,
-      mapSamples: 16000,
+      mapSamples: 9000,
       mapBrightness: 6,
       baseColor: [0.18, 0.18, 0.2],
       markerColor: [0.95, 0.95, 0.98],

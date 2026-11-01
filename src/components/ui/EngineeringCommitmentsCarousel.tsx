@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import {
   ShieldCheck,
   Zap,
@@ -63,50 +63,39 @@ const COMMITMENTS: CommitmentItem[] = [
 const AUTO_ROTATE_MS = 8000;
 
 export function EngineeringCommitmentsCarousel() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   const activeItem = COMMITMENTS[currentIndex];
 
   const goToNext = useCallback(() => {
     setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % COMMITMENTS.length);
-    setProgress(0);
   }, []);
 
   const goToPrev = useCallback(() => {
     setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + COMMITMENTS.length) % COMMITMENTS.length);
-    setProgress(0);
   }, []);
 
   const goToIndex = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
-    setProgress(0);
   };
 
   useEffect(() => {
-    if (isPaused || !isAutoPlayEnabled) return;
+    if (isPaused || !isAutoPlayEnabled || !isInView) return;
 
-    const intervalTime = 50;
-    const increment = (intervalTime / AUTO_ROTATE_MS) * 100;
+    const timer = setTimeout(() => {
+      goToNext();
+    }, AUTO_ROTATE_MS);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNext();
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, isAutoPlayEnabled, goToNext]);
+    return () => clearTimeout(timer);
+  }, [currentIndex, isPaused, isAutoPlayEnabled, isInView, goToNext]);
 
   const touchStartX = useRef<number | null>(null);
 
@@ -155,12 +144,13 @@ export function EngineeringCommitmentsCarousel() {
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full overflow-hidden rounded-3xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-2xl transition-all"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Top Header Bar: Step Selector Tabs + Play/Pause & Nav Arrows */}
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-2 sm:p-3">
+      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[#fafafa] dark:bg-[#18181b] p-2 sm:p-3">
         {/* Horizontal Scrollable Tabs */}
         <div className="overflow-x-auto scrollbar-none flex-1 min-w-0 pr-2">
           <div className="flex items-center gap-1 sm:gap-1.5 min-w-max">
@@ -171,24 +161,19 @@ export function EngineeringCommitmentsCarousel() {
                   key={item.id}
                   onClick={() => goToIndex(idx)}
                   className={cn(
-                    "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all cursor-pointer truncate",
+                    "relative flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 text-xs font-mono transition-all duration-200 cursor-pointer truncate isolate",
                     isActive
-                      ? "text-[var(--background)] font-semibold"
+                      ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-semibold shadow-sm"
                       : "text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-neutral-500/10"
                   )}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeCommitmentTab"
-                      className="absolute inset-0 rounded-full bg-[var(--foreground)] shadow-sm -z-10"
-                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
-                    />
-                  )}
-                  <span className={cn("text-[10px] font-bold", isActive ? "text-[var(--background)]" : "text-[var(--text-muted)]")}>
-                    {item.number}
+                  <span className="relative z-10 flex items-center gap-1.5 truncate">
+                    <span className={cn("text-[10px] font-bold", isActive ? "text-neutral-300 dark:text-neutral-600" : "text-[var(--text-muted)]")}>
+                      {item.number}
+                    </span>
+                    <span className="hidden sm:inline truncate">{item.title}</span>
+                    <span className="sm:hidden truncate">{item.title.split(" ")[0]} {item.title.split(" ")[1]}</span>
                   </span>
-                  <span className="hidden sm:inline truncate">{item.title}</span>
-                  <span className="sm:hidden truncate">{item.title.split(" ")[0]} {item.title.split(" ")[1]}</span>
                 </button>
               );
             })}
@@ -199,7 +184,7 @@ export function EngineeringCommitmentsCarousel() {
         <div className="flex items-center gap-1 sm:gap-1.5 shrink-0 pl-1">
           <button
             onClick={() => setIsAutoPlayEnabled((prev) => !prev)}
-            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label={isAutoPlayEnabled ? "Pause carousel auto-play" : "Resume carousel auto-play"}
             title={isAutoPlayEnabled ? "Pause autoplay" : "Resume autoplay"}
           >
@@ -212,7 +197,7 @@ export function EngineeringCommitmentsCarousel() {
 
           <button
             onClick={goToPrev}
-            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Previous commitment"
           >
             <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -220,7 +205,7 @@ export function EngineeringCommitmentsCarousel() {
 
           <button
             onClick={goToNext}
-            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
+            className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white dark:bg-[#202024] text-[var(--text-secondary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
             aria-label="Next commitment"
           >
             <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -230,10 +215,12 @@ export function EngineeringCommitmentsCarousel() {
 
       {/* Auto-Advance Progress Line */}
       <div className="relative h-0.5 w-full bg-[var(--border-subtle)] overflow-hidden">
-        <motion.div
-          className="h-full bg-[var(--foreground)]"
-          style={{ width: `${progress}%` }}
-          transition={{ duration: 0.05, ease: "linear" }}
+        <div
+          key={`${currentIndex}-${isPaused}-${isAutoPlayEnabled}-${isInView}`}
+          className="h-full w-full bg-[var(--foreground)] origin-left"
+          style={{
+            animation: !isPaused && isAutoPlayEnabled && isInView ? `carousel-progress ${AUTO_ROTATE_MS}ms linear forwards` : "none",
+          }}
         />
       </div>
 

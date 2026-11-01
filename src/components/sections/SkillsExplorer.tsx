@@ -4,7 +4,6 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
 import { useLenis } from "lenis/react";
 import { PORTFOLIO_DATA, SkillItem } from "@/data/portfolio";
-import { NumberTicker } from "@/components/ui/NumberTicker";
 import { EASE_OUT_EXPO } from "@/components/ui/Reveal";
 import { SkillIcon } from "@/components/ui/Icons";
 import {
@@ -20,7 +19,6 @@ import {
   Database,
   Terminal,
   ShieldCheck,
-  CheckCircle2,
   ChevronRight,
   Info,
 } from "lucide-react";
@@ -265,8 +263,7 @@ export function SkillsExplorer() {
             transition={{ duration: 0.7, ease: EASE_OUT_EXPO, delay: 0.2 }}
             className="mt-4 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)] font-medium leading-relaxed"
           >
-            Commercial technologies architected and deployed across high-concurrency Laravel backends,
-            Next.js 16 storefronts, transactional database schemas, and hardened Linux infrastructure.
+            Production stack architected across high-concurrency backends, modern web storefronts, transactional databases, and hardened infrastructure.
           </motion.p>
 
           {/* Live Telemetry Counter */}
@@ -274,21 +271,16 @@ export function SkillsExplorer() {
             initial={{ opacity: 0 }}
             animate={headerInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs text-[var(--text-muted)]"
+            className="mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 font-mono text-xs text-[var(--text-muted)]"
           >
-            <span className="flex items-center gap-1.5">
-              <NumberTicker value={allSkills.length} className="text-base sm:text-lg font-bold text-[var(--foreground)]" />
-              <span>technologies</span>
+            <span className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1">
+              <strong className="text-[var(--foreground)]">{allSkills.length}</strong> Tools
             </span>
-            <span className="h-3.5 w-px bg-[var(--border-subtle)]" />
-            <span className="flex items-center gap-1.5">
-              <NumberTicker value={CATEGORIES.length - 1} className="text-base sm:text-lg font-bold text-[var(--foreground)]" />
-              <span>architectural domains</span>
+            <span className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1">
+              <strong className="text-[var(--foreground)]">{CATEGORIES.length - 1}</strong> Domains
             </span>
-            <span className="h-3.5 w-px bg-[var(--border-subtle)]" />
-            <span className="flex items-center gap-1.5 text-[var(--status-live)]">
-              <span className="text-base sm:text-lg font-bold">100%</span>
-              <span>commercial production</span>
+            <span className="rounded-full border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] px-3 py-1 text-[var(--status-live)]">
+              <strong>Commercial Production</strong>
             </span>
           </motion.div>
         </div>
@@ -304,7 +296,7 @@ export function SkillsExplorer() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search 36 technologies, tools, versions..."
+                placeholder="Search technologies (e.g. Next.js, Laravel)..."
                 className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] pl-10 pr-9 py-2 text-sm sm:text-xs text-[var(--foreground)] placeholder:text-[var(--text-muted)] focus:border-[var(--foreground)] focus:outline-none transition-colors"
               />
               {searchQuery && (
@@ -442,36 +434,20 @@ export function SkillsExplorer() {
                             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--card-bg)] p-1.5 transition-transform duration-200 group-hover/pod:scale-105">
                               <SkillIcon skillId={skill.id} className="h-4 w-4" />
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-between gap-1">
-                                <span className="font-sans text-xs font-semibold text-[var(--foreground)] truncate">
-                                  {skill.name}
+                            <div className="min-w-0 flex-1 flex items-center justify-between gap-1">
+                              <span className="font-sans text-xs font-semibold text-[var(--foreground)] truncate">
+                                {skill.name}
+                              </span>
+                              {skill.version && (
+                                <span className="text-[10px] font-mono text-[var(--text-muted)] shrink-0">
+                                  {skill.version.split(" ")[0]}
                                 </span>
-                                {skill.version && (
-                                  <span className="text-[9px] font-mono text-[var(--text-muted)] shrink-0">
-                                    {skill.version.split(" ")[0]}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="text-[10px] font-mono text-[var(--text-secondary)] truncate mt-0.5">
-                                {skill.relatedProjects.length > 0
-                                  ? skill.relatedProjects[0]
-                                  : "Core Stack"}
-                              </div>
+                              )}
                             </div>
                           </button>
                         );
                       })}
                     </div>
-                  </div>
-
-                  {/* Domain Footer Note */}
-                  <div className="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
-                    <span>Tap any tool to inspect</span>
-                    <span className="text-[var(--text-secondary)] flex items-center gap-0.5 group-hover:text-[var(--foreground)] transition-colors">
-                      <span>Details</span>
-                      <ChevronRight className="h-3 w-3" />
-                    </span>
                   </div>
                 </div>
               );
@@ -481,16 +457,16 @@ export function SkillsExplorer() {
 
         {/* VIEW 2: Compact Telemetry Grid (Alternative Fast-Skimming View) */}
         {viewMode === "grid" && (
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             {filteredSkills.map((skill) => {
               return (
                 <button
                   key={skill.id}
                   onClick={() => setInspectedSkill(skill)}
-                  className="flex items-start gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-3.5 text-left transition-all duration-200 hover:border-[var(--card-border-hover)] hover:bg-neutral-500/5 cursor-pointer group"
+                  className="flex items-center gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] p-3 text-left transition-all duration-200 hover:border-[var(--card-border-hover)] hover:bg-neutral-500/5 cursor-pointer group"
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--foreground)] text-[var(--background)] p-2 group-hover:scale-105 transition-transform">
-                    <SkillIcon skillId={skill.id} className="h-4.5 w-4.5" />
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--glass-pill-bg)] border border-[var(--border-subtle)] p-1.5 group-hover:scale-105 transition-transform">
+                    <SkillIcon skillId={skill.id} className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1">
@@ -499,16 +475,13 @@ export function SkillsExplorer() {
                       </span>
                       {skill.version && (
                         <span className="rounded-full bg-[var(--glass-pill-bg)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--text-muted)] border border-[var(--border-subtle)] shrink-0">
-                          {skill.version}
+                          {skill.version.split(" ")[0]}
                         </span>
                       )}
                     </div>
-                    <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5">
+                    <div className="text-[10px] font-mono text-[var(--text-muted)] mt-0.5 truncate">
                       {skill.category}
                     </div>
-                    <p className="mt-1 text-[11px] text-[var(--text-secondary)] font-medium line-clamp-2 leading-relaxed">
-                      {skill.highlight}
-                    </p>
                   </div>
                 </button>
               );
@@ -586,17 +559,11 @@ export function SkillsExplorer() {
               <div className="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-4">
                 <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-[var(--text-muted)] mb-2">
                   <Info className="h-3.5 w-3.5 text-[var(--foreground)]" />
-                  <span>Production Role & Implementation</span>
+                  <span>Role in Production</span>
                 </div>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-sans font-medium">
                   {inspectedSkill.highlight}
                 </p>
-              </div>
-
-              {/* Verified Production Badge */}
-              <div className="mt-4 flex items-center gap-2 text-xs font-mono text-[var(--status-live)] bg-[var(--status-live)]/10 border border-[var(--status-live)]/20 rounded-2xl px-3.5 py-2">
-                <CheckCircle2 className="h-4 w-4 shrink-0" />
-                <span>Verified across commercial platforms with automated testing & hardened VPS deployment</span>
               </div>
 
               {/* Linked Production Platforms */}

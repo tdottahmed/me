@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { motion, AnimatePresence, useInView, type Variants } from "motion/react";
 import {
   Layout,
   Server,
@@ -306,12 +306,13 @@ const AUTO_STEP_DURATION = 4200; // 4.2 seconds per stage
 const TOTAL_STAGES = 4;
 
 export function SystemFlowBeam() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px 0px" });
   const [mode, setMode] = useState<SimulationMode>("locks");
   const [currentStageIdx, setCurrentStageIdx] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const currentScenario = SCENARIOS.find((s) => s.id === mode) || SCENARIOS[0];
   const stages = currentScenario.stages;
@@ -321,48 +322,35 @@ export function SystemFlowBeam() {
   const goToNextStage = useCallback(() => {
     setDirection(1);
     setCurrentStageIdx((prev) => (prev + 1) % TOTAL_STAGES);
-    setProgress(0);
   }, []);
 
   const goToPrevStage = useCallback(() => {
     setDirection(-1);
     setCurrentStageIdx((prev) => (prev - 1 + TOTAL_STAGES) % TOTAL_STAGES);
-    setProgress(0);
   }, []);
 
   const goToStage = (idx: number) => {
     if (idx === currentStageIdx) return;
     setDirection(idx > currentStageIdx ? 1 : -1);
     setCurrentStageIdx(idx);
-    setProgress(0);
   };
 
   const handleScenarioChange = (newMode: SimulationMode) => {
     setMode(newMode);
     setCurrentStageIdx(0);
     setDirection(1);
-    setProgress(0);
   };
 
   // Auto-play stepper progression
   useEffect(() => {
-    if (isPaused || !isAutoPlayEnabled) return;
+    if (isPaused || !isAutoPlayEnabled || !isInView) return;
 
-    const intervalTime = 50;
-    const step = (intervalTime / AUTO_STEP_DURATION) * 100;
+    const timer = setTimeout(() => {
+      goToNextStage();
+    }, AUTO_STEP_DURATION);
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          goToNextStage();
-          return 0;
-        }
-        return prev + step;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [isPaused, isAutoPlayEnabled, goToNextStage]);
+    return () => clearTimeout(timer);
+  }, [currentStageIdx, isPaused, isAutoPlayEnabled, isInView, goToNextStage]);
 
   // Touch swipe gesture support for mobile
   const touchStartX = useRef<number | null>(null);
@@ -412,6 +400,7 @@ export function SystemFlowBeam() {
 
   return (
     <div
+      ref={containerRef}
       className="relative flex flex-col font-mono text-xs select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -488,8 +477,11 @@ export function SystemFlowBeam() {
                   {isActive && (
                     <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--card-contrast-fg)]/25 overflow-hidden">
                       <div
-                        className="h-full bg-emerald-400 transition-all duration-75"
-                        style={{ width: `${progress}%` }}
+                        key={`micro-${currentStageIdx}-${isPaused}-${isAutoPlayEnabled}-${isInView}`}
+                        className="h-full w-full bg-emerald-400 origin-left"
+                        style={{
+                          animation: !isPaused && isAutoPlayEnabled && isInView ? `carousel-progress ${AUTO_STEP_DURATION}ms linear forwards` : "none",
+                        }}
                       />
                     </div>
                   )}
@@ -524,8 +516,11 @@ export function SystemFlowBeam() {
         {/* Animated Progress Line */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-[var(--border-subtle)] overflow-hidden">
           <div
-            className="h-full bg-[var(--foreground)] opacity-70 transition-all duration-75"
-            style={{ width: `${progress}%` }}
+            key={`inspector-${currentStageIdx}-${isPaused}-${isAutoPlayEnabled}-${isInView}`}
+            className="h-full w-full bg-[var(--foreground)] opacity-70 origin-left"
+            style={{
+              animation: !isPaused && isAutoPlayEnabled && isInView ? `carousel-progress ${AUTO_STEP_DURATION}ms linear forwards` : "none",
+            }}
           />
         </div>
 
