@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   MessageSquare,
   X,
-  Send,
   Phone,
   Mail,
   ArrowUpRight,
@@ -15,6 +14,7 @@ import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { useToast } from "@/components/ui/Toast";
 import { useLenis } from "lenis/react";
 import confetti from "canvas-confetti";
+import { FacebookIcon, TelegramIcon } from "@/components/ui/Icons";
 
 // Official SVG Icons for Brand Accuracy
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
@@ -25,25 +25,8 @@ function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-function MessengerIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.974 18.627 0 12 0zm1.191 14.963l-3.056-3.26-5.963 3.26 6.559-6.963 3.13 3.26 5.889-3.26-6.559 6.963z" />
-    </svg>
-  );
-}
-
-function TelegramIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-    </svg>
-  );
-}
-
 export function FloatingChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [quickMessage, setQuickMessage] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
   const widgetRef = useRef<HTMLDivElement>(null);
   const lenis = useLenis();
@@ -84,17 +67,6 @@ export function FloatingChatWidget() {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleQuickSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!quickMessage.trim()) return;
-
-    // Send via WhatsApp with pre-filled message
-    const encoded = encodeURIComponent(quickMessage);
-    window.open(`https://wa.me/8801876525073?text=${encoded}`, "_blank");
-    setQuickMessage("");
-    setIsOpen(false);
-  };
-
   const scrollToContact = () => {
     setIsOpen(false);
     const el = document.getElementById("contact");
@@ -116,25 +88,25 @@ export function FloatingChatWidget() {
       isExternal: true,
     },
     {
-      id: "messenger",
-      name: "Messenger",
-      subtitle: "Facebook Chat",
+      id: "facebook",
+      name: "Facebook",
+      subtitle: "@tdottahmed • Direct Message",
       badge: "Online",
-      icon: MessengerIcon,
+      icon: FacebookIcon,
       accent: "text-blue-500",
       bgHover: "hover:border-blue-500/40 hover:bg-blue-500/5",
-      href: "https://m.me/tanbir.ahmed07",
+      href: "https://www.facebook.com/tdottahmed/",
       isExternal: true,
     },
     {
       id: "telegram",
       name: "Telegram",
-      subtitle: "@tdottahmed • Direct Wire",
+      subtitle: "@tanbirahmed07 • Direct Wire",
       badge: "Direct",
       icon: TelegramIcon,
       accent: "text-sky-500",
       bgHover: "hover:border-sky-500/40 hover:bg-sky-500/5",
-      href: "https://t.me/tdottahmed",
+      href: "https://t.me/tanbirahmed07",
       isExternal: true,
     },
     {
@@ -264,34 +236,15 @@ export function FloatingChatWidget() {
               })}
             </div>
 
-            {/* Quick Note Input Form */}
-            <div className="border-t border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3">
-              <form onSubmit={handleQuickSend} className="flex items-center gap-1.5">
-                <input
-                  type="text"
-                  value={quickMessage}
-                  onChange={(e) => setQuickMessage(e.target.value)}
-                  placeholder="Type a message & chat..."
-                  className="flex-1 rounded-full border border-[var(--border-subtle)] bg-[var(--card-bg)] px-3.5 py-2 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--foreground)] focus:outline-none transition-colors"
-                />
-                <button
-                  type="submit"
-                  aria-label="Send via WhatsApp"
-                  title="Send via WhatsApp"
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--card-contrast-bg)] text-[var(--card-contrast-fg)] hover:opacity-90 transition-opacity cursor-pointer shrink-0"
-                >
-                  <Send className="h-3.5 w-3.5" />
-                </button>
-              </form>
-
-              <div className="mt-2 text-center">
-                <button
-                  onClick={scrollToContact}
-                  className="text-[11px] font-mono text-[var(--muted-foreground)] hover:text-[var(--foreground)] underline underline-offset-2 transition-colors cursor-pointer"
-                >
-                  Or fill out the direct inquiry form ↓
-                </button>
-              </div>
+            {/* Direct Inquiry Link Footer */}
+            <div className="border-t border-[var(--border-subtle)] bg-[var(--glass-pill-bg)] p-3 text-center">
+              <button
+                onClick={scrollToContact}
+                className="w-full rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] hover:bg-[var(--glass-pill-bg)] py-2.5 px-4 text-xs font-mono text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all cursor-pointer flex items-center justify-center gap-2 group"
+              >
+                <span>Or fill out the direct inquiry form</span>
+                <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
+              </button>
             </div>
           </motion.div>
         )}

@@ -18,7 +18,7 @@ import {
   MessageSquare,
   Check,
 } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { GithubIcon, LinkedinIcon, FacebookIcon, TelegramIcon } from "@/components/ui/Icons";
 import { EngineeringCommitmentsCarousel } from "@/components/ui/EngineeringCommitmentsCarousel";
 
 export function ContactFooter() {
@@ -464,6 +464,24 @@ export function ContactFooter() {
                   <LinkedinIcon className="h-4 w-4" />
                 </a>
                 <a
+                  href={personal.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900/60 text-neutral-400 hover:text-blue-500 hover:border-neutral-700 transition-colors"
+                >
+                  <FacebookIcon className="h-4 w-4" />
+                </a>
+                <a
+                  href={personal.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Telegram"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900/60 text-neutral-400 hover:text-sky-400 hover:border-neutral-700 transition-colors"
+                >
+                  <TelegramIcon className="h-4 w-4" />
+                </a>
+                <a
                   href={`https://wa.me/8801876525073`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -482,8 +500,8 @@ export function ContactFooter() {
               </div>
             </div>
 
-            {/* Navigation / Company (2-3 cols) */}
-            <div className="md:col-span-2 space-y-3">
+            {/* Navigation / Company (Desktop only, hidden on mobile) */}
+            <div className="hidden md:block md:col-span-2 space-y-3">
               <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-500 font-semibold">
                 NAVIGATION
               </div>
@@ -521,8 +539,8 @@ export function ContactFooter() {
               </ul>
             </div>
 
-            {/* Expertise / Services (2-3 cols) */}
-            <div className="md:col-span-2 space-y-3">
+            {/* Expertise / Services (Desktop only, hidden on mobile) */}
+            <div className="hidden md:block md:col-span-2 space-y-3">
               <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-500 font-semibold">
                 EXPERTISE
               </div>
@@ -545,23 +563,50 @@ export function ContactFooter() {
               </ul>
             </div>
 
-            {/* Contact Details (3 cols) */}
-            <div className="md:col-span-3 space-y-3">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-500 font-semibold">
-                CONTACT
+            {/* Contact Details (Full width & beautifully styled on mobile, 3 cols on desktop) */}
+            <div className="pt-6 border-t border-neutral-900 md:pt-0 md:border-t-0 md:col-span-3 space-y-3.5">
+              <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-500 font-semibold flex items-center justify-between">
+                <span>CONTACT</span>
+                <span className="md:hidden text-[10px] text-emerald-400 font-mono flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Available Now
+                </span>
               </div>
-              <div className="space-y-2 text-xs font-medium text-neutral-400">
-                <p>
+              <div className="space-y-2.5 text-xs font-medium text-neutral-400">
+                <div>
                   <a
                     href={`mailto:${personal.email}`}
-                    className="hover:text-white font-mono transition-colors"
+                    className="inline-flex items-center gap-2 hover:text-white font-mono transition-colors group"
                   >
-                    {personal.email}
+                    <Mail className="h-3.5 w-3.5 text-neutral-500 group-hover:text-amber-400 transition-colors shrink-0" />
+                    <span>{personal.email}</span>
                   </a>
-                </p>
-                <p className="font-mono">{personal.phoneFormatted}</p>
-                <p>{personal.location}</p>
-                <p className="text-[11px] text-neutral-500 font-mono">
+                </div>
+                <div>
+                  <a
+                    href={`tel:${personal.phone}`}
+                    className="inline-flex items-center gap-2 hover:text-white font-mono transition-colors group"
+                  >
+                    <Phone className="h-3.5 w-3.5 text-neutral-500 group-hover:text-emerald-400 transition-colors shrink-0" />
+                    <span>{personal.phoneFormatted}</span>
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href={personal.telegramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 hover:text-white font-mono transition-colors group"
+                  >
+                    <TelegramIcon className="h-3.5 w-3.5 text-neutral-500 group-hover:text-sky-400 transition-colors shrink-0" />
+                    <span>Telegram: @{personal.telegramHandle}</span>
+                  </a>
+                </div>
+                <div className="flex items-center gap-2 text-neutral-400 font-sans">
+                  <MapPin className="h-3.5 w-3.5 text-neutral-500 shrink-0" />
+                  <span>{personal.location}</span>
+                </div>
+                <p className="text-[11px] text-neutral-500 font-mono pt-1">
                   Available for Remote & Relocation
                 </p>
               </div>

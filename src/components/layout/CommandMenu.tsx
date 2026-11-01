@@ -20,7 +20,7 @@ import {
   Compass,
   Sparkles,
 } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { GithubIcon, LinkedinIcon, FacebookIcon, TelegramIcon } from "@/components/ui/Icons";
 
 export function CommandMenu() {
   const { isOpen, closeMenu, toggleMenu } = useCommandMenu();
@@ -208,6 +208,26 @@ export function CommandMenu() {
               >
                 <LinkedinIcon className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span>Open LinkedIn Profile (tanbir-ahmed07)</span>
+              </Command.Item>
+              <Command.Item
+                onSelect={() => {
+                  closeMenu();
+                  window.open(PORTFOLIO_DATA.personal.facebookUrl, "_blank");
+                }}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
+              >
+                <FacebookIcon className="h-4 w-4 text-[var(--muted-foreground)]" />
+                <span>Open Facebook Profile (tdottahmed)</span>
+              </Command.Item>
+              <Command.Item
+                onSelect={() => {
+                  closeMenu();
+                  window.open(PORTFOLIO_DATA.personal.telegramUrl, "_blank");
+                }}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs text-[var(--foreground)] hover:bg-[var(--glass-pill-bg)] cursor-pointer transition-colors"
+              >
+                <TelegramIcon className="h-4 w-4 text-[var(--muted-foreground)]" />
+                <span>Message on Telegram (@tanbirahmed07)</span>
               </Command.Item>
               <Command.Item
                 onSelect={handleReplayPreloader}

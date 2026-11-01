@@ -72,7 +72,7 @@ export function InteractiveMiniTerminal() {
       case "contact":
         res = (
           <div className="text-slate-300">
-            Email: {PORTFOLIO_DATA.personal.email} | Phone: {PORTFOLIO_DATA.personal.phoneFormatted} | Location: Dhaka, BD
+            Email: {PORTFOLIO_DATA.personal.email} | Telegram: @{PORTFOLIO_DATA.personal.telegramHandle} | FB: tdottahmed | Phone: {PORTFOLIO_DATA.personal.phoneFormatted}
           </div>
         );
         break;

@@ -91,6 +91,9 @@ export const PORTFOLIO_DATA = {
     portfolioUrl: "https://tanbir.nixsoftware.net",
     linkedinUrl: "https://linkedin.com/in/tanbir-ahmed07",
     githubUrl: "https://github.com/tdottahmed",
+    facebookUrl: "https://www.facebook.com/tdottahmed/",
+    telegramUrl: "https://t.me/tanbirahmed07",
+    telegramHandle: "tanbirahmed07",
     resumeUrl: "https://docs.google.com/document/d/1acwsxleAOt_vVNW3_2eMqSk25mKlFf8cou8nwWacixI/edit?usp=sharing",
     availability: "Available for Full-Stack Roles & High-Impact Contracts",
     summary:
